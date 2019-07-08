@@ -1,0 +1,30 @@
+namespace WhyNotLang.Tokenizer
+{
+    public enum TokenType
+    {
+        Identifier,
+        String,
+        Number,
+        Var,
+        Assign,
+        Begin,
+        End,
+        If,
+        Else,
+        While,
+        Plus,
+        Minus,
+        Multiply,
+        Divide,
+        LessThan,
+        LessThanOrEqual,
+        GreaterThan,
+        GreaterThanOrEqual,
+        Equal,
+        NotEqual,
+        LeftParen,
+        RightParen,
+        Function,
+        Return
+    }
+}
