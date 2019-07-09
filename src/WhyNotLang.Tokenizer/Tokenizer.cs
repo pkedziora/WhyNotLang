@@ -29,17 +29,32 @@ namespace WhyNotLang.Tokenizer
 
         private (Token token, int endIndex) GetNextToken(string input, int startIndex)
         {
-            if (char.IsDigit(input[startIndex]))
+            var index = startIndex;
+            var endIndex = index;
+            
+            if (char.IsDigit(input[index]))
             {
-                return ReadNumber(input, startIndex);
+                return ReadNumber(input, index);
             }
 
-            if (input[startIndex] == '"')
+            if (IsIdentifierChar(input[index]))
             {
-                return ReadString(input, startIndex);
+                var identifierOrKeyword = ReadIdentifier(input, index);
+                if (_map.Map.ContainsKey(identifierOrKeyword.token.Value))
+                {
+                    // It's a keyword
+                    identifierOrKeyword.token.Type = _map.Map[identifierOrKeyword.token.Value];
+                }
+
+                return identifierOrKeyword;
+            }
+
+            if (input[index] == '"')
+            {
+                return ReadString(input, index);
             }
             
-            var index = startIndex;
+            
             var str = input[index].ToString();
             var tokens = _map.GetTokensStartingWith(str);
 
@@ -47,23 +62,25 @@ namespace WhyNotLang.Tokenizer
             {
                 while (tokens.Any() && index + 1 < input.Length)
                 {
-                    str = str + input[++index];
+                    var newStr = str + input[++index];
 
-                    var currentTokens = _map.GetTokensStartingWith(str);
+                    var currentTokens = _map.GetTokensStartingWith(newStr);
                     if (currentTokens.Count > 0)
                     {
                         tokens = currentTokens;
+                        str = newStr;
+                        endIndex = index;
                     }
                 }
             
                 if (_map.Map.ContainsKey(str))
                 {
                     var token = _map.Map[str];
-                    return (new Token(token, str), index);
+                    return (new Token(token, str), endIndex);
                 }
             }
-            
-            return ReadIdentifier(input, startIndex);
+
+            return (new Token(TokenType.Invalid, str), endIndex);
         }
 
         private bool IsIdentifierChar(char ch)

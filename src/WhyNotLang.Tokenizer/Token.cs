@@ -10,5 +10,11 @@ namespace WhyNotLang.Tokenizer
             Type = type;
             Value = value;
         }
+
+        public override bool Equals(object obj)
+        {
+            var token = obj as Token;
+            return Type == token.Type && Value == token.Value;
+        }
     }
 }
