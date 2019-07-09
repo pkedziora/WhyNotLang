@@ -13,18 +13,20 @@ namespace WhyNotLang.Tokenizer
         While,
         Function,
         Return,
-        Assign,
         LeftParen,
         RightParen,
         Plus,
         Minus,
         Multiply,
         Divide,
+        Assign,
+        Not,
         LessThan,
         GreaterThan,
         LessThanOrEqual,
         GreaterThanOrEqual,
         Equal,
-        NotEqual
+        NotEqual,
+        Invalid
     }
 }
