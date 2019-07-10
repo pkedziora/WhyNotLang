@@ -1,20 +1,21 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace WhyNotLang.Tokenizer
 {
     public class Tokenizer : ITokenizer
     {
-        private TokenMap _map;
-        public Tokenizer()
+        private readonly ITokenReader _tokenReader;
+        private readonly ITokenMap _tokenMap;
+        public Tokenizer(ITokenReader tokenReader, ITokenMap tokenMap)
         {
-            _map = new TokenMap();
+            _tokenReader = tokenReader;
+            _tokenMap = tokenMap;
         }
         
         public IList<Token> GetTokens(string input)
         {
+            input = input.Trim();
             var tokens = new List<Token>();
             var index = 0;
             while (index < input.Length)
@@ -29,126 +30,57 @@ namespace WhyNotLang.Tokenizer
 
         private (Token token, int endIndex) GetNextToken(string input, int startIndex)
         {
-            var index = startIndex;
+            var index = _tokenReader.SkipWhitespace(input, startIndex);
             var endIndex = index;
             
-            if (char.IsDigit(input[index]))
+            if (_tokenReader.CanReadNumber(input, index))
             {
-                return ReadNumber(input, index);
+                return _tokenReader.ReadNumber(input, index);
+            }
+            
+            if (_tokenReader.CanReadString(input, index))
+            {
+                return _tokenReader.ReadString(input, index);
             }
 
-            if (IsIdentifierChar(input[index]))
+            if (_tokenReader.CanReadIdentifier(input, index))
             {
-                var identifierOrKeyword = ReadIdentifier(input, index);
-                if (_map.Map.ContainsKey(identifierOrKeyword.token.Value))
+                var identifierOrKeyword = _tokenReader.ReadIdentifier(input, index);
+                if (_tokenMap.Map.ContainsKey(identifierOrKeyword.token.Value))
                 {
                     // It's a keyword
-                    identifierOrKeyword.token.Type = _map.Map[identifierOrKeyword.token.Value];
+                    var keyword = new Token(_tokenMap.Map[identifierOrKeyword.token.Value], identifierOrKeyword.token.Value);
+                    identifierOrKeyword = (keyword, identifierOrKeyword.endIndex);
                 }
 
                 return identifierOrKeyword;
             }
 
-            if (input[index] == '"')
-            {
-                return ReadString(input, index);
-            }
-            
-            
-            var str = input[index].ToString();
-            var tokens = _map.GetTokensStartingWith(str);
+            var tokenStr = input[index].ToString();
+            var matchingTokens = _tokenMap.GetTokensStartingWith(tokenStr);
 
-            if (tokens.Any())
+            if (matchingTokens.Any())
             {
-                while (tokens.Any() && index + 1 < input.Length)
+                while (matchingTokens.Any() && index + 1 < input.Length)
                 {
-                    var newStr = str + input[++index];
+                    var newTokenStr = tokenStr + input[++index];
 
-                    var currentTokens = _map.GetTokensStartingWith(newStr);
-                    if (currentTokens.Count > 0)
+                    matchingTokens = _tokenMap.GetTokensStartingWith(newTokenStr);
+                    if (matchingTokens.Count > 0)
                     {
-                        tokens = currentTokens;
-                        str = newStr;
+                        tokenStr = newTokenStr;
                         endIndex = index;
                     }
                 }
             
-                if (_map.Map.ContainsKey(str))
+                if (_tokenMap.Map.ContainsKey(tokenStr))
                 {
-                    var token = _map.Map[str];
-                    return (new Token(token, str), endIndex);
+                    var token = _tokenMap.Map[tokenStr];
+                    return (new Token(token, tokenStr), endIndex);
                 }
             }
 
-            return (new Token(TokenType.Invalid, str), endIndex);
-        }
-
-        private bool IsIdentifierChar(char ch)
-        {
-            return char.IsDigit(ch) || char.IsLetter(ch) || ch == '_';
-        }
-
-        private (Token token, int endIndex) ReadIdentifier(string input, int startIndex)
-        {
-            if (!char.IsLetter(input[startIndex]) && input[startIndex] != '_')
-            {
-                return (new Token(TokenType.Invalid, input[startIndex].ToString()), startIndex);
-            }
-            
-            var index = startIndex;
-            var sb = new StringBuilder();
-            while (index < input.Length && IsIdentifierChar(input[index]))
-            {
-                sb.Append(input[index]);
-                index++;
-            }
-
-            index--;
-
-            var tokenStr = sb.ToString();
-
-            return (new Token(TokenType.Identifier, tokenStr), index);
-        }
-        
-        private (Token token, int endIndex) ReadNumber(string input, int startIndex)
-        {
-            var index = startIndex;
-            var sb = new StringBuilder();
-            while (index < input.Length && char.IsDigit(input[index]))
-            {
-                sb.Append(input[index]);
-                index++;
-            }
-
-            index--;
-
-            var tokenStr = sb.ToString();
-
-            return (new Token(TokenType.Number, tokenStr), index);
-        }
-        
-        private (Token token, int endIndex) ReadString(string input, int startIndex)
-        {
-            var index = startIndex;
-            if (input[index++] != '"')
-            {
-                throw new Exception("Invalid string");
-            }
-            var sb = new StringBuilder();
-            while (index < input.Length && input[index] != '"')
-            {
-                sb.Append(input[index]);
-                index++;
-            }
-            
-            if (input[index] != '"')
-            {
-                throw new Exception("Invalid string");
-            }
-
-            var tokenStr = sb.ToString();
-            
-            return (new Token(TokenType.String, tokenStr), index);
+            return (new Token(TokenType.Invalid, tokenStr), endIndex);
         }
     }
 }

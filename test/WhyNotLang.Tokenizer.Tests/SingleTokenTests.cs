@@ -1,4 +1,3 @@
-using System;
 using System.Linq;
 using Xunit;
 
@@ -9,7 +8,7 @@ namespace WhyNotLang.Tokenizer.Tests
         private Tokenizer _tokenizer;
         public SingleTokenTests()
         {
-            _tokenizer = new Tokenizer();
+            _tokenizer = new Tokenizer(new TokenReader(), new TokenMap());
         }
         
         [Theory]

@@ -2,7 +2,7 @@ using System.Collections.Generic;
 
 namespace WhyNotLang.Tokenizer
 {
-    public class TokenMap
+    public class TokenMap : ITokenMap
     {
         public Dictionary<string, TokenType> Map { get; }
         public TokenMap()
@@ -52,7 +52,5 @@ namespace WhyNotLang.Tokenizer
                 {"!=", TokenType.NotEqual}
             };
         }
-        
-        
     }
 }
