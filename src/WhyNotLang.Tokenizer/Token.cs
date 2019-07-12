@@ -13,12 +13,12 @@ namespace WhyNotLang.Tokenizer
 
         public override bool Equals(object obj)
         {
-            if (!(obj is Token))
+            var token = obj as Token;
+            if (token == null)
             {
                 return false;
             }
             
-            var token = obj as Token;
             return Type == token.Type && Value == token.Value;
         }
 

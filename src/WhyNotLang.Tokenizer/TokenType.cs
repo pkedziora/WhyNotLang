@@ -27,6 +27,7 @@ namespace WhyNotLang.Tokenizer
         GreaterThanOrEqual,
         Equal,
         NotEqual,
-        Invalid
+        Invalid,
+        Eof
     }
 }
