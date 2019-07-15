@@ -139,5 +139,70 @@ namespace WhyNotLang.Parser.Tests
             var actual = (UnaryExpression) result;
             Assert.Equal(expected, actual);
         }
+        
+        [Fact]
+        public void ParsesRedundantSingleParens()
+        {
+            var expression = "(1)";
+            var expected = new ValueExpression(TestHelpers.GetToken("1"));
+            
+            var result = _parser.ParseExpression(expression);
+            var actual = (ValueExpression) result;
+            Assert.Equal(expected, actual);
+        }
+        
+        [Fact]
+        public void ParsesRedundantParensAround3PartBinaryExpression()
+        {
+            var expression = "(1 + 2) - 3";
+            var inner = TestHelpers.GetBinaryExpression(1, "+", 2);
+            var expected = TestHelpers.GetBinaryExpression(inner, "-", 3);
+            
+            var result = _parser.ParseExpression(expression);
+            var actual = (BinaryExpression) result;
+            
+            Assert.Equal(expected, actual);
+        }
+        
+        [Fact]
+        public void ParsesParensAround3PartBinaryExpression()
+        {
+            var expression = "1 + (2 - 3)";
+            var inner = TestHelpers.GetBinaryExpression(2, "-", 3);
+            var expected = TestHelpers.GetBinaryExpression(1, "+", inner);
+            
+            var result = _parser.ParseExpression(expression);
+            var actual = (BinaryExpression) result;
+            
+            Assert.Equal(expected, actual);
+        }
+        
+        [Fact]
+        public void ParsesParensAround4PartBinaryExpression()
+        {
+            var expression = "1 * (2 + 3) * 4";
+            var innerInner = TestHelpers.GetBinaryExpression(2, "+", 3);
+            var inner = TestHelpers.GetBinaryExpression(1, "*", innerInner);
+            var expected = TestHelpers.GetBinaryExpression(inner, "*", 4);
+            
+            var result = _parser.ParseExpression(expression);
+            var actual = (BinaryExpression) result;
+            
+            Assert.Equal(expected, actual);
+        }
+        
+        [Fact]
+        public void ParsesSomeRedundantParensAround4PartBinaryExpression()
+        {
+            var expression = "((1 * (2 + 3)) * 4)";
+            var innerInner = TestHelpers.GetBinaryExpression(2, "+", 3);
+            var inner = TestHelpers.GetBinaryExpression(1, "*", innerInner);
+            var expected = TestHelpers.GetBinaryExpression(inner, "*", 4);
+            
+            var result = _parser.ParseExpression(expression);
+            var actual = (BinaryExpression) result;
+            
+            Assert.Equal(expected, actual);
+        }
     }
 }
