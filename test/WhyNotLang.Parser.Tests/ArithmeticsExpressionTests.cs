@@ -114,5 +114,30 @@ namespace WhyNotLang.Parser.Tests
             
             Assert.Equal(expected, actual);
         }
+        
+        [Fact]
+        public void Parses1PartUnaryExpression()
+        {
+            var expression = "-1";
+            var expected = new UnaryExpression(new ValueExpression(TestHelpers.GetToken("1")), TestHelpers.GetToken("-"));
+            
+            var result = _parser.ParseExpression(expression);
+            var actual = (UnaryExpression) result;
+            Assert.Equal(expected, actual);
+        }
+        
+        [Fact]
+        public void Parses2PartUnaryExpression()
+        {
+            var expression = "+-1";
+            var expected = new UnaryExpression(
+                new UnaryExpression(
+                    new ValueExpression(TestHelpers.GetToken("1")), TestHelpers.GetToken("-")), 
+                TestHelpers.GetToken("+"));
+            
+            var result = _parser.ParseExpression(expression);
+            var actual = (UnaryExpression) result;
+            Assert.Equal(expected, actual);
+        }
     }
 }

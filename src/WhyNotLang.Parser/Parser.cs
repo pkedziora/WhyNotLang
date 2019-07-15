@@ -1,3 +1,4 @@
+using System;
 using WhyNotLang.Parser.Expressions;
 using WhyNotLang.Parser.Extensions;
 using WhyNotLang.Tokenizer;
@@ -22,7 +23,7 @@ namespace WhyNotLang.Parser
         
         private IExpression ParseExpression(Precedence previousPrecedence)
         {
-            var leftExpression = ParseValueExpression(_tokenIterator.CurrentToken);
+            var leftExpression = ParseUnaryExpression(_tokenIterator.CurrentToken);
             while (_tokenIterator.PeekToken(1).Type != TokenType.Eof && _tokenIterator.PeekToken(1).GetPrecedence() > previousPrecedence)
             {
                 var currentOperator = _tokenIterator.GetNextToken();
@@ -34,7 +35,7 @@ namespace WhyNotLang.Parser
                 IExpression rightExpression;
                 if (currentPrecedence >= nextPrecedence)
                 {
-                    rightExpression = ParseValueExpression(nextToken);
+                    rightExpression = ParseUnaryExpression(nextToken);
                 }
                 else
                 {
@@ -48,9 +49,15 @@ namespace WhyNotLang.Parser
             return leftExpression;
         }
 
-        public IExpression ParseValueExpression(Token token)
+        public IExpression ParseUnaryExpression(Token token)
         {
-            return new ValueExpression(token);
+            if (token.Type == TokenType.Number || token.Type == TokenType.Identifier)
+            {
+                return new ValueExpression(token);
+            }
+
+            var inner = ParseUnaryExpression(_tokenIterator.GetNextToken());
+            return new UnaryExpression(inner, token);
         }
         
         public IExpression ParseBinaryExpression(IExpression left, Token operatorToken, IExpression right)
