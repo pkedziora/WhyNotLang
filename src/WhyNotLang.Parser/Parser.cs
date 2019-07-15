@@ -1,4 +1,5 @@
 using WhyNotLang.Parser.Expressions;
+using WhyNotLang.Parser.Extensions;
 using WhyNotLang.Tokenizer;
 
 namespace WhyNotLang.Parser
@@ -15,14 +16,32 @@ namespace WhyNotLang.Parser
         public IExpression ParseExpression(string expression)
         {
             _tokenIterator.InitTokens(expression);
-            
-            var leftExpression = ParseValueExpression(_tokenIterator.CurrentToken);
 
-            while (_tokenIterator.GetNextToken().Type != TokenType.Eof)
+            return ParseExpression(Precedence.None);
+        }
+        
+        private IExpression ParseExpression(Precedence previousPrecedence)
+        {
+            var leftExpression = ParseValueExpression(_tokenIterator.CurrentToken);
+            while (_tokenIterator.PeekToken(1).Type != TokenType.Eof && _tokenIterator.PeekToken(1).GetPrecedence() > previousPrecedence)
             {
-                var operatorToken = _tokenIterator.CurrentToken;
-                var rightExpression = ParseValueExpression(_tokenIterator.GetNextToken());
-                var binaryExpression = ParseBinaryExpression(leftExpression, operatorToken, rightExpression);
+                var currentOperator = _tokenIterator.GetNextToken();
+                var currentPrecedence = currentOperator.GetPrecedence();
+
+                var nextToken = _tokenIterator.GetNextToken();
+                var nextPrecedence = _tokenIterator.PeekToken(1).GetPrecedence();
+                
+                IExpression rightExpression;
+                if (currentPrecedence >= nextPrecedence)
+                {
+                    rightExpression = ParseValueExpression(nextToken);
+                }
+                else
+                {
+                    rightExpression = ParseExpression(currentPrecedence);
+                }
+                
+                var binaryExpression = ParseBinaryExpression(leftExpression, currentOperator, rightExpression);
                 leftExpression = binaryExpression;
             }
 

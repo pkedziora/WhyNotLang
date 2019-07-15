@@ -100,5 +100,19 @@ namespace WhyNotLang.Parser.Tests
             
             Assert.Equal(expected, actual);
         }
+        
+        [Fact]
+        public void Parses4PartBinaryExpressionHighPrecedenceInTheMiddle()
+        {
+            var expression = "1 + 2 * 3 + 4";
+            var innerInner = TestHelpers.GetBinaryExpression(2, "*", 3);
+            var inner = TestHelpers.GetBinaryExpression(1, "+", innerInner);
+            var expected = TestHelpers.GetBinaryExpression(inner, "+", 4);
+            
+            var result = _parser.ParseExpression(expression);
+            var actual = (BinaryExpression) result;
+            
+            Assert.Equal(expected, actual);
+        }
     }
 }
