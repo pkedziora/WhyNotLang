@@ -23,25 +23,38 @@ namespace WhyNotLang.Parser
         
         private IExpression ParseExpression(Precedence previousPrecedence)
         {
-            var leftExpression = ParseUnaryExpression(_tokenIterator.CurrentToken);
+            IExpression leftExpression = ParseParens();
+            if (leftExpression == null)
+            {
+                leftExpression = ParseUnaryExpression(_tokenIterator.CurrentToken);;
+            }
+
             while (_tokenIterator.PeekToken(1).Type != TokenType.Eof && _tokenIterator.PeekToken(1).GetPrecedence() > previousPrecedence)
             {
                 var currentOperator = _tokenIterator.GetNextToken();
                 var currentPrecedence = currentOperator.GetPrecedence();
 
                 var nextToken = _tokenIterator.GetNextToken();
-                var nextPrecedence = _tokenIterator.PeekToken(1).GetPrecedence();
-                
+
                 IExpression rightExpression;
-                if (currentPrecedence >= nextPrecedence)
-                {
-                    rightExpression = ParseUnaryExpression(nextToken);
-                }
-                else
+                if (_tokenIterator.CurrentToken.Type == TokenType.LeftParen)
                 {
                     rightExpression = ParseExpression(currentPrecedence);
                 }
+                else
+                {
+                    var nextPrecedence = _tokenIterator.PeekToken(1).GetPrecedence();
                 
+                    if (currentPrecedence >= nextPrecedence)
+                    {
+                        rightExpression = ParseUnaryExpression(nextToken);
+                    }
+                    else
+                    {
+                        rightExpression = ParseExpression(currentPrecedence);
+                    }
+                }
+
                 var binaryExpression = ParseBinaryExpression(leftExpression, currentOperator, rightExpression);
                 leftExpression = binaryExpression;
             }
@@ -49,6 +62,23 @@ namespace WhyNotLang.Parser
             return leftExpression;
         }
 
+        public IExpression ParseParens()
+        {
+            if (_tokenIterator.CurrentToken.Type != TokenType.LeftParen)
+            {
+                return null;
+            }
+
+            _tokenIterator.GetNextToken(); // Current is one after (
+
+            var expression = ParseExpression(Precedence.None);
+            
+            _tokenIterator.GetNextToken(); // Current is )
+
+            return expression;
+
+        }
+        
         public IExpression ParseUnaryExpression(Token token)
         {
             if (token.Type == TokenType.Number || token.Type == TokenType.Identifier)

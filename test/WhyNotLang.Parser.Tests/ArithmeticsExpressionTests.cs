@@ -192,6 +192,20 @@ namespace WhyNotLang.Parser.Tests
         }
         
         [Fact]
+        public void ParsesParensAround4PartBinaryExpressionRightAssociative()
+        {
+            var expression = "1 + (2 + 3) * 4";
+            var innerInner = TestHelpers.GetBinaryExpression(2, "+", 3);
+            var inner = TestHelpers.GetBinaryExpression(innerInner, "*", 4);
+            var expected = TestHelpers.GetBinaryExpression(1, "+", inner);
+            
+            var result = _parser.ParseExpression(expression);
+            var actual = (BinaryExpression) result;
+            
+            Assert.Equal(expected, actual);
+        }
+        
+        [Fact]
         public void ParsesSomeRedundantParensAround4PartBinaryExpression()
         {
             var expression = "((1 * (2 + 3)) * 4)";
