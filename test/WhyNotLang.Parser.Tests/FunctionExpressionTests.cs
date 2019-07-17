@@ -21,7 +21,9 @@ namespace WhyNotLang.Parser.Tests
             var result = _parser.ParseExpression(expression);
             var actual = (FunctionExpression) result;
             
-            Assert.Equal(expected, actual);
+            Assert.Equal(expected.Name, actual.Name);
+            Assert.Equal(expected.Type, actual.Type);
+            Assert.Null(actual.Parameter);
         }
         
         [Fact]

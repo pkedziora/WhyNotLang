@@ -26,7 +26,7 @@ namespace WhyNotLang.Parser
             IExpression leftExpression = ParseParens();
             if (leftExpression == null)
             {
-                leftExpression = ParseUnaryExpression(_tokenIterator.CurrentToken);;
+                leftExpression = ParseUnaryExpression();
             }
 
             while (_tokenIterator.PeekToken(1).Type != TokenType.Eof && _tokenIterator.PeekToken(1).GetPrecedence() > previousPrecedence)
@@ -34,7 +34,7 @@ namespace WhyNotLang.Parser
                 var currentOperator = _tokenIterator.GetNextToken();
                 var currentPrecedence = currentOperator.GetPrecedence();
 
-                var nextToken = _tokenIterator.GetNextToken();
+                _tokenIterator.GetNextToken();
 
                 IExpression rightExpression;
                 if (_tokenIterator.CurrentToken.Type == TokenType.LeftParen)
@@ -47,7 +47,7 @@ namespace WhyNotLang.Parser
                 
                     if (currentPrecedence >= nextPrecedence)
                     {
-                        rightExpression = ParseUnaryExpression(nextToken);
+                        rightExpression = ParseUnaryExpression();
                     }
                     else
                     {
@@ -79,14 +79,33 @@ namespace WhyNotLang.Parser
 
         }
         
-        public IExpression ParseUnaryExpression(Token token)
+        public IExpression ParseUnaryExpression()
         {
+            var token = _tokenIterator.CurrentToken;
+            var nextToken = _tokenIterator.PeekToken(1);
+            var isFunctionExpression = token.Type == TokenType.Identifier && nextToken.Type == TokenType.LeftParen;
+
+            if (isFunctionExpression)
+            {
+                _tokenIterator.GetNextToken();
+                IExpression parameterExpression = null;
+                if (_tokenIterator.PeekToken(1).Type != TokenType.RightParen)
+                {
+                    // Only parse parameter if it's not empty
+                    parameterExpression = ParseExpression(Precedence.None);
+
+                }
+                _tokenIterator.GetNextToken(); // )
+                return new FunctionExpression(token, parameterExpression);
+            }
+            
             if (token.Type == TokenType.Number || token.Type == TokenType.Identifier)
             {
                 return new ValueExpression(token);
             }
 
-            var inner = ParseUnaryExpression(_tokenIterator.GetNextToken());
+            _tokenIterator.GetNextToken();
+            var inner = ParseUnaryExpression();
             return new UnaryExpression(inner, token);
         }
         
