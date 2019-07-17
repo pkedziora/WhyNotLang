@@ -88,7 +88,7 @@ namespace WhyNotLang.Parser
             if (isFunctionExpression)
             {
                 _tokenIterator.GetNextToken();
-                IExpression parameterExpression = null;
+                IExpression parameterExpression = new EmptyExpression();
                 if (_tokenIterator.PeekToken(1).Type != TokenType.RightParen)
                 {
                     // Only parse parameter if it's not empty

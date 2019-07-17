@@ -16,14 +16,12 @@ namespace WhyNotLang.Parser.Tests
         public void ParsesParameterlessFunction()
         {
             var expression = "foo()";
-            var expected = new FunctionExpression(new Token(TokenType.Identifier, "foo"), null);
+            var expected = new FunctionExpression(new Token(TokenType.Identifier, "foo"), new EmptyExpression());
             
             var result = _parser.ParseExpression(expression);
             var actual = (FunctionExpression) result;
             
-            Assert.Equal(expected.Name, actual.Name);
-            Assert.Equal(expected.Type, actual.Type);
-            Assert.Null(actual.Parameter);
+            Assert.Equal(expected, actual);
         }
         
         [Fact]
