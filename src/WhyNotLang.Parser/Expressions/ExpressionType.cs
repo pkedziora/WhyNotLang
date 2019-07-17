@@ -4,6 +4,7 @@ namespace WhyNotLang.Parser.Expressions
     {
         Value,
         Unary,
-        Binary
+        Binary,
+        Function
     }
 }
