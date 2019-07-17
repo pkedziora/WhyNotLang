@@ -4,7 +4,6 @@ namespace WhyNotLang.Parser
     {
         None,
         AddSub,
-        MulDiv,
-        Parens
+        MulDiv
     }
 }
