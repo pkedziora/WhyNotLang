@@ -6,11 +6,11 @@ using WhyNotLang.Tokenizer;
 
 namespace WhyNotLang.Parser
 {
-    public class Parser
+    public class ExpressionParser : IExpressionParser
     {
         private readonly ITokenIterator _tokenIterator;
 
-        public Parser(ITokenIterator tokenIterator)
+        public ExpressionParser(ITokenIterator tokenIterator)
         {
             _tokenIterator = tokenIterator;
         }
@@ -67,7 +67,7 @@ namespace WhyNotLang.Parser
             return leftExpression;
         }
 
-        public IExpression ParseParens()
+        private IExpression ParseParens()
         {
             if (_tokenIterator.CurrentToken.Type != TokenType.LeftParen)
             {
@@ -82,7 +82,7 @@ namespace WhyNotLang.Parser
             return expression;
         }
 
-        public IExpression ParseFunctionExpression()
+        private IExpression ParseFunctionExpression()
         {
             if (_tokenIterator.CurrentToken.Type != TokenType.Identifier)
             {
@@ -109,8 +109,8 @@ namespace WhyNotLang.Parser
             _tokenIterator.GetNextToken();
             return new FunctionExpression(functionNameToken, parameterExpressions);
         }
-        
-        public IExpression ParseUnaryExpression()
+
+        private IExpression ParseUnaryExpression()
         {
             var token = _tokenIterator.CurrentToken;
             var nextToken = _tokenIterator.PeekToken(1);

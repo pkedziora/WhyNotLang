@@ -6,10 +6,10 @@ namespace WhyNotLang.Parser.Tests
 {
     public class BooleanExpressionTests
     {
-        private Parser _parser;
+        private ExpressionParser _parser;
         public BooleanExpressionTests()
         {
-            _parser = new Parser(new TokenIterator(new Tokenizer.Tokenizer(new TokenReader(), new TokenMap())));
+            _parser = new ExpressionParser(new TokenIterator(new Tokenizer.Tokenizer(new TokenReader(), new TokenMap())));
         }
 
         [Fact]
