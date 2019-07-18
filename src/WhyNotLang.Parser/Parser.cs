@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using WhyNotLang.Parser.Expressions;
 using WhyNotLang.Parser.Extensions;
 using WhyNotLang.Tokenizer;
@@ -29,9 +30,9 @@ namespace WhyNotLang.Parser
                 leftExpression = ParseUnaryExpression();
             }
 
-            while (_tokenIterator.PeekToken(1).Type != TokenType.Eof && _tokenIterator.PeekToken(1).GetPrecedence() > previousPrecedence)
+            while (_tokenIterator.CurrentToken.Type != TokenType.Eof && _tokenIterator.CurrentToken.GetPrecedence() > previousPrecedence)
             {
-                var currentOperator = _tokenIterator.GetNextToken();
+                var currentOperator = _tokenIterator.CurrentToken;
                 var currentPrecedence = currentOperator.GetPrecedence();
 
                 _tokenIterator.GetNextToken();
@@ -55,7 +56,7 @@ namespace WhyNotLang.Parser
                     }
                 }
 
-                var binaryExpression = ParseBinaryExpression(leftExpression, currentOperator, rightExpression);
+                var binaryExpression = new BinaryExpression(leftExpression, currentOperator, rightExpression);
                 leftExpression = binaryExpression;
             }
 
@@ -73,10 +74,31 @@ namespace WhyNotLang.Parser
 
             var expression = ParseExpression(Precedence.None);
             
-            _tokenIterator.GetNextToken(); // Current is )
-
+            _tokenIterator.GetNextToken(); //Set to new token
             return expression;
+        }
 
+        public IExpression ParseFunctionExpression()
+        {
+            var functionNameToken = _tokenIterator.CurrentToken;
+            _tokenIterator.GetNextToken(); // Swallow function name
+            var parameterExpressions = new List<IExpression>();
+            if (_tokenIterator.PeekToken(1).Type != TokenType.RightParen)
+            {
+                do
+                {
+                    _tokenIterator.GetNextToken(); // Swallow ( or ,
+                    parameterExpressions.Add(ParseExpression(Precedence.None));
+                } while (_tokenIterator.CurrentToken.Type == TokenType.Comma);
+            }
+            else
+            {
+                _tokenIterator.GetNextToken(); // Swallow (
+                parameterExpressions.Add(new EmptyExpression());
+            }
+
+            _tokenIterator.GetNextToken(); //Set to new token
+            return new FunctionExpression(functionNameToken, parameterExpressions);
         }
         
         public IExpression ParseUnaryExpression()
@@ -87,32 +109,18 @@ namespace WhyNotLang.Parser
 
             if (isFunctionExpression)
             {
-                _tokenIterator.GetNextToken(); // Swallow function name
-                _tokenIterator.GetNextToken(); // Swallow (
-                IExpression parameterExpression = new EmptyExpression();
-                if (_tokenIterator.CurrentToken.Type != TokenType.RightParen)
-                {
-                    // Only parse parameter if it's not empty
-                    parameterExpression = ParseExpression(Precedence.None);
-
-                }
-                _tokenIterator.GetNextToken(); // )
-                return new FunctionExpression(token, parameterExpression);
+                return ParseFunctionExpression();
             }
             
             if (token.Type == TokenType.Number || token.Type == TokenType.Identifier)
             {
+                _tokenIterator.GetNextToken(); //Set to new token
                 return new ValueExpression(token);
             }
 
             _tokenIterator.GetNextToken();
             var inner = ParseUnaryExpression();
             return new UnaryExpression(inner, token);
-        }
-        
-        public IExpression ParseBinaryExpression(IExpression left, Token operatorToken, IExpression right)
-        {
-            return new BinaryExpression(left, operatorToken, right);
         }
     }
 }

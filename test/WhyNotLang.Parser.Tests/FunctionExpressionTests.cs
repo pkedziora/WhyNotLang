@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using WhyNotLang.Parser.Expressions;
 using WhyNotLang.Tokenizer;
 using Xunit;
@@ -142,6 +143,86 @@ namespace WhyNotLang.Parser.Tests
             var innerExp = TestHelpers.GetBinaryExpression(3, "+", functionExp);
             var expected = TestHelpers.GetBinaryExpression(innerExp, "-", 4);
 
+            var result = _parser.ParseExpression(expression);
+            var actual = (BinaryExpression) result;
+            
+            Assert.Equal(expected, actual);
+        }
+        
+        [Fact]
+        public void Parses2NumberParameterFunction()
+        {
+            var expression = "foo(1,2)";
+            var expectedParameters = new List<IExpression>
+            {
+                new ValueExpression(new Token(TokenType.Number, "1")),
+                new ValueExpression(new Token(TokenType.Number, "2")),
+            };
+            
+            var expected = new FunctionExpression(new Token(TokenType.Identifier, "foo"), 
+                expectedParameters);
+            
+            var result = _parser.ParseExpression(expression);
+            var actual = (FunctionExpression) result;
+            
+            Assert.Equal(expected, actual);
+        }
+        
+        [Fact]
+        public void Parses2SimpleExpressionParameterFunction()
+        {
+            var expression = "foo(1 + 2, 3 * 4)";
+            
+            var expectedParameters = new List<IExpression>
+            {
+                TestHelpers.GetBinaryExpression(1, "+", 2),
+                TestHelpers.GetBinaryExpression(3, "*", 4)
+            };
+            
+            var expected = new FunctionExpression(new Token(TokenType.Identifier, "foo"), 
+                expectedParameters);
+            
+            var result = _parser.ParseExpression(expression);
+            var actual = (FunctionExpression) result;
+            
+            Assert.Equal(expected, actual);
+        }
+        
+        [Fact]
+        public void Parses3SimpleExpressionParameterFunction()
+        {
+            var expression = "foo(1 + 2, 5, 3 * 4)";
+            
+            var expectedParameters = new List<IExpression>
+            {
+                TestHelpers.GetBinaryExpression(1, "+", 2),
+                new ValueExpression(new Token(TokenType.Number, "5")),
+                TestHelpers.GetBinaryExpression(3, "*", 4)
+            };
+            
+            var expected = new FunctionExpression(new Token(TokenType.Identifier, "foo"), 
+                expectedParameters);
+            
+            var result = _parser.ParseExpression(expression);
+            var actual = (FunctionExpression) result;
+            
+            Assert.Equal(expected, actual);
+        }
+        
+        [Fact]
+        public void Parses2NumberParameterFunctionFollowedByExpression()
+        {
+            var expression = "foo(1,2) + 1";
+            var expectedParameters = new List<IExpression>
+            {
+                new ValueExpression(new Token(TokenType.Number, "1")),
+                new ValueExpression(new Token(TokenType.Number, "2")),
+            };
+            
+            var functionExpression = new FunctionExpression(new Token(TokenType.Identifier, "foo"), 
+                expectedParameters);
+            var expected = TestHelpers.GetBinaryExpression(functionExpression, "+", 1);
+            
             var result = _parser.ParseExpression(expression);
             var actual = (BinaryExpression) result;
             

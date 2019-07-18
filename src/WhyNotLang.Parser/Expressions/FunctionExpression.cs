@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+using System.Linq;
 using WhyNotLang.Tokenizer;
 
 namespace WhyNotLang.Parser.Expressions
@@ -5,15 +7,21 @@ namespace WhyNotLang.Parser.Expressions
     public class FunctionExpression : IExpression
     {
         public Token Name { get; }
-        public IExpression Parameter { get;  }
+        public List<IExpression> Parameters { get;  }
         
         public ExpressionType Type => ExpressionType.Function;
         
         
-        public FunctionExpression(Token name, IExpression parameter)
+        public FunctionExpression(Token name, List<IExpression> parameters)
         {
             Name = name;
-            Parameter = parameter;
+            Parameters = parameters;
+        }
+        
+        public FunctionExpression(Token name, IExpression parameters)
+        {
+            Name = name;
+            Parameters = new List<IExpression> {parameters};
         }
         
         public override bool Equals(object obj)
@@ -24,7 +32,7 @@ namespace WhyNotLang.Parser.Expressions
                 return false;
             }
             
-            return Parameter.Equals(expression.Parameter) && 
+            return Parameters.SequenceEqual(expression.Parameters) && 
                    Name.Equals(expression.Name) &&
                    Type == expression.Type;
         }
@@ -34,7 +42,7 @@ namespace WhyNotLang.Parser.Expressions
             unchecked
             {
                 int hash = 17;
-                hash = hash * 23 + Parameter.GetHashCode();
+                hash = hash * 23 + Parameters.GetHashCode();
                 hash = hash * 23 + Name.GetHashCode();
                 hash = hash * 23 + Type.GetHashCode();
                 

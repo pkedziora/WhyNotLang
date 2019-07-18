@@ -13,6 +13,7 @@ namespace WhyNotLang.Tokenizer
         While,
         Function,
         Return,
+        Comma,
         LeftParen,
         RightParen,
         Plus,

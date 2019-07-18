@@ -20,6 +20,7 @@ namespace WhyNotLang.Tokenizer.Tests
         [InlineData("while", TokenType.While)]
         [InlineData("function", TokenType.Function)]
         [InlineData("return", TokenType.Return)]
+        [InlineData(",", TokenType.Comma)]
         [InlineData("(", TokenType.LeftParen)]
         [InlineData(")", TokenType.RightParen)]
         [InlineData("+", TokenType.Plus)]

@@ -36,6 +36,7 @@ namespace WhyNotLang.Tokenizer
                 {"while", TokenType.While},
                 {"function", TokenType.Function},
                 {"return", TokenType.Return},
+                {",", TokenType.Comma},
                 {"(", TokenType.LeftParen},
                 {")", TokenType.RightParen},
                 {"+", TokenType.Plus},
