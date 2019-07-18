@@ -26,6 +26,11 @@ namespace WhyNotLang.Parser.Tests
             var left = new ValueExpression(new Token(TokenType.Number, a.ToString()));
             return new BinaryExpression(left, GetToken(op), right);
         }
+        
+        public static BinaryExpression GetBinaryExpression(IExpression left, string op, IExpression right)
+        {
+            return new BinaryExpression(left, GetToken(op), right);
+        }
 
         public static Token GetToken(string token)
         {
