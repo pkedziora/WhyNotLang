@@ -171,8 +171,8 @@ namespace WhyNotLang.Parser.Tests
         [Fact]
         public void ParsesNotInFrontOfSecondParensIn2PartBooleanExpressionWithIdentifiers()
         {
-            var expression = "((foo == bar) and !(x1 > x3))";
-            var left = TestHelpers.GetBinaryExpression("foo", "==", "bar");
+            var expression = "((foo != bar) and !(x1 > x3))";
+            var left = TestHelpers.GetBinaryExpression("foo", "!=", "bar");
             var right = TestHelpers.GetUnaryExpression("!",TestHelpers.GetBinaryExpression("x1", ">", "x3"));
             var expected = TestHelpers.GetBinaryExpression(left, "and", right);
             var result = _parser.ParseExpression(expression);
