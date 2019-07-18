@@ -22,6 +22,8 @@ namespace WhyNotLang.Tokenizer
         Divide,
         Assign,
         Not,
+        And,
+        Or,
         LessThan,
         GreaterThan,
         LessThanOrEqual,

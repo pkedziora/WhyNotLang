@@ -45,6 +45,8 @@ namespace WhyNotLang.Tokenizer
                 {"/", TokenType.Divide},
                 {"=", TokenType.Assign},
                 {"!", TokenType.Not},
+                {"and", TokenType.And},
+                {"or", TokenType.Or},
                 {"<", TokenType.LessThan},
                 {">", TokenType.GreaterThan},
                 {"<=", TokenType.LessThanOrEqual},

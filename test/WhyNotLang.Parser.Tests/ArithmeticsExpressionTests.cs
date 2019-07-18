@@ -116,6 +116,20 @@ namespace WhyNotLang.Parser.Tests
         }
         
         [Fact]
+        public void Parses4PartBinaryExpressionLowPrecedenceInTheMiddle()
+        {
+            var expression = "1 * 2 + 3 / 4";
+            var leftInner = TestHelpers.GetBinaryExpression(1, "*", 2);
+            var rightInner = TestHelpers.GetBinaryExpression(3, "/", 4);
+            var expected = TestHelpers.GetBinaryExpression(leftInner, "+", rightInner);
+            
+            var result = _parser.ParseExpression(expression);
+            var actual = (BinaryExpression) result;
+            
+            Assert.Equal(expected, actual);
+        }
+        
+        [Fact]
         public void Parses1PartUnaryExpression()
         {
             var expression = "-1";
@@ -152,10 +166,35 @@ namespace WhyNotLang.Parser.Tests
         }
         
         [Fact]
+        public void ParsesRedundantSingleParensWithNegativeNumber()
+        {
+            var expression = "(-1)";
+            var expected = new UnaryExpression(new ValueExpression(TestHelpers.GetToken("1")), TestHelpers.GetToken("-"));
+            
+            var result = _parser.ParseExpression(expression);
+            var actual = (UnaryExpression) result;
+            Assert.Equal(expected, actual);
+        }
+        
+        [Fact]
         public void ParsesRedundantParensAround3PartBinaryExpression()
         {
             var expression = "(1 + 2) - 3";
             var inner = TestHelpers.GetBinaryExpression(1, "+", 2);
+            var expected = TestHelpers.GetBinaryExpression(inner, "-", 3);
+            
+            var result = _parser.ParseExpression(expression);
+            var actual = (BinaryExpression) result;
+            
+            Assert.Equal(expected, actual);
+        }
+        
+        [Fact]
+        public void ParsesRedundantParensAround3PartBinaryExpressionWithNegativeNumber()
+        {
+            var expression = "(-1 + -2) - 3";
+            
+            var inner = TestHelpers.GetBinaryExpression(TestHelpers.GetUnaryExpression("-", 1), "+", TestHelpers.GetUnaryExpression("-", 2));
             var expected = TestHelpers.GetBinaryExpression(inner, "-", 3);
             
             var result = _parser.ParseExpression(expression);
@@ -173,7 +212,18 @@ namespace WhyNotLang.Parser.Tests
             
             var result = _parser.ParseExpression(expression);
             var actual = (BinaryExpression) result;
+            Assert.Equal(expected, actual);
+        }
+        
+        [Fact]
+        public void ParsesParensAround3PartBinaryExpressionWithNegativeNumber()
+        {
+            var expression = "1 + (2 - -3)";
+            var inner = TestHelpers.GetBinaryExpression(2, "-", TestHelpers.GetUnaryExpression("-", 3));
+            var expected = TestHelpers.GetBinaryExpression(1, "+", inner);
             
+            var result = _parser.ParseExpression(expression);
+            var actual = (BinaryExpression) result;
             Assert.Equal(expected, actual);
         }
         
