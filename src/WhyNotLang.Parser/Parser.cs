@@ -24,8 +24,12 @@ namespace WhyNotLang.Parser
         
         private IExpression ParseExpression(Precedence previousPrecedence)
         {
-            IExpression leftExpression = ParseParens();
-            if (leftExpression == null)
+            IExpression leftExpression;
+            if (_tokenIterator.CurrentToken.Type == TokenType.LeftParen)
+            {
+                leftExpression = ParseParens();
+            }
+            else
             {
                 leftExpression = ParseUnaryExpression();
             }
@@ -67,19 +71,24 @@ namespace WhyNotLang.Parser
         {
             if (_tokenIterator.CurrentToken.Type != TokenType.LeftParen)
             {
-                return null;
+                throw new ArgumentException("( expected");
             }
 
-            _tokenIterator.GetNextToken(); // Current is one after (
+            _tokenIterator.GetNextToken(); // Swallow (
 
             var expression = ParseExpression(Precedence.None);
             
-            _tokenIterator.GetNextToken(); //Set to new token
+            _tokenIterator.GetNextToken();
             return expression;
         }
 
         public IExpression ParseFunctionExpression()
         {
+            if (_tokenIterator.CurrentToken.Type != TokenType.Identifier)
+            {
+                throw new ArgumentException("Identifier expected");
+            }
+            
             var functionNameToken = _tokenIterator.CurrentToken;
             _tokenIterator.GetNextToken(); // Swallow function name
             var parameterExpressions = new List<IExpression>();
@@ -97,7 +106,7 @@ namespace WhyNotLang.Parser
                 parameterExpressions.Add(new EmptyExpression());
             }
 
-            _tokenIterator.GetNextToken(); //Set to new token
+            _tokenIterator.GetNextToken();
             return new FunctionExpression(functionNameToken, parameterExpressions);
         }
         
@@ -114,7 +123,7 @@ namespace WhyNotLang.Parser
             
             if (token.Type == TokenType.Number || token.Type == TokenType.Identifier)
             {
-                _tokenIterator.GetNextToken(); //Set to new token
+                _tokenIterator.GetNextToken();
                 return new ValueExpression(token);
             }
 
