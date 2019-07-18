@@ -49,6 +49,18 @@ namespace WhyNotLang.Parser.Tests
         }
         
         [Fact]
+        public void Parses2PartBinaryExpressionWithIdentifier()
+        {
+            var expression = "a + b";
+            var expected = TestHelpers.GetBinaryExpression("a", "+", "b");
+            
+            var result = _parser.ParseExpression(expression);
+            var actual = (BinaryExpression) result;
+            
+            Assert.Equal(expected, actual);
+        }
+        
+        [Fact]
         public void Parses3PartBinaryExpression()
         {
             var expression = "1 + 2 - 3";
@@ -66,6 +78,20 @@ namespace WhyNotLang.Parser.Tests
         {
             var expression = "1 + 2 - 3 + 4";
             var innerInner = TestHelpers.GetBinaryExpression(1, "+", 2);
+            var inner = TestHelpers.GetBinaryExpression(innerInner, "-", 3);
+            var expected = TestHelpers.GetBinaryExpression(inner, "+", 4);
+            
+            var result = _parser.ParseExpression(expression);
+            var actual = (BinaryExpression) result;
+            
+            Assert.Equal(expected, actual);
+        }
+        
+        [Fact]
+        public void Parses4PartBinaryExpressionWithNumbersAndIdentifiers()
+        {
+            var expression = "a + b - 3 + 4";
+            var innerInner = TestHelpers.GetBinaryExpression("a", "+", "b");
             var inner = TestHelpers.GetBinaryExpression(innerInner, "-", 3);
             var expected = TestHelpers.GetBinaryExpression(inner, "+", 4);
             

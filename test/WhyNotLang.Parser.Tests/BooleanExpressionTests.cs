@@ -131,11 +131,49 @@ namespace WhyNotLang.Parser.Tests
         }
         
         [Fact]
+        public void ParsesNotInFrontOfSingleParens()
+        {
+            var expression = "!(1 < 2)";
+            var expected = TestHelpers.GetUnaryExpression("!",TestHelpers.GetBinaryExpression(1, "<", 2));
+            
+            var result = _parser.ParseExpression(expression);
+            var actual = (UnaryExpression) result;
+            
+            Assert.Equal(expected, actual);
+        }
+        
+        [Fact]
         public void ParsesRedundantParensAround2PartBooleanExpression()
         {
             var expression = "((1 == 2) and (4 > 3))";
             var left = TestHelpers.GetBinaryExpression(1, "==", 2);
             var right = TestHelpers.GetBinaryExpression(4, ">", 3);
+            var expected = TestHelpers.GetBinaryExpression(left, "and", right);
+            var result = _parser.ParseExpression(expression);
+            var actual = (BinaryExpression) result;
+            
+            Assert.Equal(expected, actual);
+        }
+        
+        [Fact]
+        public void ParsesNotInFrontOfSecondParensIn2PartBooleanExpression()
+        {
+            var expression = "((1 == 2) and !(4 > 3))";
+            var left = TestHelpers.GetBinaryExpression(1, "==", 2);
+            var right = TestHelpers.GetUnaryExpression("!",TestHelpers.GetBinaryExpression(4, ">", 3));
+            var expected = TestHelpers.GetBinaryExpression(left, "and", right);
+            var result = _parser.ParseExpression(expression);
+            var actual = (BinaryExpression) result;
+            
+            Assert.Equal(expected, actual);
+        }
+        
+        [Fact]
+        public void ParsesNotInFrontOfSecondParensIn2PartBooleanExpressionWithIdentifiers()
+        {
+            var expression = "((foo == bar) and !(x1 > x3))";
+            var left = TestHelpers.GetBinaryExpression("foo", "==", "bar");
+            var right = TestHelpers.GetUnaryExpression("!",TestHelpers.GetBinaryExpression("x1", ">", "x3"));
             var expected = TestHelpers.GetBinaryExpression(left, "and", right);
             var result = _parser.ParseExpression(expression);
             var actual = (BinaryExpression) result;

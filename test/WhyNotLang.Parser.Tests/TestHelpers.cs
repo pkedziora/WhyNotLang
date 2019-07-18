@@ -15,15 +15,34 @@ namespace WhyNotLang.Parser.Tests
             return new BinaryExpression(left, GetToken(op), right);
         }
         
+        public static BinaryExpression GetBinaryExpression(string a, string op, string b)
+        {
+            var left = new ValueExpression(new Token(TokenType.Identifier, a));
+            var right = new ValueExpression(new Token(TokenType.Identifier, b));
+            return new BinaryExpression(left, GetToken(op), right);
+        }
+        
         public static BinaryExpression GetBinaryExpression(IExpression left, string op, int b)
         {
             var right = new ValueExpression(new Token(TokenType.Number, b.ToString()));
             return new BinaryExpression(left, GetToken(op), right);
         }
         
+        public static BinaryExpression GetBinaryExpression(IExpression left, string op, string b)
+        {
+            var right = new ValueExpression(new Token(TokenType.Identifier, b));
+            return new BinaryExpression(left, GetToken(op), right);
+        }
+        
         public static BinaryExpression GetBinaryExpression(int a, string op, IExpression right)
         {
             var left = new ValueExpression(new Token(TokenType.Number, a.ToString()));
+            return new BinaryExpression(left, GetToken(op), right);
+        }
+        
+        public static BinaryExpression GetBinaryExpression(string a, string op, IExpression right)
+        {
+            var left = new ValueExpression(new Token(TokenType.Identifier, a));
             return new BinaryExpression(left, GetToken(op), right);
         }
         
@@ -35,6 +54,11 @@ namespace WhyNotLang.Parser.Tests
         public static UnaryExpression GetUnaryExpression(string op, int number)
         {
             return new UnaryExpression(new ValueExpression(TestHelpers.GetToken(number.ToString())), GetToken(op));
+        }
+        
+        public static UnaryExpression GetUnaryExpression(string op, string identifier)
+        {
+            return new UnaryExpression(new ValueExpression(TestHelpers.GetToken(identifier)), GetToken(op));
         }
         
         public static UnaryExpression GetUnaryExpression(string op, IExpression inner)
