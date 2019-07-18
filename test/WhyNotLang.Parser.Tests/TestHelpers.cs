@@ -34,7 +34,12 @@ namespace WhyNotLang.Parser.Tests
 
         public static UnaryExpression GetUnaryExpression(string op, int number)
         {
-            return new UnaryExpression(new ValueExpression(TestHelpers.GetToken(number.ToString())), TestHelpers.GetToken(op));
+            return new UnaryExpression(new ValueExpression(TestHelpers.GetToken(number.ToString())), GetToken(op));
+        }
+        
+        public static UnaryExpression GetUnaryExpression(string op, IExpression inner)
+        {
+            return new UnaryExpression(inner, GetToken(op));
         }
 
         public static Token GetToken(string token)

@@ -162,6 +162,24 @@ namespace WhyNotLang.Parser.Tests
         }
         
         [Fact]
+        public void ParsesParensWithMinusInFrontIn3PartBooleanExpression()
+        {
+            var expression = "1 >= 2 and -(3 < 4 or 5 <= 6)";
+            var left = TestHelpers.GetBinaryExpression(1, ">=", 2);
+            var middle = TestHelpers.GetBinaryExpression(3, "<", 4);
+            var right = TestHelpers.GetBinaryExpression(5, "<=", 6);
+
+            var inner = TestHelpers.GetUnaryExpression("-", TestHelpers.GetBinaryExpression(middle, "or", right));
+            
+            var expected = TestHelpers.GetBinaryExpression(left, "and", inner);
+            
+            var result = _parser.ParseExpression(expression);
+            var actual = (BinaryExpression) result;
+            
+            Assert.Equal(expected, actual);
+        }
+        
+        [Fact]
         public void ParsesParensAround4PartBooleanExpression()
         {
             var expression = "1 >= 2 or (3 < 4 or 5 <= 6) and 7 == 8";

@@ -114,11 +114,16 @@ namespace WhyNotLang.Parser
         {
             var token = _tokenIterator.CurrentToken;
             var nextToken = _tokenIterator.PeekToken(1);
+            
             var isFunctionExpression = token.Type == TokenType.Identifier && nextToken.Type == TokenType.LeftParen;
-
             if (isFunctionExpression)
             {
                 return ParseFunctionExpression();
+            }
+
+            if (_tokenIterator.CurrentToken.Type == TokenType.LeftParen)
+            {
+                return ParseParens();
             }
             
             if (token.Type == TokenType.Number || token.Type == TokenType.Identifier)
