@@ -3,17 +3,13 @@ using WhyNotLang.Tokenizer;
 
 namespace WhyNotLang.Parser.Statements
 {
-    public class VariableAssignmentStatement : IStatement
+    public class VariableAssignmentStatement : VariableStatementBase, IStatement
     {
-        public Token Variable { get; }
-        public IExpression Value { get; }
-        
-        public StatementType Type => StatementType.VariableAssignmentStatement;
+        public override StatementType Type => StatementType.VariableAssignmentStatement;
 
-        public VariableAssignmentStatement(Token variable, IExpression value)
+        public VariableAssignmentStatement(Token variable, IExpression value) : base(variable, value)
         {
-            Variable = variable;
-            Value = value;
         }
+        
     }
 }
