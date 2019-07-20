@@ -90,6 +90,11 @@ namespace WhyNotLang.Parser.Tests
             return new UnaryExpression(GetValueExpression(number), GetToken(op));
         }
         
+        public static UnaryExpression GetUnaryExpression(string op, string identifier)
+        {
+            return new UnaryExpression(GetValueExpression(identifier), GetToken(op));
+        }
+        
         public static UnaryExpression GetUnaryExpressionWithIdentifier(string op, string identifier)
         {
             return new UnaryExpression(new ValueExpression(GetToken(identifier)), GetToken(op));
@@ -98,6 +103,11 @@ namespace WhyNotLang.Parser.Tests
         public static ValueExpression GetValueExpression(int number)
         {
             return new ValueExpression(GetToken(number.ToString()));
+        }
+        
+        public static ValueExpression GetValueExpression(string identifier)
+        {
+            return new ValueExpression(GetToken(identifier));
         }
         
         public static UnaryExpression GetUnaryExpression(string op, IExpression inner)

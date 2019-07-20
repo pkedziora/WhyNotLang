@@ -9,7 +9,6 @@ namespace WhyNotLang.Parser
     public class ExpressionParser : IExpressionParser
     {
         private readonly ITokenIterator _tokenIterator;
-
         public ExpressionParser(ITokenIterator tokenIterator)
         {
             _tokenIterator = tokenIterator;
@@ -26,10 +25,11 @@ namespace WhyNotLang.Parser
         {
             return ParseExpression(Precedence.None);
         }
-        
+
         private IExpression ParseExpression(Precedence previousPrecedence)
         {
             IExpression leftExpression;
+
             if (_tokenIterator.CurrentToken.Type == TokenType.LeftParen)
             {
                 leftExpression = ParseParens();

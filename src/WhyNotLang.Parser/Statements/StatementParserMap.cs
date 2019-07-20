@@ -43,6 +43,9 @@ namespace WhyNotLang.Parser.Statements
                 
                 case TokenType.Function:
                     return new FunctionDeclarationParser(_tokenIterator, _expressionParser, parser);
+                
+                case TokenType.Return:
+                    return new ReturnStatementParser(_tokenIterator, _expressionParser);
             }
             
             throw new ArgumentException("Parser not found for current token");

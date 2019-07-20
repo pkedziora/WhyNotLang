@@ -9,6 +9,7 @@ namespace WhyNotLang.Parser.Statements
         BlockStatement,
         WhileStatement,
         FunctionCallStatement,
-        FunctionDeclarationStatement
+        FunctionDeclarationStatement,
+        ReturnStatement
     }
 }
