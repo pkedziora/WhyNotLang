@@ -21,12 +21,61 @@ namespace WhyNotLang.Parser.Tests.Statements
                 if (x < y)
                     x = 1");
 
-            var expectedTestExpression = TestHelpers.GetBinaryExpressionWithIdentifiers("x", "<", "y");
+            var expectedCondition = TestHelpers.GetBinaryExpressionWithIdentifiers("x", "<", "y");
             var expectedBody = TestHelpers.GetVariableAssignementStatement("x", TestHelpers.GetValueExpression(1));
             
             var expected = new IfStatement(
-               expectedTestExpression, 
+               expectedCondition, 
                expectedBody);
+            
+            var actual = _parser.ParseNext();
+            
+            Assert.Equal(expected, actual);
+        }
+        
+        [Fact]
+        public void ParsesIfStatementWithComplexCondition()
+        {
+            _parser.Initialise(@"
+                if (((1 == 2) and !(4 > 3)))
+                    x = 1");
+            
+            var left = TestHelpers.GetBinaryExpression(1, "==", 2);
+            var right = TestHelpers.GetUnaryExpression("!",TestHelpers.GetBinaryExpression(4, ">", 3));
+            var expectedCondition = TestHelpers.GetBinaryExpression(left, "and", right);
+            
+            var expectedBody = TestHelpers.GetVariableAssignementStatement("x", TestHelpers.GetValueExpression(1));
+            
+            var expected = new IfStatement(
+                expectedCondition, 
+                expectedBody);
+            
+            var actual = _parser.ParseNext();
+            
+            Assert.Equal(expected, actual);
+        }
+        
+        [Fact]
+        public void ParsesIfStatementWithComplexConditionAndComplexBody()
+        {
+            _parser.Initialise(@"
+                if (((1 == 2) and !(4 > 3)))
+                    var x = (1 + 2) * 3");
+            
+            var left = TestHelpers.GetBinaryExpression(1, "==", 2);
+            var right = TestHelpers.GetUnaryExpression("!",TestHelpers.GetBinaryExpression(4, ">", 3));
+            var expectedCondition = TestHelpers.GetBinaryExpression(left, "and", right);
+            
+            
+            var inner = TestHelpers.GetBinaryExpression(1, "+", 2);
+            var expression = TestHelpers.GetBinaryExpression(inner, "*", 3);
+            var expectedBody = new VariableDeclarationStatement(
+                new Token(TokenType.Identifier, "x"), 
+                expression);
+
+            var expected = new IfStatement(
+                expectedCondition, 
+                expectedBody);
             
             var actual = _parser.ParseNext();
             

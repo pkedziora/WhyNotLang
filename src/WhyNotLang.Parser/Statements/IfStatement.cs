@@ -4,13 +4,13 @@ namespace WhyNotLang.Parser.Statements
 {
     public class IfStatement : IStatement
     {
-        public IExpression TestExpression { get; }
+        public IExpression Condition { get; }
         public IStatement Body { get; }
         public StatementType Type => StatementType.IfStatement;
 
-        public IfStatement(IExpression testExpression, IStatement body)
+        public IfStatement(IExpression condition, IStatement body)
         {
-            TestExpression = testExpression;
+            Condition = condition;
             Body = body;
         }
         
@@ -22,7 +22,7 @@ namespace WhyNotLang.Parser.Statements
                 return false;
             }
             
-            return TestExpression.Equals(statement.TestExpression) && 
+            return Condition.Equals(statement.Condition) && 
                    Body.Equals(statement.Body) &&
                    Type == statement.Type;
         }
@@ -32,7 +32,7 @@ namespace WhyNotLang.Parser.Statements
             unchecked
             {
                 int hash = 17;
-                hash = hash * 23 + TestExpression.GetHashCode();
+                hash = hash * 23 + Condition.GetHashCode();
                 hash = hash * 23 + Body.GetHashCode();
                 hash = hash * 23 + Type.GetHashCode();
                 

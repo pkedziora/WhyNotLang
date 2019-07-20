@@ -29,10 +29,10 @@ namespace WhyNotLang.Parser.Statements.Parsers
                 throw new ArgumentException("( expected");
             }
             
-            var testExpression = _expressionParser.ParseNextExpression();
+            var condition = _expressionParser.ParseNextExpression();
             var body = _parser.ParseNext();
             
-            return new IfStatement(testExpression, body);
+            return new IfStatement(condition, body);
         }
     }
 }
