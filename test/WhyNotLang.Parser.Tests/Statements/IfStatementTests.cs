@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using WhyNotLang.Parser.Expressions;
 using WhyNotLang.Parser.Statements;
 using WhyNotLang.Tokenizer;
@@ -127,6 +128,69 @@ namespace WhyNotLang.Parser.Tests.Statements
                 firstExpectedCondition, 
                 firstExpectedBody,
                 new IfStatement(secondExpectedCondition, secondExpectedBody, thirdExpectedBody));
+            
+            var actual = _parser.ParseNext();
+            
+            Assert.Equal(expected, actual);
+        }
+        
+        [Fact]
+        public void ParsesIfElseIfElseStatementWithBlock()
+        {
+            _parser.Initialise(@"
+                if (x < y)
+                    x = 1
+                else if (y == z)
+                begin
+                    y = 2 * 3
+                    ab = a * b
+                end
+                else
+                    z = (4)");
+
+            var firstExpectedCondition = TestHelpers.GetBinaryExpressionWithIdentifiers("x", "<", "y");
+            var firstExpectedBody = TestHelpers.GetVariableAssignementStatement("x", TestHelpers.GetValueExpression(1));
+            
+            var secondExpectedCondition = TestHelpers.GetBinaryExpressionWithIdentifiers("y", "==", "z");
+            var secondExpectedBody = 
+                new BlockStatement(new List<IStatement>()
+                {
+                    TestHelpers.GetVariableAssignementStatement("y", TestHelpers.GetBinaryExpression(2, "*", 3)),
+                    TestHelpers.GetVariableAssignementStatement("ab", TestHelpers.GetBinaryExpressionWithIdentifiers("a", "*", "b"))
+                });
+
+            var thirdExpectedBody = TestHelpers.GetVariableAssignementStatement("z", TestHelpers.GetValueExpression(4));
+            
+            var expected = new IfStatement(
+                firstExpectedCondition, 
+                firstExpectedBody,
+                new IfStatement(secondExpectedCondition, secondExpectedBody, thirdExpectedBody));
+            
+            var actual = _parser.ParseNext();
+            
+            Assert.Equal(expected, actual);
+        }
+        
+        [Fact]
+        public void ParsesIfStatementWithBlock()
+        {
+            _parser.Initialise(@"
+                if (x < y)
+                    begin
+                        x = 1
+                        z = 2
+                    end");
+
+            var expectedCondition = TestHelpers.GetBinaryExpressionWithIdentifiers("x", "<", "y");
+            var expectedBody = new BlockStatement(new List<IStatement>()
+            {
+                TestHelpers.GetVariableAssignementStatement("x", TestHelpers.GetValueExpression(1)),
+                TestHelpers.GetVariableAssignementStatement("z", TestHelpers.GetValueExpression(2))
+            }); 
+            
+            var expected = new IfStatement(
+                expectedCondition, 
+                expectedBody);
             
             var actual = _parser.ParseNext();
             
