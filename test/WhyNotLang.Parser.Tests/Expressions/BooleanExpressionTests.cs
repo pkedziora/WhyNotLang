@@ -2,14 +2,14 @@ using WhyNotLang.Parser.Expressions;
 using WhyNotLang.Tokenizer;
 using Xunit;
 
-namespace WhyNotLang.Parser.Tests
+namespace WhyNotLang.Parser.Tests.Expressions
 {
     public class BooleanExpressionTests
     {
-        private ExpressionParser _parser;
+        private readonly ExpressionParser _parser;
         public BooleanExpressionTests()
         {
-            _parser = new ExpressionParser(new TokenIterator(new Tokenizer.Tokenizer(new TokenReader(), new TokenMap())));
+            _parser = TestHelpers.CreateExpressionParser();
         }
 
         [Fact]

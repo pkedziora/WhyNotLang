@@ -1,5 +1,6 @@
 using System.Linq;
 using WhyNotLang.Parser.Expressions;
+using WhyNotLang.Parser.Statements;
 using WhyNotLang.Tokenizer;
 
 namespace WhyNotLang.Parser.Tests
@@ -8,6 +9,25 @@ namespace WhyNotLang.Parser.Tests
     {
         private static readonly Tokenizer.Tokenizer _tokenizer = CreateTokenizer();
 
+        public static TokenIterator CreateTokenIterator()
+        {
+            return new TokenIterator(new Tokenizer.Tokenizer(new TokenReader(), new TokenMap()));
+        }
+
+        public static ExpressionParser CreateExpressionParser(ITokenIterator tokenIterator = null)
+        {
+            tokenIterator = tokenIterator ??
+                            new TokenIterator(new Tokenizer.Tokenizer(new TokenReader(), new TokenMap()));
+            return new ExpressionParser(tokenIterator);
+        }
+        
+        public static Parser CreateParser()
+        {
+            var tokenIterator = CreateTokenIterator();
+            var expressionParser = CreateExpressionParser(tokenIterator);
+            return new Parser(tokenIterator, new StatementParserMap(expressionParser));
+        }
+        
         public static BinaryExpression GetBinaryExpression(int a, string op, int b)
         {
             var left = new ValueExpression(new Token(TokenType.Number, a.ToString()));

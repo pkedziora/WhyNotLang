@@ -22,6 +22,11 @@ namespace WhyNotLang.Parser
             return ParseExpression(Precedence.None);
         }
         
+        public IExpression ParseNextExpression()
+        {
+            return ParseExpression(Precedence.None);
+        }
+        
         private IExpression ParseExpression(Precedence previousPrecedence)
         {
             IExpression leftExpression;

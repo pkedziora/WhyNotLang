@@ -5,7 +5,7 @@ using WhyNotLang.Tokenizer;
 
 namespace WhyNotLang.Parser
 {
-    public class Parser
+    public class Parser : IParser
     {
         private readonly ITokenIterator _tokenIterator;
         private readonly IStatementParserMap _statementParserMap;
@@ -16,17 +16,29 @@ namespace WhyNotLang.Parser
             _statementParserMap = statementParserMap;
         }
 
-        public List<IStatement> Parse()
+        public List<IStatement> ParseAll(string program)
         {
             var statements = new List<IStatement>();
             while (_tokenIterator.CurrentToken.Type != TokenType.Eof)
             {
-                var parser = GetNextStatementParser();
-                var statement = parser.Parse();
+                var statement = ParseNext();
                 statements.Add(statement);
             }
 
             return statements;
+        }
+
+        public void Initialise(string program)
+        {
+            _tokenIterator.InitTokens(program);
+        }
+        
+        public IStatement ParseNext()
+        {
+            var parser = GetNextStatementParser();
+            var statement = parser.Parse();
+
+            return statement;
         }
 
         private IStatementParser GetNextStatementParser()
