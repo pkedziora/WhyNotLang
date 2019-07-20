@@ -80,17 +80,34 @@ namespace WhyNotLang.Parser.Tests
 
         public static UnaryExpression GetUnaryExpression(string op, int number)
         {
-            return new UnaryExpression(new ValueExpression(TestHelpers.GetToken(number.ToString())), GetToken(op));
+            return new UnaryExpression(GetValueExpression(number), GetToken(op));
         }
         
         public static UnaryExpression GetUnaryExpressionWithIdentifier(string op, string identifier)
         {
-            return new UnaryExpression(new ValueExpression(TestHelpers.GetToken(identifier)), GetToken(op));
+            return new UnaryExpression(new ValueExpression(GetToken(identifier)), GetToken(op));
+        }
+
+        public static ValueExpression GetValueExpression(int number)
+        {
+            return new ValueExpression(GetToken(number.ToString()));
         }
         
         public static UnaryExpression GetUnaryExpression(string op, IExpression inner)
         {
             return new UnaryExpression(inner, GetToken(op));
+        }
+
+        public static VariableAssignmentStatement GetVariableAssignementStatement(string identifier, IExpression expression)
+        {
+            return new VariableAssignmentStatement(GetToken(identifier),
+                expression);
+        }
+        
+        public static VariableDeclarationStatement GetVariableDeclarationStatement(string identifier, IExpression expression)
+        {
+            return new VariableDeclarationStatement(GetToken(identifier),
+                expression);
         }
 
         public static Token GetToken(string token)

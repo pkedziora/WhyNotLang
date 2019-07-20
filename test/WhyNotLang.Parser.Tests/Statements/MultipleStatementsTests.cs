@@ -64,11 +64,9 @@ namespace WhyNotLang.Parser.Tests.Statements
                             y = 1 * 2");
             var expected = new List<IStatement>
             {
-                new VariableDeclarationStatement(
-                    new Token(TokenType.Identifier, "x"),
+                TestHelpers.GetVariableDeclarationStatement("x",
                     TestHelpers.GetBinaryExpression(1, "+", 2)),
-                new VariableAssignmentStatement(
-                    new Token(TokenType.Identifier, "y"),
+                TestHelpers.GetVariableAssignementStatement( "y",
                     TestHelpers.GetBinaryExpression(1, "*", 2))
             };
 
@@ -85,11 +83,9 @@ namespace WhyNotLang.Parser.Tests.Statements
                             y = (1 * (2 + 3))");
             var expected = new List<IStatement>
             {
-                new VariableAssignmentStatement(
-                    new Token(TokenType.Identifier, "x"),
+                TestHelpers.GetVariableAssignementStatement("x", 
                     TestHelpers.GetBinaryExpression(TestHelpers.GetBinaryExpression(1, "+", 2), "*", 3)),
-                new VariableAssignmentStatement(
-                    new Token(TokenType.Identifier, "y"),
+                TestHelpers.GetVariableAssignementStatement( "y",
                     TestHelpers.GetBinaryExpression(1, "*", TestHelpers.GetBinaryExpression(2, "+", 3)))
             };
 
@@ -106,11 +102,9 @@ namespace WhyNotLang.Parser.Tests.Statements
                             var y = (1 * (2 + 3))");
             var expected = new List<IStatement>
             {
-                new VariableAssignmentStatement(
-                    new Token(TokenType.Identifier, "x"),
+                TestHelpers.GetVariableAssignementStatement("x",
                     TestHelpers.GetBinaryExpression(TestHelpers.GetBinaryExpression(1, "+", 2), "*", 3)),
-                new VariableDeclarationStatement(
-                    new Token(TokenType.Identifier, "y"),
+                TestHelpers.GetVariableDeclarationStatement("y",
                     TestHelpers.GetBinaryExpression(1, "*", TestHelpers.GetBinaryExpression(2, "+", 3)))
             };
 

@@ -22,8 +22,7 @@ namespace WhyNotLang.Parser.Tests.Statements
                     x = 1");
 
             var expectedTestExpression = TestHelpers.GetBinaryExpressionWithIdentifiers("x", "<", "y");
-            var expectedBody = new VariableAssignmentStatement(new Token(TokenType.Identifier, "x"),
-                new ValueExpression(new Token(TokenType.Number, "1")));
+            var expectedBody = TestHelpers.GetVariableAssignementStatement("x", TestHelpers.GetValueExpression(1));
             
             var expected = new IfStatement(
                expectedTestExpression, 
