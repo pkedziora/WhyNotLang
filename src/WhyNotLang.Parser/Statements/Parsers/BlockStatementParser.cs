@@ -1,3 +1,7 @@
+using System;
+using System.Collections.Generic;
+using WhyNotLang.Tokenizer;
+
 namespace WhyNotLang.Parser.Statements.Parsers
 {
     public class BlockStatementParser : IStatementParser
@@ -15,7 +19,22 @@ namespace WhyNotLang.Parser.Statements.Parsers
         
         public IStatement Parse()
         {
-            throw new System.NotImplementedException();
+            if (_tokenIterator.CurrentToken.Type != TokenType.Begin)
+            {
+                throw new ArgumentException("begin expected");
+            }
+            
+            _tokenIterator.GetNextToken(); // Swallow begin
+            var childStatements = new List<IStatement>();
+            while (_tokenIterator.CurrentToken.Type != TokenType.End)
+            {
+                var currentChildStatement = _parser.ParseNext();
+                childStatements.Add(currentChildStatement);
+            }
+
+            _tokenIterator.GetNextToken(); // Swallow end
+
+            return new BlockStatement(childStatements);
         }
     }
 }
