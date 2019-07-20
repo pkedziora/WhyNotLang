@@ -66,7 +66,6 @@ namespace WhyNotLang.Parser.Tests.Statements
             var right = TestHelpers.GetUnaryExpression("!",TestHelpers.GetBinaryExpression(4, ">", 3));
             var expectedCondition = TestHelpers.GetBinaryExpression(left, "and", right);
             
-            
             var inner = TestHelpers.GetBinaryExpression(1, "+", 2);
             var expression = TestHelpers.GetBinaryExpression(inner, "*", 3);
             var expectedBody = new VariableDeclarationStatement(
@@ -76,6 +75,29 @@ namespace WhyNotLang.Parser.Tests.Statements
             var expected = new IfStatement(
                 expectedCondition, 
                 expectedBody);
+            
+            var actual = _parser.ParseNext();
+            
+            Assert.Equal(expected, actual);
+        }
+        
+        [Fact]
+        public void ParsesSimpleIfElseStatement()
+        {
+            _parser.Initialise(@"
+                if (x < y)
+                    x = 1
+                else
+                    y = 2");
+
+            var expectedCondition = TestHelpers.GetBinaryExpressionWithIdentifiers("x", "<", "y");
+            var expectedBody = TestHelpers.GetVariableAssignementStatement("x", TestHelpers.GetValueExpression(1));
+            var expectedElse = TestHelpers.GetVariableAssignementStatement("y", TestHelpers.GetValueExpression(2));
+            
+            var expected = new IfStatement(
+                expectedCondition, 
+                expectedBody,
+                expectedElse);
             
             var actual = _parser.ParseNext();
             

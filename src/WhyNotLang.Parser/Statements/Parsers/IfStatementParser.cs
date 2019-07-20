@@ -31,8 +31,14 @@ namespace WhyNotLang.Parser.Statements.Parsers
             
             var condition = _expressionParser.ParseNextExpression();
             var body = _parser.ParseNext();
+            IStatement elseStatement = null;
+            if (_tokenIterator.CurrentToken.Type == TokenType.Else)
+            {
+                _tokenIterator.GetNextToken(); // Swallow else
+                elseStatement = _parser.ParseNext();
+            }
             
-            return new IfStatement(condition, body);
+            return new IfStatement(condition, body, elseStatement);
         }
     }
 }
