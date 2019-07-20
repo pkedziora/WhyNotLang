@@ -5,7 +5,7 @@ namespace WhyNotLang.Parser
 {
     public class TokenIterator : ITokenIterator
     {
-        public Token CurrentToken => _tokens[_currentIndex];
+        public Token CurrentToken => _currentIndex < _tokens.Count ? _tokens[_currentIndex] : Token.Eof;
         private IList<Token> _tokens;
         private int _currentIndex;
         private readonly ITokenizer _tokenizer;
@@ -25,7 +25,8 @@ namespace WhyNotLang.Parser
         {
             if (_currentIndex >= _tokens.Count - 1)
             {
-                return new Token(TokenType.Eof, "");
+                _currentIndex = _tokens.Count;
+                return Token.Eof;
             }
 
             _currentIndex++;

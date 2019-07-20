@@ -5,6 +5,8 @@ namespace WhyNotLang.Tokenizer
         public TokenType Type { get; }
         public string Value { get; }
 
+        public static Token Eof => new Token(TokenType.Eof, "");
+        
         public Token(TokenType type, string value)
         {
             Type = type;
