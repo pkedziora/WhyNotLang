@@ -7,6 +7,7 @@ namespace WhyNotLang.Parser.Statements
         VariableAssignmentStatement,
         IfStatement,
         BlockStatement,
-        WhileStatement
+        WhileStatement,
+        FunctionCallStatement
     }
 }
