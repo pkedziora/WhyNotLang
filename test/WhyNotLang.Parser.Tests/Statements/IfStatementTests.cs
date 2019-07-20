@@ -103,5 +103,34 @@ namespace WhyNotLang.Parser.Tests.Statements
             
             Assert.Equal(expected, actual);
         }
+        
+        [Fact]
+        public void ParsesIfElseIfElseStatement()
+        {
+            _parser.Initialise(@"
+                if (x < y)
+                    x = 1
+                else if (y == z)
+                    y = 2 * 3
+                else
+                    z = (4)");
+
+            var firstExpectedCondition = TestHelpers.GetBinaryExpressionWithIdentifiers("x", "<", "y");
+            var firstExpectedBody = TestHelpers.GetVariableAssignementStatement("x", TestHelpers.GetValueExpression(1));
+            
+            var secondExpectedCondition = TestHelpers.GetBinaryExpressionWithIdentifiers("y", "==", "z");
+            var secondExpectedBody = TestHelpers.GetVariableAssignementStatement("y", TestHelpers.GetBinaryExpression(2, "*", 3));
+            
+            var thirdExpectedBody = TestHelpers.GetVariableAssignementStatement("z", TestHelpers.GetValueExpression(4));
+            
+            var expected = new IfStatement(
+                firstExpectedCondition, 
+                firstExpectedBody,
+                new IfStatement(secondExpectedCondition, secondExpectedBody, thirdExpectedBody));
+            
+            var actual = _parser.ParseNext();
+            
+            Assert.Equal(expected, actual);
+        }
     }
 }
