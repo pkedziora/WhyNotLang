@@ -6,15 +6,15 @@ namespace WhyNotLang.Parser.Statements
 {
     public abstract class VariableStatementBase
     {
-        public Token Variable { get; }
-        public IExpression Value { get; }
+        public Token VariableName { get; }
+        public IExpression Expression { get; }
 
         public abstract StatementType Type { get; }
 
-        public VariableStatementBase(Token variable, IExpression value)
+        public VariableStatementBase(Token variableName, IExpression expression)
         {
-            Variable = variable;
-            Value = value;
+            VariableName = variableName;
+            Expression = expression;
         }
         
         public override bool Equals(object obj)
@@ -25,8 +25,8 @@ namespace WhyNotLang.Parser.Statements
                 return false;
             }
 
-            return Variable.Equals(statement.Variable) &&
-                   Value.Equals(statement.Value) &&
+            return VariableName.Equals(statement.VariableName) &&
+                   Expression.Equals(statement.Expression) &&
                    Type.Equals(statement.Type);
         }
 
@@ -35,8 +35,8 @@ namespace WhyNotLang.Parser.Statements
             unchecked
             {
                 int hash = 17;
-                hash = hash * 23 + Variable.GetHashCode();
-                hash = hash * 23 + Value.GetHashCode();
+                hash = hash * 23 + VariableName.GetHashCode();
+                hash = hash * 23 + Expression.GetHashCode();
                 hash = hash * 23 + Type.GetHashCode();
                 
                 return hash;

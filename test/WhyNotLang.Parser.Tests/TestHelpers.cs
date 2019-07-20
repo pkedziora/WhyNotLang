@@ -25,7 +25,7 @@ namespace WhyNotLang.Parser.Tests
         {
             var tokenIterator = CreateTokenIterator();
             var expressionParser = CreateExpressionParser(tokenIterator);
-            return new Parser(tokenIterator, new StatementParserMap(expressionParser));
+            return new Parser(tokenIterator, new StatementParserMap(tokenIterator, expressionParser));
         }
         
         public static BinaryExpression GetBinaryExpression(int a, string op, int b)

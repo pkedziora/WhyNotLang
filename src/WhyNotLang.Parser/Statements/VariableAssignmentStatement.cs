@@ -7,7 +7,7 @@ namespace WhyNotLang.Parser.Statements
     {
         public override StatementType Type => StatementType.VariableAssignmentStatement;
 
-        public VariableAssignmentStatement(Token variable, IExpression value) : base(variable, value)
+        public VariableAssignmentStatement(Token variableName, IExpression expression) : base(variableName, expression)
         {
         }
         

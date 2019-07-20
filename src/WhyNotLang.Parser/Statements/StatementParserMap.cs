@@ -8,12 +8,12 @@ namespace WhyNotLang.Parser.Statements
     {
         public Dictionary<TokenType, IStatementParser> Map { get; }
 
-        public StatementParserMap(IExpressionParser expressionParser)
+        public StatementParserMap(ITokenIterator tokenIterator, IExpressionParser expressionParser)
         {
             Map = new Dictionary<TokenType, IStatementParser>
             {
-                {TokenType.Var, new VariableDeclarationParser(expressionParser)},
-                {TokenType.Identifier, new VariableAssignmentParser(expressionParser)}
+                {TokenType.Var, new VariableDeclarationParser(tokenIterator, expressionParser)},
+                {TokenType.Identifier, new VariableAssignmentParser(tokenIterator, expressionParser)}
             };
         }
     }
