@@ -25,7 +25,8 @@ namespace WhyNotLang.Parser.Statements
                 {
                     {TokenType.Var, new VariableDeclarationParser(_tokenIterator, _expressionParser)},
                     {TokenType.Identifier, new VariableAssignmentParser(_tokenIterator, _expressionParser)},
-                    {TokenType.If, new IfStatementParser(_tokenIterator, _expressionParser, parser)}
+                    {TokenType.If, new IfStatementParser(_tokenIterator, _expressionParser, parser)},
+                    {TokenType.Begin, new BlockStatementParser(_tokenIterator, _expressionParser, parser)}
                 };
             }
 
