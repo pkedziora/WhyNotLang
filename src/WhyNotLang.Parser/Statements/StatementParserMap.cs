@@ -6,15 +6,30 @@ namespace WhyNotLang.Parser.Statements
 {
     public class StatementParserMap : IStatementParserMap
     {
-        public Dictionary<TokenType, IStatementParser> Map { get; }
+        private readonly ITokenIterator _tokenIterator;
+        private readonly IExpressionParser _expressionParser;
+        private Dictionary<TokenType, IStatementParser> _map;
 
         public StatementParserMap(ITokenIterator tokenIterator, IExpressionParser expressionParser)
         {
-            Map = new Dictionary<TokenType, IStatementParser>
+            _tokenIterator = tokenIterator;
+            _expressionParser = expressionParser;
+           
+        }
+
+        public Dictionary<TokenType, IStatementParser> GetMap(IParser parser)
+        {
+            if (_map == null)
             {
-                {TokenType.Var, new VariableDeclarationParser(tokenIterator, expressionParser)},
-                {TokenType.Identifier, new VariableAssignmentParser(tokenIterator, expressionParser)}
-            };
+                _map = new Dictionary<TokenType, IStatementParser>
+                {
+                    {TokenType.Var, new VariableDeclarationParser(_tokenIterator, _expressionParser)},
+                    {TokenType.Identifier, new VariableAssignmentParser(_tokenIterator, _expressionParser)},
+                    {TokenType.If, new IfStatementParser(_tokenIterator, _expressionParser, parser)}
+                };
+            }
+
+            return _map;
         }
     }
 }
