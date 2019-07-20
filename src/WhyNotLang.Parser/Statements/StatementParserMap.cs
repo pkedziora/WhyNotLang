@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using WhyNotLang.Parser.Statements.Parsers;
 using WhyNotLang.Tokenizer;
@@ -8,7 +9,6 @@ namespace WhyNotLang.Parser.Statements
     {
         private readonly ITokenIterator _tokenIterator;
         private readonly IExpressionParser _expressionParser;
-        private Dictionary<TokenType, IStatementParser> _map;
 
         public StatementParserMap(ITokenIterator tokenIterator, IExpressionParser expressionParser)
         {
@@ -17,21 +17,23 @@ namespace WhyNotLang.Parser.Statements
            
         }
 
-        public Dictionary<TokenType, IStatementParser> GetMap(IParser parser)
+        public IStatementParser GetStatementParser(Parser parser)
         {
-            if (_map == null)
+            switch (_tokenIterator.CurrentToken.Type)
             {
-                _map = new Dictionary<TokenType, IStatementParser>
-                {
-                    {TokenType.Var, new VariableDeclarationParser(_tokenIterator, _expressionParser)},
-                    {TokenType.Identifier, new VariableAssignmentParser(_tokenIterator, _expressionParser)},
-                    {TokenType.If, new IfStatementParser(_tokenIterator, _expressionParser, parser)},
-                    {TokenType.Begin, new BlockStatementParser(_tokenIterator, _expressionParser, parser)},
-                    {TokenType.While, new WhileStatementParser(_tokenIterator, _expressionParser, parser)}
-                };
+                case TokenType.Var:
+                    return new VariableDeclarationParser(_tokenIterator, _expressionParser);
+                case TokenType.Identifier:
+                    return new VariableAssignmentParser(_tokenIterator, _expressionParser);
+                case TokenType.If:
+                    return new IfStatementParser(_tokenIterator, _expressionParser, parser);
+                case TokenType.Begin:
+                    return new BlockStatementParser(_tokenIterator, _expressionParser, parser);
+                case TokenType.While:
+                    return new WhileStatementParser(_tokenIterator, _expressionParser, parser);
             }
-
-            return _map;
+            
+            throw new ArgumentException("Parser not found for current token");
         }
     }
 }

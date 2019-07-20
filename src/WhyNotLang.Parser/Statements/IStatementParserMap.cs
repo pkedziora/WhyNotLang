@@ -6,6 +6,6 @@ namespace WhyNotLang.Parser.Statements
 {
     public interface IStatementParserMap
     {
-        Dictionary<TokenType, IStatementParser> GetMap(IParser parser);
+        IStatementParser GetStatementParser(Parser parser);
     }
 }

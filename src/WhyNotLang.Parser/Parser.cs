@@ -43,7 +43,7 @@ namespace WhyNotLang.Parser
 
         private IStatementParser GetNextStatementParser()
         {
-            return _statementParserMap.GetMap(this)[_tokenIterator.CurrentToken.Type];
+            return _statementParserMap.GetStatementParser(this);
         }
     }
 }
