@@ -40,6 +40,9 @@ namespace WhyNotLang.Parser.Statements
                 
                 case TokenType.While:
                     return new WhileStatementParser(_tokenIterator, _expressionParser, parser);
+                
+                case TokenType.Function:
+                    return new FunctionDeclarationParser(_tokenIterator, _expressionParser, parser);
             }
             
             throw new ArgumentException("Parser not found for current token");
