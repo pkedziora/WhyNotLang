@@ -27,6 +27,19 @@ namespace WhyNotLang.Parser.Tests.Statements
         }
         
         [Fact]
+        public void ParsesAssignmentWithString()
+        {
+            _parser.Initialise("x = \"abc\"");
+            var expected = new VariableAssignmentStatement(
+                new Token(TokenType.Identifier, "x"), 
+                new ValueExpression(new Token(TokenType.String, "abc")));
+            
+            var actual = _parser.ParseNext();
+            
+            Assert.Equal(expected, actual);
+        }
+        
+        [Fact]
         public void ParsesAssignmentWith2PartExpression()
         {
             _parser.Initialise("x = 1 + 2");
@@ -45,7 +58,7 @@ namespace WhyNotLang.Parser.Tests.Statements
             _parser.Initialise("x = a + b");
             var expected = new VariableAssignmentStatement(
                 new Token(TokenType.Identifier, "x"), 
-                TestHelpers.GetBinaryExpression("a", "+", "b"));
+                TestHelpers.GetBinaryExpressionWithIdentifiers("a", "+", "b"));
             
             var actual = _parser.ParseNext();
             

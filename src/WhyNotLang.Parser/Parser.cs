@@ -16,7 +16,7 @@ namespace WhyNotLang.Parser
             _statementParserMap = statementParserMap;
         }
 
-        public List<IStatement> ParseAll(string program)
+        public List<IStatement> ParseAll()
         {
             var statements = new List<IStatement>();
             while (_tokenIterator.CurrentToken.Type != TokenType.Eof)

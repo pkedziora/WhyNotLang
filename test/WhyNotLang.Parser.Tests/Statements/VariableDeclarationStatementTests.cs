@@ -26,7 +26,7 @@ namespace WhyNotLang.Parser.Tests.Statements
             Assert.Equal(expected, actual);
         }
         
-         [Fact]
+        [Fact]
         public void ParsesDeclarationWith2PartExpression()
         {
             _parser.Initialise("var x = 1 + 2");
@@ -45,7 +45,7 @@ namespace WhyNotLang.Parser.Tests.Statements
             _parser.Initialise("var x = a + b");
             var expected = new VariableDeclarationStatement(
                 new Token(TokenType.Identifier, "x"), 
-                TestHelpers.GetBinaryExpression("a", "+", "b"));
+                TestHelpers.GetBinaryExpressionWithIdentifiers("a", "+", "b"));
             
             var actual = _parser.ParseNext();
             

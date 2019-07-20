@@ -131,7 +131,7 @@ namespace WhyNotLang.Parser
                 return ParseParens();
             }
             
-            if (token.Type == TokenType.Number || token.Type == TokenType.Identifier)
+            if (token.Type == TokenType.Number || token.Type == TokenType.Identifier || token.Type == TokenType.String)
             {
                 _tokenIterator.GetNextToken();
                 return new ValueExpression(token);

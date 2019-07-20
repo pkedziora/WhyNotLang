@@ -39,11 +39,37 @@ namespace WhyNotLang.Parser.Tests.Expressions
         }
         
         [Fact]
+        public void Parses1StringParameterFunction()
+        {
+            var expression = "foo(\"abc\")";
+            var expected = new FunctionExpression(new Token(TokenType.Identifier, "foo"), 
+                new ValueExpression(new Token( TokenType.String,"abc")));
+            
+            var result = _parser.ParseExpression(expression);
+            var actual = (FunctionExpression) result;
+            
+            Assert.Equal(expected, actual);
+        }
+        
+        [Fact]
         public void Parses1SimpleExpressionParameterFunction()
         {
             var expression = "foo(1 + 2)";
             var expected = new FunctionExpression(new Token(TokenType.Identifier, "foo"), 
                 TestHelpers.GetBinaryExpression(1, "+", 2));
+            
+            var result = _parser.ParseExpression(expression);
+            var actual = (FunctionExpression) result;
+            
+            Assert.Equal(expected, actual);
+        }
+        
+        [Fact]
+        public void Parses1SimpleExpressionWithStringsParameterFunction()
+        {
+            var expression = "foo(\"abc\" + \"def\")";
+            var expected = new FunctionExpression(new Token(TokenType.Identifier, "foo"), 
+                TestHelpers.GetBinaryExpressionWithStrings("abc", "+", "def"));
             
             var result = _parser.ParseExpression(expression);
             var actual = (FunctionExpression) result;

@@ -25,6 +25,18 @@ namespace WhyNotLang.Parser.Tests.Expressions
         }
         
         [Fact]
+        public void ParsesSingleString()
+        {
+            var expression = "\"a\"";
+            var expected = new ValueExpression(new Token(TokenType.String, "a"));
+            
+            var result = _parser.ParseExpression(expression);
+            var actual = (ValueExpression) result;
+            
+            Assert.Equal(expected, actual);
+        }
+        
+        [Fact]
         public void ParsesSingleIdentifier()
         {
             var expression = "a";
@@ -49,10 +61,22 @@ namespace WhyNotLang.Parser.Tests.Expressions
         }
         
         [Fact]
+        public void Parses2PartBinaryExpressionWithStrings()
+        {
+            var expression = "\"abc\" + \"def\"";
+            var expected = TestHelpers.GetBinaryExpressionWithStrings("abc", "+", "def");
+            
+            var result = _parser.ParseExpression(expression);
+            var actual = (BinaryExpression) result;
+            
+            Assert.Equal(expected, actual);
+        }
+        
+        [Fact]
         public void Parses2PartBinaryExpressionWithIdentifier()
         {
             var expression = "a + b";
-            var expected = TestHelpers.GetBinaryExpression("a", "+", "b");
+            var expected = TestHelpers.GetBinaryExpressionWithIdentifiers("a", "+", "b");
             
             var result = _parser.ParseExpression(expression);
             var actual = (BinaryExpression) result;
@@ -91,7 +115,7 @@ namespace WhyNotLang.Parser.Tests.Expressions
         public void Parses4PartBinaryExpressionWithNumbersAndIdentifiers()
         {
             var expression = "a + b - 3 + 4";
-            var innerInner = TestHelpers.GetBinaryExpression("a", "+", "b");
+            var innerInner = TestHelpers.GetBinaryExpressionWithIdentifiers("a", "+", "b");
             var inner = TestHelpers.GetBinaryExpression(innerInner, "-", 3);
             var expected = TestHelpers.GetBinaryExpression(inner, "+", 4);
             

@@ -5,7 +5,7 @@ namespace WhyNotLang.Parser
 {
     public interface IParser
     {
-        List<IStatement> ParseAll(string program);
+        List<IStatement> ParseAll();
         void Initialise(string program);
         IStatement ParseNext();
     }

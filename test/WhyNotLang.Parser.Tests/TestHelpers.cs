@@ -35,10 +35,17 @@ namespace WhyNotLang.Parser.Tests
             return new BinaryExpression(left, GetToken(op), right);
         }
         
-        public static BinaryExpression GetBinaryExpression(string a, string op, string b)
+        public static BinaryExpression GetBinaryExpressionWithIdentifiers(string a, string op, string b)
         {
             var left = new ValueExpression(new Token(TokenType.Identifier, a));
             var right = new ValueExpression(new Token(TokenType.Identifier, b));
+            return new BinaryExpression(left, GetToken(op), right);
+        }
+        
+        public static BinaryExpression GetBinaryExpressionWithStrings(string a, string op, string b)
+        {
+            var left = new ValueExpression(new Token(TokenType.String, a));
+            var right = new ValueExpression(new Token(TokenType.String, b));
             return new BinaryExpression(left, GetToken(op), right);
         }
         
@@ -48,7 +55,7 @@ namespace WhyNotLang.Parser.Tests
             return new BinaryExpression(left, GetToken(op), right);
         }
         
-        public static BinaryExpression GetBinaryExpression(IExpression left, string op, string b)
+        public static BinaryExpression GetBinaryExpressionWithIdentifiers(IExpression left, string op, string b)
         {
             var right = new ValueExpression(new Token(TokenType.Identifier, b));
             return new BinaryExpression(left, GetToken(op), right);
@@ -60,7 +67,7 @@ namespace WhyNotLang.Parser.Tests
             return new BinaryExpression(left, GetToken(op), right);
         }
         
-        public static BinaryExpression GetBinaryExpression(string a, string op, IExpression right)
+        public static BinaryExpression GetBinaryExpressionWithIdentifiers(string a, string op, IExpression right)
         {
             var left = new ValueExpression(new Token(TokenType.Identifier, a));
             return new BinaryExpression(left, GetToken(op), right);
@@ -76,7 +83,7 @@ namespace WhyNotLang.Parser.Tests
             return new UnaryExpression(new ValueExpression(TestHelpers.GetToken(number.ToString())), GetToken(op));
         }
         
-        public static UnaryExpression GetUnaryExpression(string op, string identifier)
+        public static UnaryExpression GetUnaryExpressionWithIdentifier(string op, string identifier)
         {
             return new UnaryExpression(new ValueExpression(TestHelpers.GetToken(identifier)), GetToken(op));
         }
