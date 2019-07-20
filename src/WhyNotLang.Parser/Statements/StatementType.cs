@@ -3,6 +3,7 @@ namespace WhyNotLang.Parser.Statements
     public enum StatementType
     {
         VariableDeclarationStatement,
-        VariableAssignmentStatement
+        VariableAssignmentStatement,
+        IfStatement
     }
 }
