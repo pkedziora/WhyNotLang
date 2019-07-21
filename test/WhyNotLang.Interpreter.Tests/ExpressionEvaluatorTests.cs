@@ -21,11 +21,30 @@ namespace WhyNotLang.Interpreter.Tests
         [Theory]
         [InlineData("1", 1)]
         [InlineData("1 + 2", 3)]
+        [InlineData("1 + ---2", -1)]
         [InlineData("1 + 2 + 3", 6)]
         [InlineData("1 + 2 * 3", 7)]
         [InlineData("(1 + 2) * 3", 9)]
         [InlineData("2*(1 + 2) * 3", 18)]
+        [InlineData("2*(1 + 2) * -3", -18)]
         public void EvalBinaryExpressionWithNumbers(string strExpression, int expectedResult)
+        {
+            var input = _expressionParser.ParseExpression(strExpression);
+
+            var actual = _expressionEvaluator.Eval(input);
+            var expected = new ExpressionValue(expectedResult, ExpressionValueTypes.Number);
+            
+            Assert.Equal(expected, actual);
+        }
+        
+        [Theory]
+        [InlineData("+1", 1)]
+        [InlineData("+-1", -1)]
+        [InlineData("-1", -1)]
+        [InlineData("--1", 1)]
+        [InlineData("---1", -1)]
+        [InlineData("--+-1", -1)]
+        public void EvalUnaryExpressionWithNumbers(string strExpression, int expectedResult)
         {
             var input = _expressionParser.ParseExpression(strExpression);
 

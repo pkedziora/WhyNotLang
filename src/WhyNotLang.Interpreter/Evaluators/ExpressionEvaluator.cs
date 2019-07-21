@@ -18,6 +18,8 @@ namespace WhyNotLang.Interpreter.Evaluators
             {
                 case ExpressionType.Value:
                     return new ValueExpressionEvaluator();
+                case ExpressionType.Unary:
+                    return new UnaryExpressionEvaluator(this);
                 case ExpressionType.Binary:
                     return new BinaryExpressionEvaluator(this);
             }
