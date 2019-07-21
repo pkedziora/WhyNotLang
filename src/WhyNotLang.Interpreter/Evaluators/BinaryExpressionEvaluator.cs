@@ -25,12 +25,12 @@ namespace WhyNotLang.Interpreter.Evaluators
             var leftExpressionValue = _mainEvaluator.Eval(binaryExpression.Left);
             var rightExpressionValue = _mainEvaluator.Eval(binaryExpression.Right);
             var result =
-                ExpressionValueCalculator(leftExpressionValue, binaryExpression.Operator, rightExpressionValue);
+                CalculateValue(leftExpressionValue, binaryExpression.Operator, rightExpressionValue);
 
             return result;
         }
 
-        private ExpressionValue ExpressionValueCalculator(ExpressionValue left, Token op, ExpressionValue right)
+        private ExpressionValue CalculateValue(ExpressionValue left, Token op, ExpressionValue right)
         {
             if (left.Type != right.Type)
             {
@@ -40,15 +40,15 @@ namespace WhyNotLang.Interpreter.Evaluators
             switch (left.Type)
             {
                 case ExpressionValueTypes.Number:
-                    return new ExpressionValue(EvaluateNumberOperation((int) left.Value, op, (int) right.Value), ExpressionValueTypes.Number);
+                    return new ExpressionValue(CalculateNumberOperation((int) left.Value, op, (int) right.Value), ExpressionValueTypes.Number);
                 case ExpressionValueTypes.String:
-                    return new ExpressionValue(EvaluateStringOperation((string)left.Value, op, (string)right.Value), ExpressionValueTypes.String);
+                    return new ExpressionValue(CalculateStringOperation((string)left.Value, op, (string)right.Value), ExpressionValueTypes.String);
             }
             
             throw new ArgumentException("Unsupported token type");
         }
 
-        private string EvaluateStringOperation(string left, Token op, string right)
+        private string CalculateStringOperation(string left, Token op, string right)
         {
             if (op.Type != TokenType.Plus)
             {
@@ -57,7 +57,7 @@ namespace WhyNotLang.Interpreter.Evaluators
 
             return left + right;
         }
-        private int EvaluateNumberOperation(int left, Token op, int right)
+        private int CalculateNumberOperation(int left, Token op, int right)
         {
             switch (op.Type)
             {
