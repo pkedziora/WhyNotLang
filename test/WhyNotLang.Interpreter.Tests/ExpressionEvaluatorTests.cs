@@ -1,5 +1,6 @@
 using WhyNotLang.Interpreter.Evaluators;
 using WhyNotLang.Interpreter.Evaluators.ExpressionValues;
+using WhyNotLang.Interpreter.State;
 using WhyNotLang.Parser;
 using WhyNotLang.Test.Common;
 using Xunit;
@@ -10,11 +11,13 @@ namespace WhyNotLang.Interpreter.Tests
     {
         private ExpressionEvaluator _expressionEvaluator;
         private ExpressionParser _expressionParser;
+        private ProgramState _programState;
 
         public ExpressionEvaluatorTests()
         {
             _expressionParser = TestHelpers.CreateExpressionParser();
-            _expressionEvaluator = new ExpressionEvaluator();
+            _programState = new ProgramState();
+            _expressionEvaluator = new ExpressionEvaluator(_programState);
         }
         
         [Theory]

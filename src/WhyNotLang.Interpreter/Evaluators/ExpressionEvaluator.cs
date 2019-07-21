@@ -1,11 +1,19 @@
 using System;
 using WhyNotLang.Interpreter.Evaluators.ExpressionValues;
+using WhyNotLang.Interpreter.State;
 using WhyNotLang.Parser.Expressions;
 
 namespace WhyNotLang.Interpreter.Evaluators
 {
     public class ExpressionEvaluator : IExpressionEvaluator
     {
+        private readonly IProgramState _programState;
+
+        public ExpressionEvaluator(IProgramState programState)
+        {
+            _programState = programState;
+        }
+        
         public ExpressionValue Eval(IExpression expression)
         {
             var evaluator = GetExpressionEvaluator(expression);
@@ -17,7 +25,7 @@ namespace WhyNotLang.Interpreter.Evaluators
             switch (expression.Type)
             {
                 case ExpressionType.Value:
-                    return new ValueExpressionEvaluator();
+                    return new ValueExpressionEvaluator(_programState);
                 case ExpressionType.Unary:
                     return new UnaryExpressionEvaluator(this);
                 case ExpressionType.Binary:
