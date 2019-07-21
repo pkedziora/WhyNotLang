@@ -1,6 +1,7 @@
 using WhyNotLang.Interpreter.Evaluators;
 using WhyNotLang.Interpreter.State;
 using WhyNotLang.Parser;
+using WhyNotLang.Parser.Statements;
 
 namespace WhyNotLang.Interpreter.StatementExecutors
 {
@@ -20,7 +21,10 @@ namespace WhyNotLang.Interpreter.StatementExecutors
         
         public void Execute()
         {
-            throw new System.NotImplementedException();
+            var variableDeclaration = _statementIterator.CurrentStatement as VariableDeclarationStatement;
+            var variableName = variableDeclaration.VariableName.Value;
+            var variableValue = _expressionEvaluator.Eval(variableDeclaration.Expression);
+            _programState.CurrentScope.DeclareVariable(variableName, variableValue);
         }
     }
 }

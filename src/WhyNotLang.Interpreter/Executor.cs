@@ -13,6 +13,11 @@ namespace WhyNotLang.Interpreter
             _statementIterator = statementIterator;
             _statementExecutorMap = statementExecutorMap;
         }
+
+        public void Initialise(string program)
+        {
+            _statementIterator.InitStatements(program);
+        }
         
         public void ExecuteNext()
         {

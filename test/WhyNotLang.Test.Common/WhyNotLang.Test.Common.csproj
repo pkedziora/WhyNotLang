@@ -5,6 +5,7 @@
     </PropertyGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\..\src\WhyNotLang.Interpreter\WhyNotLang.Interpreter.csproj" />
       <ProjectReference Include="..\..\src\WhyNotLang.Parser\WhyNotLang.Parser.csproj" />
       <ProjectReference Include="..\..\src\WhyNotLang.Tokenizer\WhyNotLang.Tokenizer.csproj" />
     </ItemGroup>

@@ -1,4 +1,8 @@
 using System.Linq;
+using WhyNotLang.Interpreter;
+using WhyNotLang.Interpreter.Evaluators;
+using WhyNotLang.Interpreter.State;
+using WhyNotLang.Interpreter.StatementExecutors;
 using WhyNotLang.Parser;
 using WhyNotLang.Parser.Expressions;
 using WhyNotLang.Parser.Statements;
@@ -27,6 +31,12 @@ namespace WhyNotLang.Test.Common
             var tokenIterator = CreateTokenIterator();
             var expressionParser = CreateExpressionParser(tokenIterator);
             return new Parser.Parser(tokenIterator, new StatementParserMap(tokenIterator, expressionParser));
+        }
+
+        public static Executor CreateExecutor(ProgramState programState)
+        {
+            var iterator = new StatementIterator(CreateParser());
+            return new Executor(iterator, new StatementExecutorMap(iterator, new ExpressionEvaluator(), programState));
         }
         
         public static BinaryExpression GetBinaryExpression(int a, string op, int b)
