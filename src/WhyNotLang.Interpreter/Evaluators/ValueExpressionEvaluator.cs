@@ -30,9 +30,16 @@ namespace WhyNotLang.Interpreter.Evaluators
                     return new ExpressionValue(int.Parse(token.Value), ExpressionValueTypes.Number);
                 case TokenType.String:
                     return new ExpressionValue(token.Value, ExpressionValueTypes.String);
+                case TokenType.Identifier:
+                    return GetVariableValue(token.Value);
             }
             
             throw new ArgumentException("Unsupported token type");
+        }
+
+        private ExpressionValue GetVariableValue(string identifier)
+        {
+            return _programState.CurrentScope.GetVariable(identifier);
         }
     }
 }
