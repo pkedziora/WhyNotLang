@@ -10,6 +10,7 @@ namespace WhyNotLang.Parser.Statements
         WhileStatement,
         FunctionCallStatement,
         FunctionDeclarationStatement,
-        ReturnStatement
+        ReturnStatement,
+        EofStatement
     }
 }
