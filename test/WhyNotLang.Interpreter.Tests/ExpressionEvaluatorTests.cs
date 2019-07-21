@@ -40,6 +40,29 @@ namespace WhyNotLang.Interpreter.Tests
         }
         
         [Theory]
+        [InlineData("b", 2)]
+        [InlineData("1 + a", 2)]
+        [InlineData("1 + ---b", -1)]
+        [InlineData("a + b + c", 6)]
+        [InlineData("1 + 2 * c", 7)]
+        [InlineData("(a + b) * 3", 9)]
+        [InlineData("2*(a + 2) * c", 18)]
+        [InlineData("2*(1 + b) * -c", -18)]
+        public void EvalBinaryExpressionWithNumbersAndVariables(string strExpression, int expectedResult)
+        {
+            _programState.CurrentScope.DeclareVariable("a", new ExpressionValue(1,ExpressionValueTypes.Number));
+            _programState.CurrentScope.DeclareVariable("b", new ExpressionValue(2,ExpressionValueTypes.Number));
+            _programState.CurrentScope.DeclareVariable("c", new ExpressionValue(3,ExpressionValueTypes.Number));
+            
+            var input = _expressionParser.ParseExpression(strExpression);
+
+            var actual = _expressionEvaluator.Eval(input);
+            var expected = new ExpressionValue(expectedResult, ExpressionValueTypes.Number);
+            
+            Assert.Equal(expected, actual);
+        }
+        
+        [Theory]
         [InlineData("+1", 1)]
         [InlineData("+-1", -1)]
         [InlineData("-1", -1)]
