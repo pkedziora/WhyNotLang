@@ -18,6 +18,8 @@ namespace WhyNotLang.Interpreter.Evaluators
             {
                 case ExpressionType.Value:
                     return new ValueExpressionEvaluator();
+                case ExpressionType.Binary:
+                    return new BinaryExpressionEvaluator(this);
             }
             
             throw new ArgumentException("Parser not found for current token");

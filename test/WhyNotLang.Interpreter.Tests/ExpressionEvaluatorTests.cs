@@ -1,6 +1,8 @@
 using WhyNotLang.Interpreter.Evaluators;
 using WhyNotLang.Interpreter.ExpressionValues;
+using WhyNotLang.Parser;
 using WhyNotLang.Test.Common;
+using WhyNotLang.Tokenizer;
 using Xunit;
 
 namespace WhyNotLang.Interpreter.Tests
@@ -8,19 +10,27 @@ namespace WhyNotLang.Interpreter.Tests
     public class ExpressionEvaluatorTests
     {
         private ExpressionEvaluator _expressionEvaluator;
+        private ExpressionParser _expressionParser;
 
         public ExpressionEvaluatorTests()
         {
+            _expressionParser = TestHelpers.CreateExpressionParser();
             _expressionEvaluator = new ExpressionEvaluator();
         }
-
-        [Fact]
-        public void EvalSingleNumber()
+        
+        [Theory]
+        [InlineData("1", 1)]
+        [InlineData("1 + 2", 3)]
+        [InlineData("1 + 2 + 3", 6)]
+        [InlineData("1 + 2 * 3", 7)]
+        [InlineData("(1 + 2) * 3", 9)]
+        [InlineData("2*(1 + 2) * 3", 18)]
+        public void EvalBinaryExpressionWithNumbers(string strExpression, int expectedResult)
         {
-            var input = TestHelpers.GetValueExpression(1);
+            var input = _expressionParser.ParseExpression(strExpression);
 
             var actual = _expressionEvaluator.Eval(input);
-            var expected = new ExpressionValue(1, ExpressionValueTypes.Number);
+            var expected = new ExpressionValue(expectedResult, ExpressionValueTypes.Number);
             
             Assert.Equal(expected, actual);
         }
@@ -28,10 +38,21 @@ namespace WhyNotLang.Interpreter.Tests
         [Fact]
         public void EvalSingleString()
         {
-            var input = TestHelpers.GetValueExpressionAsString("abc");
+            var input = _expressionParser.ParseExpression("\"abc\"");
 
             var actual = _expressionEvaluator.Eval(input);
             var expected = new ExpressionValue("abc", ExpressionValueTypes.String);
+            
+            Assert.Equal(expected, actual);
+        }
+
+        [Fact]
+        public void EvalBinaryExpressionWithStrings()
+        {
+            var input = _expressionParser.ParseExpression("\"abc\" + \"def\"");
+
+            var actual = _expressionEvaluator.Eval(input);
+            var expected = new ExpressionValue("abcdef", ExpressionValueTypes.String);
             
             Assert.Equal(expected, actual);
         }
