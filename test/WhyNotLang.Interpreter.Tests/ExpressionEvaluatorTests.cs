@@ -54,6 +54,24 @@ namespace WhyNotLang.Interpreter.Tests
             Assert.Equal(expected, actual);
         }
         
+        [Theory]
+        [InlineData("1 < 2", 1)]
+        [InlineData("1 > 2", 0)]
+        [InlineData("1 > 2 or 1 <= 2", 1)]
+        [InlineData("1 > 2 and 1 <= 2", 0)]
+        [InlineData("1 >= 2 or 1 == 1 and 2 >= 1", 1)]
+        [InlineData("(1 == 1 or 2 == 3) and 2 > 1", 1)]
+        [InlineData("1 == 2", 0)]
+        public void EvalConditionalBinaryExpressionWithNumbers(string strExpression, int expectedResult)
+        {
+            var input = _expressionParser.ParseExpression(strExpression);
+
+            var actual = _expressionEvaluator.Eval(input);
+            var expected = new ExpressionValue(expectedResult, ExpressionValueTypes.Number);
+            
+            Assert.Equal(expected, actual);
+        }
+        
         [Fact]
         public void EvalSingleString()
         {

@@ -84,7 +84,7 @@ namespace WhyNotLang.Interpreter.Evaluators
                 case TokenType.Or:
                     return CastBoolToInt(CastIntToBool(left) || CastIntToBool(right));
                 case TokenType.And:
-                    return CastBoolToInt(CastIntToBool(left) || CastIntToBool(right));
+                    return CastBoolToInt(CastIntToBool(left) && CastIntToBool(right));
             }
             
             throw new ArgumentException("Unsupported token type");

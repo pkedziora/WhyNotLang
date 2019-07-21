@@ -155,7 +155,7 @@ namespace WhyNotLang.Parser.Tests.Expressions
             
             Assert.Equal(expected, actual);
         }
-        
+
         [Fact]
         public void ParsesNotInFrontOfSecondParensIn2PartBooleanExpression()
         {
