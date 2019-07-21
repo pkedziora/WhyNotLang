@@ -1,9 +1,10 @@
 using System.Linq;
+using WhyNotLang.Parser;
 using WhyNotLang.Parser.Expressions;
 using WhyNotLang.Parser.Statements;
 using WhyNotLang.Tokenizer;
 
-namespace WhyNotLang.Parser.Tests
+namespace WhyNotLang.Test.Common
 {
     public class TestHelpers
     {
@@ -21,11 +22,11 @@ namespace WhyNotLang.Parser.Tests
             return new ExpressionParser(tokenIterator);
         }
         
-        public static Parser CreateParser()
+        public static Parser.Parser CreateParser()
         {
             var tokenIterator = CreateTokenIterator();
             var expressionParser = CreateExpressionParser(tokenIterator);
-            return new Parser(tokenIterator, new StatementParserMap(tokenIterator, expressionParser));
+            return new Parser.Parser(tokenIterator, new StatementParserMap(tokenIterator, expressionParser));
         }
         
         public static BinaryExpression GetBinaryExpression(int a, string op, int b)
@@ -108,6 +109,11 @@ namespace WhyNotLang.Parser.Tests
         public static ValueExpression GetValueExpression(string identifier)
         {
             return new ValueExpression(GetToken(identifier));
+        }
+        
+        public static ValueExpression GetValueExpressionAsString(string str)
+        {
+            return new ValueExpression(new Token(TokenType.String, str));
         }
         
         public static UnaryExpression GetUnaryExpression(string op, IExpression inner)

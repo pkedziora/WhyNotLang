@@ -8,6 +8,12 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WhyNotLang.Parser", "src\Wh
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WhyNotLang.Parser.Tests", "test\WhyNotLang.Parser.Tests\WhyNotLang.Parser.Tests.csproj", "{BB6353DC-A9B7-43FD-9769-4FCE012FA048}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WhyNotLang.Interpreter", "src\WhyNotLang.Interpreter\WhyNotLang.Interpreter.csproj", "{90B8F30A-50C7-4B7F-A05C-1E89AEE428F3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WhyNotLang.Interpreter.Tests", "test\WhyNotLang.Interpreter.Tests\WhyNotLang.Interpreter.Tests.csproj", "{C76566AB-2F02-4CE2-AEB0-54DA8669A997}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WhyNotLang.Test.Common", "test\WhyNotLang.Test.Common\WhyNotLang.Test.Common.csproj", "{F9DD8476-F43E-42EE-AB7B-5993ABBEFFBB}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -30,5 +36,17 @@ Global
 		{BB6353DC-A9B7-43FD-9769-4FCE012FA048}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BB6353DC-A9B7-43FD-9769-4FCE012FA048}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BB6353DC-A9B7-43FD-9769-4FCE012FA048}.Release|Any CPU.Build.0 = Release|Any CPU
+		{90B8F30A-50C7-4B7F-A05C-1E89AEE428F3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{90B8F30A-50C7-4B7F-A05C-1E89AEE428F3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{90B8F30A-50C7-4B7F-A05C-1E89AEE428F3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{90B8F30A-50C7-4B7F-A05C-1E89AEE428F3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C76566AB-2F02-4CE2-AEB0-54DA8669A997}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C76566AB-2F02-4CE2-AEB0-54DA8669A997}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C76566AB-2F02-4CE2-AEB0-54DA8669A997}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C76566AB-2F02-4CE2-AEB0-54DA8669A997}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F9DD8476-F43E-42EE-AB7B-5993ABBEFFBB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F9DD8476-F43E-42EE-AB7B-5993ABBEFFBB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F9DD8476-F43E-42EE-AB7B-5993ABBEFFBB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F9DD8476-F43E-42EE-AB7B-5993ABBEFFBB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
