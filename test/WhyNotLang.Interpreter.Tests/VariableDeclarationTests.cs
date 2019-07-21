@@ -32,5 +32,19 @@ namespace WhyNotLang.Interpreter.Tests
             
             Assert.Equal(expected, actual);
         }
+        
+        [Fact]
+        public void ExecutesVariableDeclarationWithComplexExpression()
+        {
+            _executor.Initialise("var abc := (10 * (4/4) + (2 - 1))");
+            
+            _executor.ExecuteNext();
+            
+            var actual = _programState.CurrentScope.GetVariable("abc");
+
+            var expected = new ExpressionValue(11, ExpressionValueTypes.Number);
+            
+            Assert.Equal(expected, actual);
+        }
     }
 }
