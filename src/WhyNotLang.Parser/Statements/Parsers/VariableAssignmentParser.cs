@@ -20,7 +20,7 @@ namespace WhyNotLang.Parser.Statements.Parsers
             _tokenIterator.GetNextToken();
             if (_tokenIterator.CurrentToken.Type != TokenType.Assign)
             {
-                throw new ArgumentException("= expected");
+                throw new ArgumentException(":= expected");
             }
 
             _tokenIterator.GetNextToken();

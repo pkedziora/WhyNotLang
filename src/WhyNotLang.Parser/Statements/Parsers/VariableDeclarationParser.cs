@@ -25,7 +25,7 @@ namespace WhyNotLang.Parser.Statements.Parsers
             _tokenIterator.GetNextToken();
             if (_tokenIterator.CurrentToken.Type != TokenType.Assign)
             {
-                throw new ArgumentException("= expected. Variables need to be initialised with value");
+                throw new ArgumentException(":= expected. Variables need to be initialised with value");
             }
 
             _tokenIterator.GetNextToken();

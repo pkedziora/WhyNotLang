@@ -16,7 +16,7 @@ namespace WhyNotLang.Parser.Tests.Statements
         [Fact]
         public void ParsesDeclarationWithSingleNumber()
         {
-            _parser.Initialise("var x = 1");
+            _parser.Initialise("var x := 1");
             var expected = new VariableDeclarationStatement(
                 new Token(TokenType.Identifier, "x"), 
                 new ValueExpression(new Token(TokenType.Number, "1")));
@@ -29,7 +29,7 @@ namespace WhyNotLang.Parser.Tests.Statements
         [Fact]
         public void ParsesDeclarationWith2PartExpression()
         {
-            _parser.Initialise("var x = 1 + 2");
+            _parser.Initialise("var x := 1 + 2");
             var expected = new VariableDeclarationStatement(
                 new Token(TokenType.Identifier, "x"), 
                 TestHelpers.GetBinaryExpression(1, "+", 2));
@@ -42,7 +42,7 @@ namespace WhyNotLang.Parser.Tests.Statements
         [Fact]
         public void ParsesDeclarationWith2PartExpressionWithIdentifiers()
         {
-            _parser.Initialise("var x = a + b");
+            _parser.Initialise("var x := a + b");
             var expected = new VariableDeclarationStatement(
                 new Token(TokenType.Identifier, "x"), 
                 TestHelpers.GetBinaryExpressionWithIdentifiers("a", "+", "b"));
@@ -55,7 +55,7 @@ namespace WhyNotLang.Parser.Tests.Statements
         [Fact]
         public void ParsesDeclarationWith3PartExpression()
         {
-            _parser.Initialise("var x = 1 + 2 * 3");
+            _parser.Initialise("var x := 1 + 2 * 3");
             var inner = TestHelpers.GetBinaryExpression(2, "*", 3);
             var expression = TestHelpers.GetBinaryExpression(1, "+", inner);
             var expected = new VariableDeclarationStatement(
@@ -70,7 +70,7 @@ namespace WhyNotLang.Parser.Tests.Statements
         [Fact]
         public void ParsesDeclarationWith3PartExpressionWithParens()
         {
-            _parser.Initialise("var x = (1 + 2) * 3");
+            _parser.Initialise("var x := (1 + 2) * 3");
             var inner = TestHelpers.GetBinaryExpression(1, "+", 2);
             var expression = TestHelpers.GetBinaryExpression(inner, "*", 3);
             var expected = new VariableDeclarationStatement(

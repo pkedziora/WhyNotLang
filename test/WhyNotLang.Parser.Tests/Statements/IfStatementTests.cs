@@ -20,7 +20,7 @@ namespace WhyNotLang.Parser.Tests.Statements
         {
             _parser.Initialise(@"
                 if (x < y)
-                    x = 1");
+                    x := 1");
 
             var expectedCondition = TestHelpers.GetBinaryExpressionWithIdentifiers("x", "<", "y");
             var expectedBody = TestHelpers.GetVariableAssignementStatement("x", TestHelpers.GetValueExpression(1));
@@ -39,7 +39,7 @@ namespace WhyNotLang.Parser.Tests.Statements
         {
             _parser.Initialise(@"
                 if (((1 == 2) and !(4 > 3)))
-                    x = 1");
+                    x := 1");
             
             var left = TestHelpers.GetBinaryExpression(1, "==", 2);
             var right = TestHelpers.GetUnaryExpression("!",TestHelpers.GetBinaryExpression(4, ">", 3));
@@ -61,7 +61,7 @@ namespace WhyNotLang.Parser.Tests.Statements
         {
             _parser.Initialise(@"
                 if (((1 == 2) and !(4 > 3)))
-                    var x = (1 + 2) * 3");
+                    var x := (1 + 2) * 3");
             
             var left = TestHelpers.GetBinaryExpression(1, "==", 2);
             var right = TestHelpers.GetUnaryExpression("!",TestHelpers.GetBinaryExpression(4, ">", 3));
@@ -87,9 +87,9 @@ namespace WhyNotLang.Parser.Tests.Statements
         {
             _parser.Initialise(@"
                 if (x < y)
-                    x = 1
+                    x := 1
                 else
-                    y = 2");
+                    y := 2");
 
             var expectedCondition = TestHelpers.GetBinaryExpressionWithIdentifiers("x", "<", "y");
             var expectedBody = TestHelpers.GetVariableAssignementStatement("x", TestHelpers.GetValueExpression(1));
@@ -110,11 +110,11 @@ namespace WhyNotLang.Parser.Tests.Statements
         {
             _parser.Initialise(@"
                 if (x < y)
-                    x = 1
+                    x := 1
                 else if (y == z)
-                    y = 2 * 3
+                    y := 2 * 3
                 else
-                    z = (4)");
+                    z := (4)");
 
             var firstExpectedCondition = TestHelpers.GetBinaryExpressionWithIdentifiers("x", "<", "y");
             var firstExpectedBody = TestHelpers.GetVariableAssignementStatement("x", TestHelpers.GetValueExpression(1));
@@ -139,14 +139,14 @@ namespace WhyNotLang.Parser.Tests.Statements
         {
             _parser.Initialise(@"
                 if (x < y)
-                    x = 1
+                    x := 1
                 else if (y == z)
                 begin
-                    y = 2 * 3
-                    ab = a * b
+                    y := 2 * 3
+                    ab := a * b
                 end
                 else
-                    z = (4)");
+                    z := (4)");
 
             var firstExpectedCondition = TestHelpers.GetBinaryExpressionWithIdentifiers("x", "<", "y");
             var firstExpectedBody = TestHelpers.GetVariableAssignementStatement("x", TestHelpers.GetValueExpression(1));
@@ -177,8 +177,8 @@ namespace WhyNotLang.Parser.Tests.Statements
             _parser.Initialise(@"
                 if (x < y)
                     begin
-                        x = 1
-                        z = 2
+                        x := 1
+                        z := 2
                     end");
 
             var expectedCondition = TestHelpers.GetBinaryExpressionWithIdentifiers("x", "<", "y");

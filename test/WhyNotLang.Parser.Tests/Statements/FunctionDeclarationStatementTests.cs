@@ -73,9 +73,9 @@ namespace WhyNotLang.Parser.Tests.Statements
             _parser.Initialise(@"
                 function foo(abc,d,e)
                 begin
-                    x = 1
-                    var y = 2
-                    var abc = (2 + 2) * 3
+                    x := 1
+                    var y := 2
+                    var abc := (2 + 2) * 3
                 end                
             ");
             var expected = new FunctionDeclarationStatement(

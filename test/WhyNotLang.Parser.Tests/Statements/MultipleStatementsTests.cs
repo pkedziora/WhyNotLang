@@ -19,8 +19,8 @@ namespace WhyNotLang.Parser.Tests.Statements
         public void Parses2AssignmentsWithSingleNumber()
         {
             _parser.Initialise(
-                @" x = 1
-                            y = 2");
+                @" x := 1
+                            y := 2");
             var expected = new List<IStatement>
             {
                 new VariableAssignmentStatement(
@@ -40,8 +40,8 @@ namespace WhyNotLang.Parser.Tests.Statements
         public void Parses2AssignmentsWithSimpleExpressions()
         {
             _parser.Initialise(
-                @" x = 1 + 2
-                            y = 1 * 2");
+                @" x := 1 + 2
+                            y := 1 * 2");
             var expected = new List<IStatement>
             {
                 new VariableAssignmentStatement(
@@ -60,8 +60,8 @@ namespace WhyNotLang.Parser.Tests.Statements
         public void Parses1DeclarationAnd1AssignmentsWithSimpleExpressions()
         {
             _parser.Initialise(
-                @" var x = 1 + 2
-                            y = 1 * 2");
+                @" var x := 1 + 2
+                            y := 1 * 2");
             var expected = new List<IStatement>
             {
                 TestHelpers.GetVariableDeclarationStatement("x",
@@ -79,8 +79,8 @@ namespace WhyNotLang.Parser.Tests.Statements
         public void Parses2AssignmentsWithComplexExpressions()
         {
             _parser.Initialise(
-                @" x = (1 + 2) * 3
-                            y = (1 * (2 + 3))");
+                @" x := (1 + 2) * 3
+                            y := (1 * (2 + 3))");
             var expected = new List<IStatement>
             {
                 TestHelpers.GetVariableAssignementStatement("x", 
@@ -98,8 +98,8 @@ namespace WhyNotLang.Parser.Tests.Statements
         public void Parses1DeclarationAnd1AssignmentsWithComplexExpressions()
         {
             _parser.Initialise(
-                @" x = (1 + 2) * 3
-                            var y = (1 * (2 + 3))");
+                @" x := (1 + 2) * 3
+                            var y := (1 * (2 + 3))");
             var expected = new List<IStatement>
             {
                 TestHelpers.GetVariableAssignementStatement("x",
@@ -117,18 +117,18 @@ namespace WhyNotLang.Parser.Tests.Statements
         public void ParsesVarAssignmentAndIfAndWhileAndFunctionAndVarDeclaration()
         {
             _parser.Initialise(
-                @" x = (1 + 2) * 3
+                @" x := (1 + 2) * 3
                             if (x < y)
-                                x = 1
+                                x := 1
                             else
-                                y = 2
+                                y := 2
                             while (x < y)
                             begin
-                                x = x + 1
-                                y = y - 2
+                                x := x + 1
+                                y := y - 2
                             end
                             foo(1,2)
-                            var y = (1 * (2 + 3))");
+                            var y := (1 * (2 + 3))");
 
             //If
             var expectedIfCondition = TestHelpers.GetBinaryExpressionWithIdentifiers("x", "<", "y");

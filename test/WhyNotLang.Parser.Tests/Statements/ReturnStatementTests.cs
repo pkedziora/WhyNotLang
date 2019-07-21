@@ -94,9 +94,9 @@ namespace WhyNotLang.Parser.Tests.Statements
             _parser.Initialise(@"
                 function foo()
                 begin
-                    x = 1
+                    x := 1
                     return 1 + 2
-                    y = 2
+                    y := 2
                 end                
             ");
             var expected = new FunctionDeclarationStatement(

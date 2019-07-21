@@ -20,7 +20,7 @@ namespace WhyNotLang.Parser.Tests.Statements
         {
             _parser.Initialise(@"
                 while (x < y)
-                    x = x + 1");
+                    x := x + 1");
 
             var expectedCondition = TestHelpers.GetBinaryExpressionWithIdentifiers("x", "<", "y");
             var expectedBody = TestHelpers.GetVariableAssignementStatement("x", TestHelpers.GetBinaryExpressionWithIdentifiers("x", "+", 1));
@@ -40,8 +40,8 @@ namespace WhyNotLang.Parser.Tests.Statements
             _parser.Initialise(@"
                 while (x < y)
                     begin
-                        x = x + 1
-                        y = y - 2
+                        x := x + 1
+                        y := y - 2
                     end");
 
             var expectedCondition = TestHelpers.GetBinaryExpressionWithIdentifiers("x", "<", "y");
@@ -65,7 +65,7 @@ namespace WhyNotLang.Parser.Tests.Statements
         {
             _parser.Initialise(@"
                 while (((1 == 2) and !(4 > 3)))
-                    x = 1");
+                    x := 1");
             
             var left = TestHelpers.GetBinaryExpression(1, "==", 2);
             var right = TestHelpers.GetUnaryExpression("!",TestHelpers.GetBinaryExpression(4, ">", 3));

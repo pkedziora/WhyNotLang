@@ -28,7 +28,7 @@ namespace WhyNotLang.Tokenizer.Tests
         [InlineData("*", TokenType.Multiply)]
         [InlineData("/", TokenType.Divide)]
         [InlineData("!", TokenType.Not)]
-        [InlineData("=", TokenType.Assign)]
+        [InlineData(":=", TokenType.Assign)]
         [InlineData("<", TokenType.LessThan)]
         [InlineData(">", TokenType.GreaterThan)]
         [InlineData("<=", TokenType.LessThanOrEqual)]

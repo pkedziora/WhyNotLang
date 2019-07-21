@@ -16,7 +16,7 @@ namespace WhyNotLang.Parser.Tests.Statements
         [Fact]
         public void ParsesAssignmentWithSingleNumber()
         {
-            _parser.Initialise("x = 1");
+            _parser.Initialise("x := 1");
             var expected = new VariableAssignmentStatement(
                 new Token(TokenType.Identifier, "x"), 
                 new ValueExpression(new Token(TokenType.Number, "1")));
@@ -29,7 +29,7 @@ namespace WhyNotLang.Parser.Tests.Statements
         [Fact]
         public void ParsesAssignmentWithString()
         {
-            _parser.Initialise("x = \"abc\"");
+            _parser.Initialise("x := \"abc\"");
             var expected = new VariableAssignmentStatement(
                 new Token(TokenType.Identifier, "x"), 
                 new ValueExpression(new Token(TokenType.String, "abc")));
@@ -42,7 +42,7 @@ namespace WhyNotLang.Parser.Tests.Statements
         [Fact]
         public void ParsesAssignmentWith2PartExpression()
         {
-            _parser.Initialise("x = 1 + 2");
+            _parser.Initialise("x := 1 + 2");
             var expected = new VariableAssignmentStatement(
                 new Token(TokenType.Identifier, "x"), 
                 TestHelpers.GetBinaryExpression(1, "+", 2));
@@ -55,7 +55,7 @@ namespace WhyNotLang.Parser.Tests.Statements
         [Fact]
         public void ParsesAssignmentWith2PartExpressionWithIdentifiers()
         {
-            _parser.Initialise("x = a + b");
+            _parser.Initialise("x := a + b");
             var expected = new VariableAssignmentStatement(
                 new Token(TokenType.Identifier, "x"), 
                 TestHelpers.GetBinaryExpressionWithIdentifiers("a", "+", "b"));
@@ -68,7 +68,7 @@ namespace WhyNotLang.Parser.Tests.Statements
         [Fact]
         public void ParsesAssignmentWith3PartExpression()
         {
-            _parser.Initialise("x = 1 + 2 * 3");
+            _parser.Initialise("x := 1 + 2 * 3");
             var inner = TestHelpers.GetBinaryExpression(2, "*", 3);
             var expression = TestHelpers.GetBinaryExpression(1, "+", inner);
             var expected = new VariableAssignmentStatement(
@@ -83,7 +83,7 @@ namespace WhyNotLang.Parser.Tests.Statements
         [Fact]
         public void ParsesAssignmentWith3PartExpressionWithParens()
         {
-            _parser.Initialise("x = (1 + 2) * 3");
+            _parser.Initialise("x := (1 + 2) * 3");
             var inner = TestHelpers.GetBinaryExpression(1, "+", 2);
             var expression = TestHelpers.GetBinaryExpression(inner, "*", 3);
             var expected = new VariableAssignmentStatement(

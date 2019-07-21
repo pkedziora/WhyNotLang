@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 
 namespace WhyNotLang.Tokenizer
 {
@@ -24,6 +25,22 @@ namespace WhyNotLang.Tokenizer
             return result;
         }
 
+        public Token CreateToken(TokenType type, string val = null)
+        {
+            switch (type)
+            {
+                case TokenType.Identifier:
+                    return new Token(TokenType.Identifier, val);
+                case TokenType.Number:
+                    return new Token(TokenType.Number, val);
+                case TokenType.String:
+                    return new Token(TokenType.String, val);
+                default:
+                    var key = Map.First(keyVal => keyVal.Value == type).Key;
+                    return new Token(type, key);
+            }
+        }
+
         private Dictionary<string, TokenType> GetTokenMap()
         {
             return new Dictionary<string, TokenType>
@@ -43,7 +60,7 @@ namespace WhyNotLang.Tokenizer
                 {"-", TokenType.Minus},
                 {"*", TokenType.Multiply},
                 {"/", TokenType.Divide},
-                {"=", TokenType.Assign},
+                {":=", TokenType.Assign},
                 {"!", TokenType.Not},
                 {"and", TokenType.And},
                 {"or", TokenType.Or},

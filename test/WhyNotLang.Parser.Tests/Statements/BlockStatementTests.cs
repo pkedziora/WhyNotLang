@@ -32,7 +32,7 @@ namespace WhyNotLang.Parser.Tests.Statements
         {
             _parser.Initialise(@"
                 begin
-                    x = 1
+                    x := 1
                 end");
             
             var expected = new BlockStatement(new List<IStatement>
@@ -50,8 +50,8 @@ namespace WhyNotLang.Parser.Tests.Statements
         {
             _parser.Initialise(@"
                 begin
-                    x = 1
-                    var y = 2
+                    x := 1
+                    var y := 2
                 end");
             
             var expected = new BlockStatement(new List<IStatement>
@@ -70,9 +70,9 @@ namespace WhyNotLang.Parser.Tests.Statements
         {
             _parser.Initialise(@"
                 begin
-                    x = 1
-                    var y = 2
-                    var abc = (2 + 2) * 3
+                    x := 1
+                    var y := 2
+                    var abc := (2 + 2) * 3
                 end");
             
             var expected = new BlockStatement(new List<IStatement>
@@ -93,13 +93,13 @@ namespace WhyNotLang.Parser.Tests.Statements
         {
             _parser.Initialise(@"
                 begin
-                    x = 1
-                    var y = 2
+                    x := 1
+                    var y := 2
                     begin
-                        inner1 = 100
-                        var inner2 = (200 + 200) * 300
+                        inner1 := 100
+                        var inner2 := (200 + 200) * 300
                     end
-                    var abc = (2 + 2) * 3
+                    var abc := (2 + 2) * 3
                 end");
             
             var expected = new BlockStatement(new List<IStatement>
