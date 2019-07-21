@@ -1,4 +1,4 @@
-namespace WhyNotLang.Interpreter.ExpressionValues
+namespace WhyNotLang.Interpreter.Evaluators.ExpressionValues
 {
     public enum ExpressionValueTypes
     {
