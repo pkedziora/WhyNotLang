@@ -2,7 +2,6 @@ using WhyNotLang.Interpreter.Evaluators;
 using WhyNotLang.Interpreter.Evaluators.ExpressionValues;
 using WhyNotLang.Parser;
 using WhyNotLang.Test.Common;
-using WhyNotLang.Tokenizer;
 using Xunit;
 
 namespace WhyNotLang.Interpreter.Tests

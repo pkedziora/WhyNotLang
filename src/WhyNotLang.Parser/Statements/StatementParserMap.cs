@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using WhyNotLang.Parser.Statements.Parsers;
 using WhyNotLang.Tokenizer;
 
@@ -36,13 +35,13 @@ namespace WhyNotLang.Parser.Statements
                     return new IfStatementParser(_tokenIterator, _expressionParser, parser);
                 
                 case TokenType.Begin:
-                    return new BlockStatementParser(_tokenIterator, _expressionParser, parser);
+                    return new BlockStatementParser(_tokenIterator, parser);
                 
                 case TokenType.While:
                     return new WhileStatementParser(_tokenIterator, _expressionParser, parser);
                 
                 case TokenType.Function:
-                    return new FunctionDeclarationParser(_tokenIterator, _expressionParser, parser);
+                    return new FunctionDeclarationParser(_tokenIterator, parser);
                 
                 case TokenType.Return:
                     return new ReturnStatementParser(_tokenIterator, _expressionParser);

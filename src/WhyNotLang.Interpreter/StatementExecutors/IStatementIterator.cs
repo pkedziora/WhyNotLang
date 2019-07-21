@@ -1,5 +1,4 @@
 using WhyNotLang.Parser.Statements;
-using WhyNotLang.Tokenizer;
 
 namespace WhyNotLang.Interpreter.StatementExecutors
 {

@@ -1,8 +1,6 @@
 using System.Collections.Generic;
-using WhyNotLang.Parser.Expressions;
 using WhyNotLang.Parser.Statements;
 using WhyNotLang.Test.Common;
-using WhyNotLang.Tokenizer;
 using Xunit;
 
 namespace WhyNotLang.Parser.Tests.Statements

@@ -7,13 +7,11 @@ namespace WhyNotLang.Parser.Statements.Parsers
     public class FunctionDeclarationParser : IStatementParser
     {
         private readonly ITokenIterator _tokenIterator;
-        private readonly IExpressionParser _expressionParser;
         private readonly IParser _parser;
 
-        public FunctionDeclarationParser(ITokenIterator tokenIterator, IExpressionParser expressionParser, IParser parser)
+        public FunctionDeclarationParser(ITokenIterator tokenIterator, IParser parser)
         {
             _tokenIterator = tokenIterator;
-            _expressionParser = expressionParser;
             _parser = parser;
         }
         

@@ -1,6 +1,5 @@
 using WhyNotLang.Interpreter.Evaluators;
 using WhyNotLang.Interpreter.State;
-using WhyNotLang.Parser;
 using WhyNotLang.Parser.Statements;
 
 namespace WhyNotLang.Interpreter.StatementExecutors

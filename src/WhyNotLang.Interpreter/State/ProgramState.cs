@@ -1,9 +1,6 @@
 using System;
 using System.Collections.Generic;
-using System.Net.NetworkInformation;
-using WhyNotLang.Interpreter.Evaluators.ExpressionValues;
 using WhyNotLang.Parser.Statements;
-using WhyNotLang.Tokenizer;
 
 namespace WhyNotLang.Interpreter.State
 {
@@ -11,7 +8,7 @@ namespace WhyNotLang.Interpreter.State
     {
         public Stack<Scope> Scopes { get; }
         public Scope CurrentScope => Scopes.Peek();
-        public Dictionary<string, FunctionDeclarationStatement> _functions;
+        private Dictionary<string, FunctionDeclarationStatement> _functions;
 
         public ProgramState()
         {
