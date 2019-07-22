@@ -51,5 +51,10 @@ namespace WhyNotLang.Interpreter.StatementExecutors
             
             return _statements[peekIndex];
         }
+
+        public void ResetPosition()
+        {
+            _currentIndex = 0;
+        }
     }
 }

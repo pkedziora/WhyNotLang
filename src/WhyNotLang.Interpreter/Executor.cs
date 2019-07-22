@@ -28,7 +28,11 @@ namespace WhyNotLang.Interpreter
             executor.Execute();
             _statementIterator.GetNextStatement();
         }
-        
+
+        public void ResetPosition()
+        {
+            _statementIterator.ResetPosition();
+        }
         
         public void ExecuteAll()
         {

@@ -8,5 +8,6 @@ namespace WhyNotLang.Interpreter.StatementExecutors
         void InitStatements(string program);
         IStatement GetNextStatement();
         IStatement PeekStatement(int offset);
+        void ResetPosition();
     }
 }

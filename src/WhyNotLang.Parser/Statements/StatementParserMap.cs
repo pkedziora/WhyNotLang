@@ -47,7 +47,7 @@ namespace WhyNotLang.Parser.Statements
                     return new ReturnStatementParser(_tokenIterator, _expressionParser);
             }
             
-            throw new ArgumentException("Parser not found for current token");
+            throw new ArgumentException($"Unexpected token: {_tokenIterator.CurrentToken.Value}");
         }
     }
 }
