@@ -53,7 +53,7 @@ namespace WhyNotLang.Parser
                 }
                 else
                 {
-                    var nextPrecedence = _tokenIterator.PeekToken(1).GetPrecedence();
+                    var nextPrecedence = GetNextPrecedence();
                 
                     if (currentPrecedence >= nextPrecedence)
                     {
@@ -70,6 +70,36 @@ namespace WhyNotLang.Parser
             }
 
             return leftExpression;
+        }
+
+        private Precedence GetNextPrecedence()
+        {
+            var isFunctionCall = _tokenIterator.CurrentToken.Type == TokenType.Identifier &&
+                                 _tokenIterator.PeekToken(1).Type == TokenType.LeftParen;
+            
+            if (isFunctionCall)
+            {
+                // Find closing paren of function call
+                var openParens = 1;
+                var peekAhead = 2;
+                while (openParens > 0)
+                {
+                    if (_tokenIterator.PeekToken(peekAhead).Type == TokenType.LeftParen)
+                    {
+                        openParens++;
+                    }
+                    else if (_tokenIterator.PeekToken(peekAhead).Type == TokenType.RightParen)
+                    {
+                        openParens--;
+                    }
+
+                    peekAhead++;
+                }
+
+                return _tokenIterator.PeekToken(peekAhead).GetPrecedence(); // Get precedence of operator after the function call
+            }
+            
+            return _tokenIterator.PeekToken(1).GetPrecedence();
         }
 
         private IExpression ParseParens()
