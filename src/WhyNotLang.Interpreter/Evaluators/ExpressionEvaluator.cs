@@ -30,9 +30,11 @@ namespace WhyNotLang.Interpreter.Evaluators
                     return new UnaryExpressionEvaluator(this);
                 case ExpressionType.Binary:
                     return new BinaryExpressionEvaluator(this);
+                case ExpressionType.Function:
+                    return new FunctionExpressionEvaluator(this, _programState);
             }
             
-            throw new ArgumentException("Parser not found for current token");
+            throw new ArgumentException($"Parser not found for expression {expression.Type}");
         }
     }
 }
