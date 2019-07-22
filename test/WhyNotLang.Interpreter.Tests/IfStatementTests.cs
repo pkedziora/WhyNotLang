@@ -35,6 +35,26 @@ namespace WhyNotLang.Interpreter.Tests
         }
         
         [Fact]
+        public void ExecutesTrueIfStatementWithBlock()
+        {
+            _executor.Initialise(@"
+                if (!(1 > 2) and 1 <= 2)
+                begin
+                    var x:=3
+                    x:=4
+                end
+            ");
+            
+            _executor.ExecuteAll();
+            
+            var actual = _programState.CurrentScope.GetVariable("x");
+
+            var expected = new ExpressionValue(4, ExpressionValueTypes.Number);
+            
+            Assert.Equal(expected, actual);
+        }
+        
+        [Fact]
         public void ExecutesSimpleFalseIfStatement()
         {
             _executor.Initialise(@"
