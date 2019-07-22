@@ -34,6 +34,8 @@ namespace WhyNotLang.Interpreter.StatementExecutors
                     return new BlockStatementExecutor(_statementIterator, _programState);
                 case StatementType.WhileStatement:
                     return new WhileStatementExecutor(_statementIterator, _expressionEvaluator, _programState);
+                case StatementType.FunctionCallStatement:
+                    return new FunctionCallExecutor(_statementIterator, _expressionEvaluator, _programState);
                 case StatementType.EmptyStatement:
                     return new EmptyExecutor();
             }
