@@ -1,3 +1,6 @@
+using System.Collections.Generic;
+using WhyNotLang.Interpreter.Evaluators;
+using WhyNotLang.Interpreter.State;
 using WhyNotLang.Interpreter.StatementExecutors;
 using WhyNotLang.Parser.Statements;
 
@@ -33,6 +36,12 @@ namespace WhyNotLang.Interpreter
             {
                 ExecuteNext();
             }
+        }
+        
+        public static Executor CreateExecutor(List<IStatement> statements, IProgramState programState)
+        {
+            var iterator = new StatementIterator(statements);
+            return new Executor(iterator, new StatementExecutorMap(iterator, new ExpressionEvaluator(programState), programState));
         }
     }
 }

@@ -26,6 +26,10 @@ namespace WhyNotLang.Interpreter.StatementExecutors
                     return new VariableDeclarationExecutor(_statementIterator, _expressionEvaluator, _programState);
                 case StatementType.VariableAssignmentStatement:
                     return new VariableAssignmentExecutor(_statementIterator, _expressionEvaluator, _programState);
+                case StatementType.FunctionDeclarationStatement:
+                    return new FunctionDeclarationExecutor(_statementIterator, _programState);
+                case StatementType.IfStatement:
+                    return new IfStatementExecutor(_statementIterator, _expressionEvaluator, _programState);
             }
             
             throw new ArgumentException("Executor not found for current statement");

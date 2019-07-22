@@ -15,6 +15,12 @@ namespace WhyNotLang.Interpreter.StatementExecutors
         {
             _parser = parser;
         }
+
+        public StatementIterator(List<IStatement> statements)
+        {
+            _statements = statements;
+            _currentIndex = 0;
+        }
         
         public void InitStatements(string program)
         {

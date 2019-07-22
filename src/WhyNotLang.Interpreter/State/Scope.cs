@@ -26,6 +26,11 @@ namespace WhyNotLang.Interpreter.State
             return _variableValues[identifier];
         }
         
+        public bool IsVariableDefined(string identifier)
+        {
+            return _variableValues.ContainsKey(identifier);
+        }
+        
         public void DeclareVariable(string identifier, ExpressionValue value)
         {
             if (_variableValues.ContainsKey(identifier))
