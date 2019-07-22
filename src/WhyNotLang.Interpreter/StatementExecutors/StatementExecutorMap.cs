@@ -30,6 +30,8 @@ namespace WhyNotLang.Interpreter.StatementExecutors
                     return new FunctionDeclarationExecutor(_statementIterator, _programState);
                 case StatementType.IfStatement:
                     return new IfStatementExecutor(_statementIterator, _expressionEvaluator, _programState);
+                case StatementType.BlockStatement:
+                    return new BlockStatementExecutor(_statementIterator, _programState);
                 case StatementType.EmptyStatement:
                     return new EmptyExecutor();
             }
