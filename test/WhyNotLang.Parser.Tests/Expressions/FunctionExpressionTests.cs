@@ -255,5 +255,25 @@ namespace WhyNotLang.Parser.Tests.Expressions
             
             Assert.Equal(expected, actual);
         }
+        
+        [Fact]
+        public void ParsesFunctionInTheMiddleWithHighPriorityOnTheRight()
+        {
+            var expression = "1 + foo(2) * 3";
+            var expectedParameters = new List<IExpression>
+            {
+                new ValueExpression(new Token(TokenType.Number, "2")),
+            };
+            
+            var functionExpression = new FunctionExpression(new Token(TokenType.Identifier, "foo"), 
+                expectedParameters);
+            var right = TestHelpers.GetBinaryExpression(functionExpression, "*", 3);
+            var expected = TestHelpers.GetBinaryExpression(1, "+", right);
+            
+            var result = _parser.ParseExpression(expression);
+            var actual = (BinaryExpression) result;
+            
+            Assert.Equal(expected, actual);
+        }
     }
 }

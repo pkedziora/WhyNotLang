@@ -125,18 +125,18 @@ namespace WhyNotLang.Interpreter.Tests
         public void FunctionCanBeUsedWithinExpression()
         {
             _executor.Initialise(@"
-                function mul(a,b)
+                function square(a)
                 begin
-                    return a * b
+                    return a * a
                 end
-                var x:= 3 + mul(2,2) * 3
+                var x:= 1 + square(2) * 3
             ");
             
             _executor.ExecuteAll();
             
             var actual = _programState.CurrentScope.GetVariable("x");
 
-            var expected = new ExpressionValue(15, ExpressionValueTypes.Number);
+            var expected = new ExpressionValue(13, ExpressionValueTypes.Number);
 
             Assert.Equal(expected, actual);
             Assert.False(_programState.CurrentScope.IsVariableDefined("y"));
