@@ -36,9 +36,7 @@ namespace WhyNotLang.Interpreter.Evaluators
             var statementExecutor =
                 Executor.CreateExecutor(new List<IStatement>() {functionDeclaration.Body}, _programState);
             
-            statementExecutor.ExecuteAll();
-            
-            return new ExpressionValue(0, ExpressionValueTypes.Number); // TODO replace with value of return statement
+            return statementExecutor.ExecuteAll();
         }
 
         private List<ExpressionValue> EvaluateParameters(List<IExpression> parameters)

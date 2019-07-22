@@ -5,28 +5,23 @@ using WhyNotLang.Parser.Statements;
 
 namespace WhyNotLang.Interpreter.StatementExecutors
 {
-    public class VariableAssignmentExecutor : IStatementExecutor
+    public class ReturnStatementExecutor : IStatementExecutor
     {
         private readonly IStatementIterator _statementIterator;
         private readonly IExpressionEvaluator _expressionEvaluator;
         private readonly IProgramState _programState;
 
-        public VariableAssignmentExecutor(IStatementIterator statementIterator,
-            IExpressionEvaluator expressionEvaluator, IProgramState programState)
+        public ReturnStatementExecutor(IStatementIterator statementIterator, IExpressionEvaluator expressionEvaluator, IProgramState programState)
         {
             _statementIterator = statementIterator;
             _expressionEvaluator = expressionEvaluator;
             _programState = programState;
         }
-        
+
         public ExpressionValue Execute()
         {
-            var variableAssignment = _statementIterator.CurrentStatement as VariableAssignmentStatement;
-            var variableName = variableAssignment.VariableName.Value;
-            var variableValue = _expressionEvaluator.Eval(variableAssignment.Expression);
-            _programState.CurrentScope.AssignVariable(variableName, variableValue);
-            
-            return ExpressionValue.Empty;
+            var returnStatement = _statementIterator.CurrentStatement as ReturnStatement;
+            return _expressionEvaluator.Eval(returnStatement.ReturnExpression);
         }
     }
 }

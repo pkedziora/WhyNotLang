@@ -1,9 +1,12 @@
+using WhyNotLang.Interpreter.Evaluators.ExpressionValues;
+
 namespace WhyNotLang.Interpreter.StatementExecutors
 {
     public class EmptyExecutor : IStatementExecutor
     {
-        public void Execute()
+        public ExpressionValue Execute()
         {
+            return ExpressionValue.Empty;
         }
     }
 }

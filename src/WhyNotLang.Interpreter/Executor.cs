@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using WhyNotLang.Interpreter.Evaluators;
+using WhyNotLang.Interpreter.Evaluators.ExpressionValues;
 using WhyNotLang.Interpreter.State;
 using WhyNotLang.Interpreter.StatementExecutors;
 using WhyNotLang.Parser.Statements;
@@ -22,11 +23,18 @@ namespace WhyNotLang.Interpreter
             _statementIterator.InitStatements(program);
         }
         
-        public void ExecuteNext()
+        public ExpressionValue ExecuteNext()
         {
             var executor = _statementExecutorMap.GetStatementExecutor();
-            executor.Execute();
+            var value = executor.Execute();
+            if (!Equals(value, ExpressionValue.Empty))
+            {
+                return value;
+            }
+            
             _statementIterator.GetNextStatement();
+            
+            return ExpressionValue.Empty;
         }
 
         public void ResetPosition()
@@ -34,12 +42,18 @@ namespace WhyNotLang.Interpreter
             _statementIterator.ResetPosition();
         }
         
-        public void ExecuteAll()
+        public ExpressionValue ExecuteAll()
         {
             while (_statementIterator.CurrentStatement.Type != StatementType.EofStatement)
             {
-                ExecuteNext();
+                var value = ExecuteNext();
+                if (!Equals(value, ExpressionValue.Empty))
+                {
+                    return value;
+                }
             }
+            
+            return ExpressionValue.Empty;
         }
         
         public static Executor CreateExecutor(List<IStatement> statements, IProgramState programState)

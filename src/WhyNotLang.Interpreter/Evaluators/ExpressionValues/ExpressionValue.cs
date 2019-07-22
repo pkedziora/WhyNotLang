@@ -5,6 +5,7 @@ namespace WhyNotLang.Interpreter.Evaluators.ExpressionValues
         public object Value { get; }
         public ExpressionValueTypes Type { get; }
 
+        public static ExpressionValue Empty => new ExpressionValue(0, ExpressionValueTypes.Empty);
         public ExpressionValue(object value, ExpressionValueTypes type)
         {
             Value = value;

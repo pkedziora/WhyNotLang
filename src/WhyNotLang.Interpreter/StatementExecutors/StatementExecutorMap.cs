@@ -27,7 +27,7 @@ namespace WhyNotLang.Interpreter.StatementExecutors
                 case StatementType.VariableAssignmentStatement:
                     return new VariableAssignmentExecutor(_statementIterator, _expressionEvaluator, _programState);
                 case StatementType.FunctionDeclarationStatement:
-                    return new FunctionDeclarationExecutor(_statementIterator, _programState);
+                    return new FunctionDeclarationStatementExecutor(_statementIterator, _programState);
                 case StatementType.IfStatement:
                     return new IfStatementExecutor(_statementIterator, _expressionEvaluator, _programState);
                 case StatementType.BlockStatement:
@@ -35,7 +35,9 @@ namespace WhyNotLang.Interpreter.StatementExecutors
                 case StatementType.WhileStatement:
                     return new WhileStatementExecutor(_statementIterator, _expressionEvaluator, _programState);
                 case StatementType.FunctionCallStatement:
-                    return new FunctionCallExecutor(_statementIterator, _expressionEvaluator, _programState);
+                    return new FunctionCallStatementExecutor(_statementIterator, _expressionEvaluator, _programState);
+                case StatementType.ReturnStatement:
+                    return new ReturnStatementExecutor(_statementIterator, _expressionEvaluator, _programState);
                 case StatementType.EmptyStatement:
                     return new EmptyExecutor();
             }

@@ -1,4 +1,6 @@
+using WhyNotLang.Interpreter.Evaluators.ExpressionValues;
 using WhyNotLang.Interpreter.State;
+using WhyNotLang.Parser.Expressions;
 using WhyNotLang.Parser.Statements;
 
 namespace WhyNotLang.Interpreter.StatementExecutors
@@ -14,12 +16,12 @@ namespace WhyNotLang.Interpreter.StatementExecutors
             _programState = programState;
         }
         
-        public void Execute()
+        public ExpressionValue Execute()
         {
             var blockStatement = _statementIterator.CurrentStatement as BlockStatement;
 
             var newExecutor = Executor.CreateExecutor(blockStatement.ChildStatements, _programState);
-            newExecutor.ExecuteAll();
+            return newExecutor.ExecuteAll();
         }
     }
 }

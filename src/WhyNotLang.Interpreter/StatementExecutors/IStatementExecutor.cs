@@ -1,7 +1,9 @@
+using WhyNotLang.Interpreter.Evaluators.ExpressionValues;
+
 namespace WhyNotLang.Interpreter.StatementExecutors
 {
     public interface IStatementExecutor
     {
-        void Execute();
+        ExpressionValue Execute();
     }
 }

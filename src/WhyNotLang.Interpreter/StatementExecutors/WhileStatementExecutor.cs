@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using WhyNotLang.Interpreter.Evaluators;
+using WhyNotLang.Interpreter.Evaluators.ExpressionValues;
 using WhyNotLang.Interpreter.State;
 using WhyNotLang.Parser.Statements;
 
@@ -18,7 +19,7 @@ namespace WhyNotLang.Interpreter.StatementExecutors
             _programState = programState;
         }
         
-        public void Execute()
+        public ExpressionValue Execute()
         {
             var whileStatement = _statementIterator.CurrentStatement as WhileStatement;
             var newExecutor = Executor.CreateExecutor(new List<IStatement> { whileStatement.Body}, _programState);
@@ -27,6 +28,8 @@ namespace WhyNotLang.Interpreter.StatementExecutors
                 newExecutor.ExecuteAll();
                 newExecutor.ResetPosition();
             }
+            
+            return ExpressionValue.Empty;
         }
     }
 }
