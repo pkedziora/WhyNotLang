@@ -120,5 +120,26 @@ namespace WhyNotLang.Interpreter.Tests
             Assert.Equal(expected, actual);
             Assert.False(_programState.CurrentScope.IsVariableDefined("y"));
         }
+        
+        [Fact]
+        public void FunctionCanBeUsedWithinExpression()
+        {
+            _executor.Initialise(@"
+                function mul(a,b)
+                begin
+                    return a * b
+                end
+                var x:= 3 + mul(2,2) * 3
+            ");
+            
+            _executor.ExecuteAll();
+            
+            var actual = _programState.CurrentScope.GetVariable("x");
+
+            var expected = new ExpressionValue(15, ExpressionValueTypes.Number);
+
+            Assert.Equal(expected, actual);
+            Assert.False(_programState.CurrentScope.IsVariableDefined("y"));
+        }
     }
 }
