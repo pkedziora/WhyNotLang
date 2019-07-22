@@ -38,5 +38,45 @@ namespace WhyNotLang.Interpreter.Tests
 
             Assert.Equal(expected, actual);
         }
+        
+        [Fact]
+        public void ExecutesFunctionWithParams()
+        {
+            _executor.Initialise(@"
+                function foo(y)
+                begin
+                    var x:= y + 1
+                end
+                foo(100)         
+            ");
+            
+            _executor.ExecuteAll();
+            
+            var actual = _programState.CurrentScope.GetVariable("x");
+
+            var expected = new ExpressionValue(101, ExpressionValueTypes.Number);
+
+            Assert.Equal(expected, actual);
+        }
+        
+        [Fact]
+        public void ExecutesFunctionWith2Params()
+        {
+            _executor.Initialise(@"
+                function foo(x,y)
+                begin
+                    var z:= x * y
+                end
+                foo(2,3)         
+            ");
+            
+            _executor.ExecuteAll();
+            
+            var actual = _programState.CurrentScope.GetVariable("z");
+
+            var expected = new ExpressionValue(6, ExpressionValueTypes.Number);
+
+            Assert.Equal(expected, actual);
+        }
     }
 }
