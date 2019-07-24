@@ -17,7 +17,7 @@ namespace WhyNotLang.Interpreter.Tests
         {
             _expressionParser = TestHelpers.CreateExpressionParser();
             _programState = new ProgramState();
-            _expressionEvaluator = new ExpressionEvaluator(_programState);
+            _expressionEvaluator = new ExpressionEvaluator(_programState, new BuiltinFunctionEvaluator(_programState));
         }
         
         [Theory]

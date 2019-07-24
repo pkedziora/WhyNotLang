@@ -12,11 +12,20 @@ namespace WhyNotLang.Parser.Statements
         
         public BlockStatement Body { get; }
 
+        public bool IsBuiltin { get; }
+
         public FunctionDeclarationStatement(Token name, List<Token> parameters, BlockStatement body)
         {
             Name = name;
             Parameters = parameters;
             Body = body;
+        }
+        
+        public FunctionDeclarationStatement(Token name, List<Token> parameters)
+        {
+            Name = name;
+            Parameters = parameters;
+            IsBuiltin = true;
         }
         
         public override bool Equals(object obj)
@@ -29,7 +38,8 @@ namespace WhyNotLang.Parser.Statements
             
             return Name.Equals(statement.Name) && 
                    Parameters.SequenceEqual(statement.Parameters) &&
-                   Body.Equals(statement.Body) &&
+                   (Body?.Equals(statement?.Body) ?? true) &&
+                   IsBuiltin.Equals(statement.IsBuiltin) &&
                    Type == statement.Type;
         }
 
@@ -40,7 +50,8 @@ namespace WhyNotLang.Parser.Statements
                 int hash = 17;
                 hash = hash * 23 + Name.GetHashCode();
                 hash = hash * 23 + Parameters.GetHashCode();
-                hash = hash * 23 + Body.GetHashCode();
+                hash = hash * 23 + (Body?.GetHashCode() ?? 0);
+                hash = hash * 23 + IsBuiltin.GetHashCode();
                 hash = hash * 23 + Type.GetHashCode();
                 
                 return hash;

@@ -1,5 +1,7 @@
 using System;
 using System.Collections.Generic;
+using WhyNotLang.Interpreter.Builtin;
+using WhyNotLang.Interpreter.Evaluators;
 using WhyNotLang.Parser.Statements;
 
 namespace WhyNotLang.Interpreter.State
@@ -15,6 +17,7 @@ namespace WhyNotLang.Interpreter.State
             Scopes = new Stack<Scope>();
             Scopes.Push(new Scope("Main"));
             _functions = new Dictionary<string, FunctionDeclarationStatement>();
+            BuiltinFunctionEvaluator.DeclareBuiltinFunctions(this);
         }
         
         public FunctionDeclarationStatement GetFunction(string identifier)

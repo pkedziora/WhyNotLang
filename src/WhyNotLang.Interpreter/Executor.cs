@@ -59,7 +59,7 @@ namespace WhyNotLang.Interpreter
         public static Executor CreateExecutor(List<IStatement> statements, IProgramState programState)
         {
             var iterator = new StatementIterator(statements);
-            return new Executor(iterator, new StatementExecutorMap(iterator, new ExpressionEvaluator(programState), programState));
+            return new Executor(iterator, new StatementExecutorMap(iterator, new ExpressionEvaluator(programState, new BuiltinFunctionEvaluator(programState)), programState));
         }
     }
 }

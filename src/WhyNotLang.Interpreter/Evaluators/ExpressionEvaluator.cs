@@ -8,10 +8,12 @@ namespace WhyNotLang.Interpreter.Evaluators
     public class ExpressionEvaluator : IExpressionEvaluator
     {
         private readonly IProgramState _programState;
+        private readonly IBuiltinFunctionEvaluator _builtinEvaluator;
 
-        public ExpressionEvaluator(IProgramState programState)
+        public ExpressionEvaluator(IProgramState programState, IBuiltinFunctionEvaluator builtinEvaluator)
         {
             _programState = programState;
+            _builtinEvaluator = builtinEvaluator;
         }
         
         public ExpressionValue Eval(IExpression expression)
@@ -31,7 +33,7 @@ namespace WhyNotLang.Interpreter.Evaluators
                 case ExpressionType.Binary:
                     return new BinaryExpressionEvaluator(this);
                 case ExpressionType.Function:
-                    return new FunctionExpressionEvaluator(this, _programState);
+                    return new FunctionExpressionEvaluator(this, _builtinEvaluator, _programState);
             }
             
             throw new ArgumentException($"Parser not found for expression {expression.Type}");

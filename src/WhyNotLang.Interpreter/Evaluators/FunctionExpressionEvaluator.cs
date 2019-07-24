@@ -12,11 +12,13 @@ namespace WhyNotLang.Interpreter.Evaluators
     public class FunctionExpressionEvaluator : IExpressionEvaluator
     {
         private readonly IExpressionEvaluator _mainEvaluator;
+        private readonly IBuiltinFunctionEvaluator _builtinEvaluator;
         private readonly IProgramState _programState;
 
-        public FunctionExpressionEvaluator(IExpressionEvaluator mainEvaluator, IProgramState programState)
+        public FunctionExpressionEvaluator(IExpressionEvaluator mainEvaluator, IBuiltinFunctionEvaluator builtinEvaluator, IProgramState programState)
         {
             _mainEvaluator = mainEvaluator;
+            _builtinEvaluator = builtinEvaluator;
             _programState = programState;
         }
         
@@ -31,8 +33,13 @@ namespace WhyNotLang.Interpreter.Evaluators
             var functionDeclaration = _programState.GetFunction(functionExpression.Name.Value);
             var parameterValues = EvaluateParameters(functionExpression.Parameters.Where(p => p.Type != ExpressionType.Empty).ToList());
 
+            if (functionDeclaration.IsBuiltin)
+            {
+                return _builtinEvaluator.Eval(functionExpression.Name.Value, parameterValues);
+            }
+            
             InitialiseParameterVariables(parameterValues, functionDeclaration.Parameters);
-
+            
             var statementExecutor =
                 Executor.CreateExecutor(new List<IStatement>() {functionDeclaration.Body}, _programState);
             

@@ -36,7 +36,7 @@ namespace WhyNotLang.Test.Common
         public static Executor CreateExecutor(ProgramState programState)
         {
             var iterator = new StatementIterator(CreateParser());
-            return new Executor(iterator, new StatementExecutorMap(iterator, new ExpressionEvaluator(programState), programState));
+            return new Executor(iterator, new StatementExecutorMap(iterator, new ExpressionEvaluator(programState, new BuiltinFunctionEvaluator(programState)), programState));
         }
         
         public static BinaryExpression GetBinaryExpression(int a, string op, int b)
