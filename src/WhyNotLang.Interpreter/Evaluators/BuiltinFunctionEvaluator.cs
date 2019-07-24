@@ -27,6 +27,10 @@ namespace WhyNotLang.Interpreter.Evaluators
                     return Functions.ToString(parameterValues.Single());
                 case "ToNumber":
                     return Functions.ToNumber(parameterValues.Single());
+                case "Writeln":
+                    return Functions.Writeln(parameterValues.Single());
+                case "Readln":
+                    return Functions.Readln();
             }
             
             throw new ArgumentException("Unexpected builtin function name");
@@ -41,6 +45,14 @@ namespace WhyNotLang.Interpreter.Evaluators
             programState.DeclareFunction("ToNumber", 
                 new FunctionDeclarationStatement(new Token(TokenType.Identifier, "ToNumber"),
                     new List<Token>() {new Token(TokenType.Identifier, "str")}));
+            
+            programState.DeclareFunction("Writeln", 
+                new FunctionDeclarationStatement(new Token(TokenType.Identifier, "Writeln"),
+                    new List<Token>() {new Token(TokenType.Identifier, "str")}));
+            
+            programState.DeclareFunction("Readln", 
+                new FunctionDeclarationStatement(new Token(TokenType.Identifier, "Readln"),
+                    new List<Token>()));
         }
     }
 }

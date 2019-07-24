@@ -28,5 +28,23 @@ namespace WhyNotLang.Interpreter.Builtin
             
             return new ExpressionValue(number.Value.ToString(), ExpressionValueTypes.String);
         }
+        
+        public static ExpressionValue Writeln(ExpressionValue str)
+        {
+            if (str.Type != ExpressionValueTypes.String)
+            {
+                throw new Exception("String expected");
+            }
+            
+            Console.WriteLine(str.Value);
+            return ExpressionValue.Empty;
+        }
+        
+        public static ExpressionValue Readln()
+        {
+
+            var str = Console.ReadLine();
+            return new ExpressionValue(str, ExpressionValueTypes.String);
+        }
     }
 }
