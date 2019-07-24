@@ -1,4 +1,6 @@
 using System.Collections.Generic;
+using Microsoft.Extensions.DependencyInjection;
+using WhyNotLang.Cmd;
 using WhyNotLang.Parser.Statements;
 using WhyNotLang.Test.Common;
 using WhyNotLang.Tokenizer;
@@ -8,11 +10,12 @@ namespace WhyNotLang.Parser.Tests.Statements
 {
     public class FunctionDeclarationStatementTests
     {
-        private Parser _parser;
+        private IParser _parser;
 
         public FunctionDeclarationStatementTests()
         {
-            _parser = TestHelpers.CreateParser();
+            var serviceProvider = IoC.BuildServiceProvider();
+            _parser = serviceProvider.GetService<IParser>();
         }
 
         [Fact]

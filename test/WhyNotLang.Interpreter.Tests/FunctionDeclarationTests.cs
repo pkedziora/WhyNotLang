@@ -1,4 +1,6 @@
 using System.Collections.Generic;
+using Microsoft.Extensions.DependencyInjection;
+using WhyNotLang.Cmd;
 using WhyNotLang.Interpreter.Evaluators.ExpressionValues;
 using WhyNotLang.Interpreter.State;
 using WhyNotLang.Parser.Statements;
@@ -10,13 +12,14 @@ namespace WhyNotLang.Interpreter.Tests
 {
     public class FunctionDeclarationTests
     {
-        private ProgramState _programState;
-        private Executor _executor;
+        private IProgramState _programState;
+        private IExecutor _executor;
 
         public FunctionDeclarationTests()
         {
-            _programState = new ProgramState();
-            _executor = TestHelpers.CreateExecutor(_programState);
+            var serviceProvider = IoC.BuildServiceProvider();
+            _executor = serviceProvider.GetService<IExecutor>();
+            _programState = serviceProvider.GetService<IProgramState>();
         }
 
         [Fact]

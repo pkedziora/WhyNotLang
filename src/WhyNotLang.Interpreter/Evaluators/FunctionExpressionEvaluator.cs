@@ -37,13 +37,17 @@ namespace WhyNotLang.Interpreter.Evaluators
             {
                 return _builtinEvaluator.Eval(functionExpression.Name.Value, parameterValues);
             }
-            
+
+            _programState.AddScope(functionDeclaration.Name.Value, true);
             InitialiseParameterVariables(parameterValues, functionDeclaration.Parameters);
             
             var statementExecutor =
-                Executor.CreateExecutor(new List<IStatement>() {functionDeclaration.Body}, _programState);
+                Executor.CreateExecutor(functionDeclaration.Body.ChildStatements, _programState);
             
-            return statementExecutor.ExecuteAll();
+            var returnValue = statementExecutor.ExecuteAll();
+            _programState.RemoveScope();
+
+            return returnValue;
         }
 
         private List<ExpressionValue> EvaluateParameters(List<IExpression> parameters)
@@ -66,7 +70,7 @@ namespace WhyNotLang.Interpreter.Evaluators
 
             for (int i = 0; i < values.Count; i++)
             {
-                _programState.CurrentScope.DeclareVariable(parameters[i].Value, values[i]);
+                _programState.DeclareVariable(parameters[i].Value, values[i]);
             }
         }
     }

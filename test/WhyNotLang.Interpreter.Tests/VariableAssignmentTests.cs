@@ -1,4 +1,6 @@
 using System;
+using Microsoft.Extensions.DependencyInjection;
+using WhyNotLang.Cmd;
 using WhyNotLang.Interpreter.Evaluators.ExpressionValues;
 using WhyNotLang.Interpreter.State;
 using WhyNotLang.Test.Common;
@@ -8,13 +10,14 @@ namespace WhyNotLang.Interpreter.Tests
 {
     public class VariableAssignmentTests
     {
-        private ProgramState _programState;
-        private Executor _executor;
+        private IProgramState _programState;
+        private IExecutor _executor;
 
         public VariableAssignmentTests()
         {
-            _programState = new ProgramState();
-            _executor = TestHelpers.CreateExecutor(_programState);
+            var serviceProvider = IoC.BuildServiceProvider();
+            _executor = serviceProvider.GetService<IExecutor>();
+            _programState = serviceProvider.GetService<IProgramState>();
         }
 
         [Fact]
@@ -27,7 +30,7 @@ namespace WhyNotLang.Interpreter.Tests
             
             _executor.ExecuteAll();
             
-            var actual = _programState.CurrentScope.GetVariable("x");
+            var actual = _programState.GetVariable("x");
 
             var expected = new ExpressionValue(2, ExpressionValueTypes.Number);
             
@@ -43,7 +46,7 @@ namespace WhyNotLang.Interpreter.Tests
             
             _executor.ExecuteAll();
             
-            var actual = _programState.CurrentScope.GetVariable("abc");
+            var actual = _programState.GetVariable("abc");
 
             var expected = new ExpressionValue(11, ExpressionValueTypes.Number);
             

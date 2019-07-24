@@ -1,4 +1,6 @@
 using System.Collections.Generic;
+using Microsoft.Extensions.DependencyInjection;
+using WhyNotLang.Cmd;
 using WhyNotLang.Interpreter.Evaluators.ExpressionValues;
 using WhyNotLang.Interpreter.State;
 using WhyNotLang.Parser.Statements;
@@ -10,13 +12,14 @@ namespace WhyNotLang.Interpreter.Tests
 {
     public class FunctionCallStatementTests
     {
-        private ProgramState _programState;
-        private Executor _executor;
+        private IProgramState _programState;
+        private IExecutor _executor;
 
         public FunctionCallStatementTests()
         {
-            _programState = new ProgramState();
-            _executor = TestHelpers.CreateExecutor(_programState);
+            var serviceProvider = IoC.BuildServiceProvider();
+            _executor = serviceProvider.GetService<IExecutor>();
+            _programState = serviceProvider.GetService<IProgramState>();
         }
 
         [Fact]
@@ -26,13 +29,14 @@ namespace WhyNotLang.Interpreter.Tests
                 function foo()
                 begin
                     var x:= 100
+                    return x
                 end
-                foo()         
+                var x:= foo()         
             ");
             
             _executor.ExecuteAll();
             
-            var actual = _programState.CurrentScope.GetVariable("x");
+            var actual = _programState.GetVariable("x");
 
             var expected = new ExpressionValue(100, ExpressionValueTypes.Number);
 
@@ -46,13 +50,14 @@ namespace WhyNotLang.Interpreter.Tests
                 function foo(y)
                 begin
                     var x:= y + 1
+                    return x
                 end
-                foo(100)         
+                var z := foo(100)         
             ");
             
             _executor.ExecuteAll();
             
-            var actual = _programState.CurrentScope.GetVariable("x");
+            var actual = _programState.GetVariable("z");
 
             var expected = new ExpressionValue(101, ExpressionValueTypes.Number);
 
@@ -66,13 +71,14 @@ namespace WhyNotLang.Interpreter.Tests
                 function foo(x,y)
                 begin
                     var z:= x * y
+                    return z
                 end
-                foo(2,3)         
+                var x:= foo(2,3)         
             ");
             
             _executor.ExecuteAll();
             
-            var actual = _programState.CurrentScope.GetVariable("z");
+            var actual = _programState.GetVariable("x");
 
             var expected = new ExpressionValue(6, ExpressionValueTypes.Number);
 

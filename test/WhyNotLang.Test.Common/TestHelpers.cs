@@ -1,4 +1,6 @@
 using System.Linq;
+using Microsoft.Extensions.DependencyInjection;
+using WhyNotLang.Cmd;
 using WhyNotLang.Interpreter;
 using WhyNotLang.Interpreter.Evaluators;
 using WhyNotLang.Interpreter.State;
@@ -12,32 +14,7 @@ namespace WhyNotLang.Test.Common
 {
     public class TestHelpers
     {
-        private static readonly Tokenizer.Tokenizer _tokenizer = CreateTokenizer();
-
-        public static TokenIterator CreateTokenIterator()
-        {
-            return new TokenIterator(new Tokenizer.Tokenizer(new TokenReader(), new TokenMap()));
-        }
-
-        public static ExpressionParser CreateExpressionParser(ITokenIterator tokenIterator = null)
-        {
-            tokenIterator = tokenIterator ??
-                            new TokenIterator(new Tokenizer.Tokenizer(new TokenReader(), new TokenMap()));
-            return new ExpressionParser(tokenIterator);
-        }
-        
-        public static Parser.Parser CreateParser()
-        {
-            var tokenIterator = CreateTokenIterator();
-            var expressionParser = CreateExpressionParser(tokenIterator);
-            return new Parser.Parser(tokenIterator, new StatementParserMap(tokenIterator, expressionParser));
-        }
-
-        public static Executor CreateExecutor(ProgramState programState)
-        {
-            var iterator = new StatementIterator(CreateParser());
-            return new Executor(iterator, new StatementExecutorMap(iterator, new ExpressionEvaluator(programState, new BuiltinFunctionEvaluator(programState)), programState));
-        }
+        private static readonly ITokenizer Tokenizer = CreateTokenizer();
         
         public static BinaryExpression GetBinaryExpression(int a, string op, int b)
         {
@@ -145,12 +122,13 @@ namespace WhyNotLang.Test.Common
 
         public static Token GetToken(string token)
         {
-            return _tokenizer.GetTokens(token).FirstOrDefault();
+            return Tokenizer.GetTokens(token).FirstOrDefault();
         }
 
-        private static Tokenizer.Tokenizer CreateTokenizer()
+        private static ITokenizer CreateTokenizer()
         {
-            return new Tokenizer.Tokenizer(new TokenReader(), new TokenMap());
+            var serviceProvider = IoC.BuildServiceProvider();
+            return serviceProvider.GetService<ITokenizer>();
         }
     }
 }

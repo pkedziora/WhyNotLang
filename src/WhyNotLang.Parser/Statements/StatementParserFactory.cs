@@ -4,19 +4,19 @@ using WhyNotLang.Tokenizer;
 
 namespace WhyNotLang.Parser.Statements
 {
-    public class StatementParserMap : IStatementParserMap
+    public class StatementParserFactory : IStatementParserFactory
     {
         private readonly ITokenIterator _tokenIterator;
         private readonly IExpressionParser _expressionParser;
 
-        public StatementParserMap(ITokenIterator tokenIterator, IExpressionParser expressionParser)
+        public StatementParserFactory(ITokenIterator tokenIterator, IExpressionParser expressionParser)
         {
             _tokenIterator = tokenIterator;
             _expressionParser = expressionParser;
            
         }
 
-        public IStatementParser GetStatementParser(Parser parser)
+        public IStatementParser CreateStatementParser(Parser parser)
         {
             switch (_tokenIterator.CurrentToken.Type)
             {

@@ -39,7 +39,7 @@ namespace WhyNotLang.Interpreter.Evaluators
 
         private ExpressionValue GetVariableValue(string identifier)
         {
-            return _programState.CurrentScope.GetVariable(identifier);
+            return _programState.GetVariable(identifier);
         }
     }
 }

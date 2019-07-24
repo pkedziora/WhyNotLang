@@ -5,12 +5,12 @@ namespace WhyNotLang.Tokenizer.Tests
     public class FullProgramTests
     {
         private Tokenizer _tokenizer;
-        private ITokenMap _tokenMap;
+        private ITokenFactory _tokenFactory;
         
         public FullProgramTests()
         {
-            _tokenMap = new TokenMap();
-            _tokenizer = new Tokenizer(new TokenReader(), _tokenMap);
+            _tokenFactory = new TokenFactory();
+            _tokenizer = new Tokenizer(new TokenReader(), _tokenFactory);
         }
         
         [Fact]
@@ -20,10 +20,10 @@ namespace WhyNotLang.Tokenizer.Tests
             var actual = _tokenizer.GetTokens(tokenStr);
             var expected =  new[]
             {
-                _tokenMap.CreateToken(TokenType.Identifier, "print"), 
-                _tokenMap.CreateToken(TokenType.LeftParen),
-                _tokenMap.CreateToken(TokenType.String, "Hello World"),
-                _tokenMap.CreateToken(TokenType.RightParen),
+                _tokenFactory.CreateToken(TokenType.Identifier, "print"), 
+                _tokenFactory.CreateToken(TokenType.LeftParen),
+                _tokenFactory.CreateToken(TokenType.String, "Hello World"),
+                _tokenFactory.CreateToken(TokenType.RightParen),
             };
             
             Assert.Equal(expected, actual);
@@ -36,12 +36,12 @@ namespace WhyNotLang.Tokenizer.Tests
             var actual = _tokenizer.GetTokens(tokenStr);
             var expected =  new[]
             {
-                _tokenMap.CreateToken(TokenType.Var), 
-                _tokenMap.CreateToken(TokenType.Identifier, "x"),
-                _tokenMap.CreateToken(TokenType.Assign),
-                _tokenMap.CreateToken(TokenType.Number, "1"),
-                _tokenMap.CreateToken(TokenType.Plus),
-                _tokenMap.CreateToken(TokenType.Number, "100")
+                _tokenFactory.CreateToken(TokenType.Var), 
+                _tokenFactory.CreateToken(TokenType.Identifier, "x"),
+                _tokenFactory.CreateToken(TokenType.Assign),
+                _tokenFactory.CreateToken(TokenType.Number, "1"),
+                _tokenFactory.CreateToken(TokenType.Plus),
+                _tokenFactory.CreateToken(TokenType.Number, "100")
             };
             
             Assert.Equal(expected, actual);
@@ -54,20 +54,20 @@ namespace WhyNotLang.Tokenizer.Tests
             var actual = _tokenizer.GetTokens(tokenStr);
             var expected =  new[]
             {
-                _tokenMap.CreateToken(TokenType.Var), 
-                _tokenMap.CreateToken(TokenType.Identifier, "x"),
-                _tokenMap.CreateToken(TokenType.Assign),
-                _tokenMap.CreateToken(TokenType.Number, "2"),
-                _tokenMap.CreateToken(TokenType.Multiply),
-                _tokenMap.CreateToken(TokenType.LeftParen),
-                _tokenMap.CreateToken(TokenType.Number, "1"),
-                _tokenMap.CreateToken(TokenType.Plus),
-                _tokenMap.CreateToken(TokenType.LeftParen),
-                _tokenMap.CreateToken(TokenType.Number, "100"),
-                _tokenMap.CreateToken(TokenType.Divide),
-                _tokenMap.CreateToken(TokenType.Number, "2"),
-                _tokenMap.CreateToken(TokenType.RightParen),
-                _tokenMap.CreateToken(TokenType.RightParen),
+                _tokenFactory.CreateToken(TokenType.Var), 
+                _tokenFactory.CreateToken(TokenType.Identifier, "x"),
+                _tokenFactory.CreateToken(TokenType.Assign),
+                _tokenFactory.CreateToken(TokenType.Number, "2"),
+                _tokenFactory.CreateToken(TokenType.Multiply),
+                _tokenFactory.CreateToken(TokenType.LeftParen),
+                _tokenFactory.CreateToken(TokenType.Number, "1"),
+                _tokenFactory.CreateToken(TokenType.Plus),
+                _tokenFactory.CreateToken(TokenType.LeftParen),
+                _tokenFactory.CreateToken(TokenType.Number, "100"),
+                _tokenFactory.CreateToken(TokenType.Divide),
+                _tokenFactory.CreateToken(TokenType.Number, "2"),
+                _tokenFactory.CreateToken(TokenType.RightParen),
+                _tokenFactory.CreateToken(TokenType.RightParen),
             };
             
             Assert.Equal(expected, actual);
@@ -85,18 +85,18 @@ namespace WhyNotLang.Tokenizer.Tests
             var actual = _tokenizer.GetTokens(tokenStr);
             var expected =  new[]
             {
-                _tokenMap.CreateToken(TokenType.If), 
-                _tokenMap.CreateToken(TokenType.LeftParen),
-                _tokenMap.CreateToken(TokenType.Identifier, "i"),
-                _tokenMap.CreateToken(TokenType.LessThanOrEqual),
-                _tokenMap.CreateToken(TokenType.Number, "10"),
-                _tokenMap.CreateToken(TokenType.RightParen),
-                _tokenMap.CreateToken(TokenType.Begin),
-                _tokenMap.CreateToken(TokenType.Identifier, "print"),
-                _tokenMap.CreateToken(TokenType.LeftParen),
-                _tokenMap.CreateToken(TokenType.String, "i is less than or equal 10"),
-                _tokenMap.CreateToken(TokenType.RightParen),
-                _tokenMap.CreateToken(TokenType.End)
+                _tokenFactory.CreateToken(TokenType.If), 
+                _tokenFactory.CreateToken(TokenType.LeftParen),
+                _tokenFactory.CreateToken(TokenType.Identifier, "i"),
+                _tokenFactory.CreateToken(TokenType.LessThanOrEqual),
+                _tokenFactory.CreateToken(TokenType.Number, "10"),
+                _tokenFactory.CreateToken(TokenType.RightParen),
+                _tokenFactory.CreateToken(TokenType.Begin),
+                _tokenFactory.CreateToken(TokenType.Identifier, "print"),
+                _tokenFactory.CreateToken(TokenType.LeftParen),
+                _tokenFactory.CreateToken(TokenType.String, "i is less than or equal 10"),
+                _tokenFactory.CreateToken(TokenType.RightParen),
+                _tokenFactory.CreateToken(TokenType.End)
             };
             
             Assert.Equal(expected, actual);
@@ -115,23 +115,23 @@ namespace WhyNotLang.Tokenizer.Tests
             var actual = _tokenizer.GetTokens(tokenStr);
             var expected =  new[]
             {
-                _tokenMap.CreateToken(TokenType.While), 
-                _tokenMap.CreateToken(TokenType.LeftParen),
-                _tokenMap.CreateToken(TokenType.Identifier, "i"),
-                _tokenMap.CreateToken(TokenType.LessThan),
-                _tokenMap.CreateToken(TokenType.Number, "10"),
-                _tokenMap.CreateToken(TokenType.RightParen),
-                _tokenMap.CreateToken(TokenType.Begin),
-                _tokenMap.CreateToken(TokenType.Identifier, "i"),
-                _tokenMap.CreateToken(TokenType.Assign),
-                _tokenMap.CreateToken(TokenType.Identifier, "i"),
-                _tokenMap.CreateToken(TokenType.Plus),
-                _tokenMap.CreateToken(TokenType.Number, "1"),
-                _tokenMap.CreateToken(TokenType.Identifier, "print"),
-                _tokenMap.CreateToken(TokenType.LeftParen),
-                _tokenMap.CreateToken(TokenType.Identifier, "i"),
-                _tokenMap.CreateToken(TokenType.RightParen),
-                _tokenMap.CreateToken(TokenType.End)
+                _tokenFactory.CreateToken(TokenType.While), 
+                _tokenFactory.CreateToken(TokenType.LeftParen),
+                _tokenFactory.CreateToken(TokenType.Identifier, "i"),
+                _tokenFactory.CreateToken(TokenType.LessThan),
+                _tokenFactory.CreateToken(TokenType.Number, "10"),
+                _tokenFactory.CreateToken(TokenType.RightParen),
+                _tokenFactory.CreateToken(TokenType.Begin),
+                _tokenFactory.CreateToken(TokenType.Identifier, "i"),
+                _tokenFactory.CreateToken(TokenType.Assign),
+                _tokenFactory.CreateToken(TokenType.Identifier, "i"),
+                _tokenFactory.CreateToken(TokenType.Plus),
+                _tokenFactory.CreateToken(TokenType.Number, "1"),
+                _tokenFactory.CreateToken(TokenType.Identifier, "print"),
+                _tokenFactory.CreateToken(TokenType.LeftParen),
+                _tokenFactory.CreateToken(TokenType.Identifier, "i"),
+                _tokenFactory.CreateToken(TokenType.RightParen),
+                _tokenFactory.CreateToken(TokenType.End)
             };
             
             Assert.Equal(expected, actual);

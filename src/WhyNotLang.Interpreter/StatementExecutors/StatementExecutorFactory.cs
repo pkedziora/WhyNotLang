@@ -5,20 +5,20 @@ using WhyNotLang.Parser.Statements;
 
 namespace WhyNotLang.Interpreter.StatementExecutors
 {
-    public class StatementExecutorMap : IStatementExecutorMap
+    public class StatementExecutorFactory : IStatementExecutorFactory
     {
         private readonly IStatementIterator _statementIterator;
         private readonly IExpressionEvaluator _expressionEvaluator;
         private readonly IProgramState _programState;
 
-        public StatementExecutorMap(IStatementIterator statementIterator, IExpressionEvaluator expressionEvaluator, IProgramState programState)
+        public StatementExecutorFactory(IStatementIterator statementIterator, IExpressionEvaluator expressionEvaluator, IProgramState programState)
         {
             _statementIterator = statementIterator;
             _expressionEvaluator = expressionEvaluator;
             _programState = programState;
         }
 
-        public IStatementExecutor GetStatementExecutor()
+        public IStatementExecutor CreateStatementExecutor()
         {
             switch (_statementIterator.CurrentStatement.Type)
             {

@@ -2,10 +2,10 @@ using System.Collections.Generic;
 
 namespace WhyNotLang.Tokenizer
 {
-    public interface ITokenMap
+    public interface ITokenFactory
     {
         Dictionary<string, TokenType> Map { get; }
-        Dictionary<string, TokenType> GetTokensStartingWith(string prefix);
+        Dictionary<string, TokenType> GetTokenTypesStartingWith(string prefix);
         Token CreateToken(TokenType type, string val = null);
     }
 }

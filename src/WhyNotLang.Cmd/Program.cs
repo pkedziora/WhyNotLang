@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
-using WhyNotLang.Interpreter.State;
+using Microsoft.Extensions.DependencyInjection;
+using WhyNotLang.Interpreter;
 
 namespace WhyNotLang.Cmd
 {
@@ -23,11 +24,9 @@ namespace WhyNotLang.Cmd
                 
                 fileName = args[0];
             }
-
-
-            var programState = new ProgramState();
-            var executor = ExecutorFactory.CreateExecutor(programState);
-
+            
+            var serviceProvider = IoC.BuildServiceProvider();
+            var executor = serviceProvider.GetService<IExecutor>();
             var program = File.ReadAllText(fileName);
             executor.Initialise(program);
             executor.ExecuteAll();

@@ -8,47 +8,15 @@ namespace WhyNotLang.Interpreter.State
     {
         public string Name { get; }
 
-        private Dictionary<string, ExpressionValue> _variableValues;
+        public Dictionary<string, ExpressionValue> VariableValues { get; }
 
-        public Scope(string name)
+        public bool IsFunctionScope { get; }
+        
+        public Scope(string name, bool isFunctionScope = false)
         {
             Name = name;
-            _variableValues = new Dictionary<string, ExpressionValue>();
-        }
-
-        public ExpressionValue GetVariable(string identifier)
-        {
-            if (!_variableValues.ContainsKey(identifier))
-            {
-                throw new ArgumentException($"Variable {identifier} is not defined");
-            }
-            
-            return _variableValues[identifier];
-        }
-        
-        public bool IsVariableDefined(string identifier)
-        {
-            return _variableValues.ContainsKey(identifier);
-        }
-        
-        public void DeclareVariable(string identifier, ExpressionValue value)
-        {
-            if (_variableValues.ContainsKey(identifier))
-            {
-                throw new ArgumentException($"Variable {identifier} has already been declared");
-            }
-            
-            _variableValues.Add(identifier, value);
-        }
-        
-        public void AssignVariable(string identifier, ExpressionValue value)
-        {
-            if (!_variableValues.ContainsKey(identifier))
-            {
-                throw new ArgumentException($"Variable {identifier} is not defined");
-            }
-            
-            _variableValues[identifier] = value;
+            VariableValues = new Dictionary<string, ExpressionValue>();
+            IsFunctionScope = isFunctionScope;
         }
     }
 }

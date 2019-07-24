@@ -3,15 +3,15 @@ using System.Linq;
 
 namespace WhyNotLang.Tokenizer
 {
-    public class TokenMap : ITokenMap
+    public class TokenFactory : ITokenFactory
     {
         public Dictionary<string, TokenType> Map { get; }
-        public TokenMap()
+        public TokenFactory()
         {
             Map = GetTokenMap();
         }
         
-        public Dictionary<string, TokenType> GetTokensStartingWith(string prefix)
+        public Dictionary<string, TokenType> GetTokenTypesStartingWith(string prefix)
         {
             var result = new Dictionary<string, TokenType>();
             foreach (var keyVal in Map)

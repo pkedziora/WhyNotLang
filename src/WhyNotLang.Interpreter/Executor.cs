@@ -7,15 +7,15 @@ using WhyNotLang.Parser.Statements;
 
 namespace WhyNotLang.Interpreter
 {
-    public class Executor
+    public class Executor : IExecutor
     {
         private readonly IStatementIterator _statementIterator;
-        private readonly StatementExecutorMap _statementExecutorMap;
+        private readonly IStatementExecutorFactory _statementExecutorFactory;
 
-        public Executor(IStatementIterator statementIterator, StatementExecutorMap statementExecutorMap)
+        public Executor(IStatementIterator statementIterator, IStatementExecutorFactory statementExecutorFactory)
         {
             _statementIterator = statementIterator;
-            _statementExecutorMap = statementExecutorMap;
+            _statementExecutorFactory = statementExecutorFactory;
         }
 
         public void Initialise(string program)
@@ -25,7 +25,7 @@ namespace WhyNotLang.Interpreter
         
         public ExpressionValue ExecuteNext()
         {
-            var executor = _statementExecutorMap.GetStatementExecutor();
+            var executor = _statementExecutorFactory.CreateStatementExecutor();
             var value = executor.Execute();
             if (!Equals(value, ExpressionValue.Empty))
             {
@@ -56,10 +56,10 @@ namespace WhyNotLang.Interpreter
             return ExpressionValue.Empty;
         }
         
-        public static Executor CreateExecutor(List<IStatement> statements, IProgramState programState)
+        public static IExecutor CreateExecutor(List<IStatement> statements, IProgramState programState)
         {
             var iterator = new StatementIterator(statements);
-            return new Executor(iterator, new StatementExecutorMap(iterator, new ExpressionEvaluator(programState, new BuiltinFunctionEvaluator(programState)), programState));
+            return new Executor(iterator, new StatementExecutorFactory(iterator, new ExpressionEvaluator(programState, new BuiltinFunctionEvaluator(programState)), programState));
         }
     }
 }

@@ -1,3 +1,5 @@
+using Microsoft.Extensions.DependencyInjection;
+using WhyNotLang.Cmd;
 using WhyNotLang.Parser.Expressions;
 using WhyNotLang.Test.Common;
 using WhyNotLang.Tokenizer;
@@ -7,10 +9,11 @@ namespace WhyNotLang.Parser.Tests.Expressions
 {
     public class ArithmeticsExpressionTests
     {
-        private readonly ExpressionParser _parser;
+        private readonly IExpressionParser _expressionParser;
         public ArithmeticsExpressionTests()
         {
-            _parser = TestHelpers.CreateExpressionParser();
+            var serviceProvider = IoC.BuildServiceProvider();
+            _expressionParser = serviceProvider.GetService<IExpressionParser>();
         }
 
         [Fact]
@@ -19,7 +22,7 @@ namespace WhyNotLang.Parser.Tests.Expressions
             var expression = "1";
             var expected = new ValueExpression(new Token(TokenType.Number, "1"));
             
-            var result = _parser.ParseExpression(expression);
+            var result = _expressionParser.ParseExpression(expression);
             var actual = (ValueExpression) result;
             
             Assert.Equal(expected, actual);
@@ -31,7 +34,7 @@ namespace WhyNotLang.Parser.Tests.Expressions
             var expression = "\"a\"";
             var expected = new ValueExpression(new Token(TokenType.String, "a"));
             
-            var result = _parser.ParseExpression(expression);
+            var result = _expressionParser.ParseExpression(expression);
             var actual = (ValueExpression) result;
             
             Assert.Equal(expected, actual);
@@ -43,7 +46,7 @@ namespace WhyNotLang.Parser.Tests.Expressions
             var expression = "a";
             var expected = new ValueExpression(new Token(TokenType.Identifier, "a"));
             
-            var result = _parser.ParseExpression(expression);
+            var result = _expressionParser.ParseExpression(expression);
             var actual = (ValueExpression) result;
             
             Assert.Equal(expected, actual);
@@ -55,7 +58,7 @@ namespace WhyNotLang.Parser.Tests.Expressions
             var expression = "1 + 2";
             var expected = TestHelpers.GetBinaryExpression(1, "+", 2);
             
-            var result = _parser.ParseExpression(expression);
+            var result = _expressionParser.ParseExpression(expression);
             var actual = (BinaryExpression) result;
             
             Assert.Equal(expected, actual);
@@ -67,7 +70,7 @@ namespace WhyNotLang.Parser.Tests.Expressions
             var expression = "\"abc\" + \"def\"";
             var expected = TestHelpers.GetBinaryExpressionWithStrings("abc", "+", "def");
             
-            var result = _parser.ParseExpression(expression);
+            var result = _expressionParser.ParseExpression(expression);
             var actual = (BinaryExpression) result;
             
             Assert.Equal(expected, actual);
@@ -79,7 +82,7 @@ namespace WhyNotLang.Parser.Tests.Expressions
             var expression = "a + b";
             var expected = TestHelpers.GetBinaryExpressionWithIdentifiers("a", "+", "b");
             
-            var result = _parser.ParseExpression(expression);
+            var result = _expressionParser.ParseExpression(expression);
             var actual = (BinaryExpression) result;
             
             Assert.Equal(expected, actual);
@@ -92,7 +95,7 @@ namespace WhyNotLang.Parser.Tests.Expressions
             var inner = TestHelpers.GetBinaryExpression(1, "+", 2);
             var expected = TestHelpers.GetBinaryExpression(inner, "-", 3);
             
-            var result = _parser.ParseExpression(expression);
+            var result = _expressionParser.ParseExpression(expression);
             var actual = (BinaryExpression) result;
             
             Assert.Equal(expected, actual);
@@ -106,7 +109,7 @@ namespace WhyNotLang.Parser.Tests.Expressions
             var inner = TestHelpers.GetBinaryExpression(innerInner, "-", 3);
             var expected = TestHelpers.GetBinaryExpression(inner, "+", 4);
             
-            var result = _parser.ParseExpression(expression);
+            var result = _expressionParser.ParseExpression(expression);
             var actual = (BinaryExpression) result;
             
             Assert.Equal(expected, actual);
@@ -120,7 +123,7 @@ namespace WhyNotLang.Parser.Tests.Expressions
             var inner = TestHelpers.GetBinaryExpression(innerInner, "-", 3);
             var expected = TestHelpers.GetBinaryExpression(inner, "+", 4);
             
-            var result = _parser.ParseExpression(expression);
+            var result = _expressionParser.ParseExpression(expression);
             var actual = (BinaryExpression) result;
             
             Assert.Equal(expected, actual);
@@ -133,7 +136,7 @@ namespace WhyNotLang.Parser.Tests.Expressions
             var inner = TestHelpers.GetBinaryExpression(2, "*", 3);
             var expected = TestHelpers.GetBinaryExpression(inner, "+", 1);
             
-            var result = _parser.ParseExpression(expression);
+            var result = _expressionParser.ParseExpression(expression);
             var actual = (BinaryExpression) result;
             
             Assert.Equal(expected, actual);
@@ -146,7 +149,7 @@ namespace WhyNotLang.Parser.Tests.Expressions
             var inner = TestHelpers.GetBinaryExpression(2, "*", 3);
             var expected = TestHelpers.GetBinaryExpression(1, "+", inner);
             
-            var result = _parser.ParseExpression(expression);
+            var result = _expressionParser.ParseExpression(expression);
             var actual = (BinaryExpression) result;
             
             Assert.Equal(expected, actual);
@@ -160,7 +163,7 @@ namespace WhyNotLang.Parser.Tests.Expressions
             var inner = TestHelpers.GetBinaryExpression(1, "+", innerInner);
             var expected = TestHelpers.GetBinaryExpression(inner, "+", 4);
             
-            var result = _parser.ParseExpression(expression);
+            var result = _expressionParser.ParseExpression(expression);
             var actual = (BinaryExpression) result;
             
             Assert.Equal(expected, actual);
@@ -174,7 +177,7 @@ namespace WhyNotLang.Parser.Tests.Expressions
             var rightInner = TestHelpers.GetBinaryExpression(3, "/", 4);
             var expected = TestHelpers.GetBinaryExpression(leftInner, "+", rightInner);
             
-            var result = _parser.ParseExpression(expression);
+            var result = _expressionParser.ParseExpression(expression);
             var actual = (BinaryExpression) result;
             
             Assert.Equal(expected, actual);
@@ -186,7 +189,7 @@ namespace WhyNotLang.Parser.Tests.Expressions
             var expression = "-1";
             var expected = new UnaryExpression(new ValueExpression(TestHelpers.GetToken("1")), TestHelpers.GetToken("-"));
             
-            var result = _parser.ParseExpression(expression);
+            var result = _expressionParser.ParseExpression(expression);
             var actual = (UnaryExpression) result;
             Assert.Equal(expected, actual);
         }
@@ -200,7 +203,7 @@ namespace WhyNotLang.Parser.Tests.Expressions
                     new ValueExpression(TestHelpers.GetToken("1")), TestHelpers.GetToken("-")), 
                 TestHelpers.GetToken("+"));
             
-            var result = _parser.ParseExpression(expression);
+            var result = _expressionParser.ParseExpression(expression);
             var actual = (UnaryExpression) result;
             Assert.Equal(expected, actual);
         }
@@ -211,7 +214,7 @@ namespace WhyNotLang.Parser.Tests.Expressions
             var expression = "(1)";
             var expected = new ValueExpression(TestHelpers.GetToken("1"));
             
-            var result = _parser.ParseExpression(expression);
+            var result = _expressionParser.ParseExpression(expression);
             var actual = (ValueExpression) result;
             Assert.Equal(expected, actual);
         }
@@ -222,7 +225,7 @@ namespace WhyNotLang.Parser.Tests.Expressions
             var expression = "(-1)";
             var expected = TestHelpers.GetUnaryExpression("-", 1);
             
-            var result = _parser.ParseExpression(expression);
+            var result = _expressionParser.ParseExpression(expression);
             var actual = (UnaryExpression) result;
             Assert.Equal(expected, actual);
         }
@@ -233,7 +236,7 @@ namespace WhyNotLang.Parser.Tests.Expressions
             var expression = "-(1)";
             var expected = TestHelpers.GetUnaryExpression("-", 1);
             
-            var result = _parser.ParseExpression(expression);
+            var result = _expressionParser.ParseExpression(expression);
             var actual = (UnaryExpression) result;
             Assert.Equal(expected, actual);
         }
@@ -245,7 +248,7 @@ namespace WhyNotLang.Parser.Tests.Expressions
             var inner = TestHelpers.GetBinaryExpression(1, "+", 2);
             var expected = TestHelpers.GetBinaryExpression(inner, "-", 3);
             
-            var result = _parser.ParseExpression(expression);
+            var result = _expressionParser.ParseExpression(expression);
             var actual = (BinaryExpression) result;
             
             Assert.Equal(expected, actual);
@@ -258,7 +261,7 @@ namespace WhyNotLang.Parser.Tests.Expressions
             var inner = TestHelpers.GetUnaryExpression("-", TestHelpers.GetBinaryExpression(1, "+", 2));
             var expected = TestHelpers.GetBinaryExpression(inner, "-", 3);
             
-            var result = _parser.ParseExpression(expression);
+            var result = _expressionParser.ParseExpression(expression);
             var actual = (BinaryExpression) result;
             
             Assert.Equal(expected, actual);
@@ -272,7 +275,7 @@ namespace WhyNotLang.Parser.Tests.Expressions
             var inner = TestHelpers.GetBinaryExpression(TestHelpers.GetUnaryExpression("-", 1), "+", TestHelpers.GetUnaryExpression("-", 2));
             var expected = TestHelpers.GetBinaryExpression(inner, "-", 3);
             
-            var result = _parser.ParseExpression(expression);
+            var result = _expressionParser.ParseExpression(expression);
             var actual = (BinaryExpression) result;
             
             Assert.Equal(expected, actual);
@@ -285,7 +288,7 @@ namespace WhyNotLang.Parser.Tests.Expressions
             var inner = TestHelpers.GetBinaryExpression(2, "-", 3);
             var expected = TestHelpers.GetBinaryExpression(1, "+", inner);
             
-            var result = _parser.ParseExpression(expression);
+            var result = _expressionParser.ParseExpression(expression);
             var actual = (BinaryExpression) result;
             Assert.Equal(expected, actual);
         }
@@ -297,7 +300,7 @@ namespace WhyNotLang.Parser.Tests.Expressions
             var inner = TestHelpers.GetUnaryExpression("-",TestHelpers.GetBinaryExpression(2, "-", 3));
             var expected = TestHelpers.GetBinaryExpression(1, "*", inner);
             
-            var result = _parser.ParseExpression(expression);
+            var result = _expressionParser.ParseExpression(expression);
             var actual = (BinaryExpression) result;
             Assert.Equal(expected, actual);
         }
@@ -309,7 +312,7 @@ namespace WhyNotLang.Parser.Tests.Expressions
             var inner = TestHelpers.GetBinaryExpression(2, "-", TestHelpers.GetUnaryExpression("-", 3));
             var expected = TestHelpers.GetBinaryExpression(1, "+", inner);
             
-            var result = _parser.ParseExpression(expression);
+            var result = _expressionParser.ParseExpression(expression);
             var actual = (BinaryExpression) result;
             Assert.Equal(expected, actual);
         }
@@ -322,7 +325,7 @@ namespace WhyNotLang.Parser.Tests.Expressions
             var inner = TestHelpers.GetBinaryExpression(1, "*", innerInner);
             var expected = TestHelpers.GetBinaryExpression(inner, "*", 4);
             
-            var result = _parser.ParseExpression(expression);
+            var result = _expressionParser.ParseExpression(expression);
             var actual = (BinaryExpression) result;
             
             Assert.Equal(expected, actual);
@@ -336,7 +339,7 @@ namespace WhyNotLang.Parser.Tests.Expressions
             var inner = TestHelpers.GetBinaryExpression(innerInner, "*", 4);
             var expected = TestHelpers.GetBinaryExpression(1, "+", inner);
             
-            var result = _parser.ParseExpression(expression);
+            var result = _expressionParser.ParseExpression(expression);
             var actual = (BinaryExpression) result;
             
             Assert.Equal(expected, actual);
@@ -350,7 +353,7 @@ namespace WhyNotLang.Parser.Tests.Expressions
             var inner = TestHelpers.GetBinaryExpression(1, "*", innerInner);
             var expected = TestHelpers.GetBinaryExpression(inner, "*", 4);
             
-            var result = _parser.ParseExpression(expression);
+            var result = _expressionParser.ParseExpression(expression);
             var actual = (BinaryExpression) result;
             
             Assert.Equal(expected, actual);

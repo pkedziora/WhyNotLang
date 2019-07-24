@@ -6,11 +6,11 @@ namespace WhyNotLang.Tokenizer
     public class Tokenizer : ITokenizer
     {
         private readonly ITokenReader _tokenReader;
-        private readonly ITokenMap _tokenMap;
-        public Tokenizer(ITokenReader tokenReader, ITokenMap tokenMap)
+        private readonly ITokenFactory _tokenFactory;
+        public Tokenizer(ITokenReader tokenReader, ITokenFactory tokenFactory)
         {
             _tokenReader = tokenReader;
-            _tokenMap = tokenMap;
+            _tokenFactory = tokenFactory;
         }
         
         public IList<Token> GetTokens(string input)
@@ -46,10 +46,10 @@ namespace WhyNotLang.Tokenizer
             if (_tokenReader.CanReadIdentifier(input, index))
             {
                 var identifierOrKeyword = _tokenReader.ReadIdentifier(input, index);
-                if (_tokenMap.Map.ContainsKey(identifierOrKeyword.token.Value))
+                if (_tokenFactory.Map.ContainsKey(identifierOrKeyword.token.Value))
                 {
                     // It's a keyword
-                    var keyword = new Token(_tokenMap.Map[identifierOrKeyword.token.Value], identifierOrKeyword.token.Value);
+                    var keyword = new Token(_tokenFactory.Map[identifierOrKeyword.token.Value], identifierOrKeyword.token.Value);
                     identifierOrKeyword = (keyword, identifierOrKeyword.endIndex);
                 }
 
@@ -57,7 +57,7 @@ namespace WhyNotLang.Tokenizer
             }
 
             var tokenStr = input[index].ToString();
-            var matchingTokens = _tokenMap.GetTokensStartingWith(tokenStr);
+            var matchingTokens = _tokenFactory.GetTokenTypesStartingWith(tokenStr);
 
             if (matchingTokens.Any())
             {
@@ -65,7 +65,7 @@ namespace WhyNotLang.Tokenizer
                 {
                     var newTokenStr = tokenStr + input[++index];
 
-                    matchingTokens = _tokenMap.GetTokensStartingWith(newTokenStr);
+                    matchingTokens = _tokenFactory.GetTokenTypesStartingWith(newTokenStr);
                     if (matchingTokens.Count > 0)
                     {
                         tokenStr = newTokenStr;
@@ -73,9 +73,9 @@ namespace WhyNotLang.Tokenizer
                     }
                 }
             
-                if (_tokenMap.Map.ContainsKey(tokenStr))
+                if (_tokenFactory.Map.ContainsKey(tokenStr))
                 {
-                    var token = _tokenMap.Map[tokenStr];
+                    var token = _tokenFactory.Map[tokenStr];
                     return (new Token(token, tokenStr), endIndex);
                 }
             }

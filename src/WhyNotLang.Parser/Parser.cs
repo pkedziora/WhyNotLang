@@ -8,12 +8,12 @@ namespace WhyNotLang.Parser
     public class Parser : IParser
     {
         private readonly ITokenIterator _tokenIterator;
-        private readonly IStatementParserMap _statementParserMap;
+        private readonly IStatementParserFactory _statementParserFactory;
 
-        public Parser(ITokenIterator tokenIterator, IStatementParserMap statementParserMap)
+        public Parser(ITokenIterator tokenIterator, IStatementParserFactory statementParserFactory)
         {
             _tokenIterator = tokenIterator;
-            _statementParserMap = statementParserMap;
+            _statementParserFactory = statementParserFactory;
         }
 
         public List<IStatement> ParseAll()
@@ -43,7 +43,7 @@ namespace WhyNotLang.Parser
 
         private IStatementParser GetNextStatementParser()
         {
-            return _statementParserMap.GetStatementParser(this);
+            return _statementParserFactory.CreateStatementParser(this);
         }
     }
 }

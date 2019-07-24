@@ -20,8 +20,12 @@ namespace WhyNotLang.Interpreter.StatementExecutors
         {
             var blockStatement = _statementIterator.CurrentStatement as BlockStatement;
 
+            _programState.AddScope("Block");
             var newExecutor = Executor.CreateExecutor(blockStatement.ChildStatements, _programState);
-            return newExecutor.ExecuteAll();
+            var returnValue = newExecutor.ExecuteAll();
+            _programState.RemoveScope();
+            
+            return returnValue;
         }
     }
 }

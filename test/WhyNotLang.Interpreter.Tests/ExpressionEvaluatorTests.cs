@@ -1,3 +1,5 @@
+using Microsoft.Extensions.DependencyInjection;
+using WhyNotLang.Cmd;
 using WhyNotLang.Interpreter.Evaluators;
 using WhyNotLang.Interpreter.Evaluators.ExpressionValues;
 using WhyNotLang.Interpreter.State;
@@ -9,15 +11,16 @@ namespace WhyNotLang.Interpreter.Tests
 {
     public class ExpressionEvaluatorTests
     {
-        private ExpressionEvaluator _expressionEvaluator;
-        private ExpressionParser _expressionParser;
-        private ProgramState _programState;
+        private IExpressionEvaluator _expressionEvaluator;
+        private IExpressionParser _expressionParser;
+        private IProgramState _programState;
 
         public ExpressionEvaluatorTests()
         {
-            _expressionParser = TestHelpers.CreateExpressionParser();
-            _programState = new ProgramState();
-            _expressionEvaluator = new ExpressionEvaluator(_programState, new BuiltinFunctionEvaluator(_programState));
+            var serviceProvider = IoC.BuildServiceProvider();
+            _expressionParser = serviceProvider.GetService<IExpressionParser>();
+            _programState = serviceProvider.GetService<IProgramState>();
+            _expressionEvaluator = serviceProvider.GetService<IExpressionEvaluator>();
         }
         
         [Theory]
@@ -50,9 +53,9 @@ namespace WhyNotLang.Interpreter.Tests
         [InlineData("2*(1 + b) * -c", -18)]
         public void EvalBinaryExpressionWithNumbersAndVariables(string strExpression, int expectedResult)
         {
-            _programState.CurrentScope.DeclareVariable("a", new ExpressionValue(1,ExpressionValueTypes.Number));
-            _programState.CurrentScope.DeclareVariable("b", new ExpressionValue(2,ExpressionValueTypes.Number));
-            _programState.CurrentScope.DeclareVariable("c", new ExpressionValue(3,ExpressionValueTypes.Number));
+            _programState.DeclareVariable("a", new ExpressionValue(1,ExpressionValueTypes.Number));
+            _programState.DeclareVariable("b", new ExpressionValue(2,ExpressionValueTypes.Number));
+            _programState.DeclareVariable("c", new ExpressionValue(3,ExpressionValueTypes.Number));
             
             var input = _expressionParser.ParseExpression(strExpression);
 

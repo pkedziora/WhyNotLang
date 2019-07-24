@@ -1,4 +1,6 @@
 using System.Collections.Generic;
+using Microsoft.Extensions.DependencyInjection;
+using WhyNotLang.Cmd;
 using WhyNotLang.Parser.Expressions;
 using WhyNotLang.Test.Common;
 using WhyNotLang.Tokenizer;
@@ -8,10 +10,11 @@ namespace WhyNotLang.Parser.Tests.Expressions
 {
     public class FunctionExpressionTests
     {
-        private readonly ExpressionParser _parser;
+        private readonly IExpressionParser _expressionParser;
         public FunctionExpressionTests()
         {
-            _parser = TestHelpers.CreateExpressionParser();
+            var serviceProvider = IoC.BuildServiceProvider();
+            _expressionParser = serviceProvider.GetService<IExpressionParser>();
         }
 
         [Fact]
@@ -20,7 +23,7 @@ namespace WhyNotLang.Parser.Tests.Expressions
             var expression = "foo()";
             var expected = new FunctionExpression(new Token(TokenType.Identifier, "foo"), new EmptyExpression());
             
-            var result = _parser.ParseExpression(expression);
+            var result = _expressionParser.ParseExpression(expression);
             var actual = (FunctionExpression) result;
             
             Assert.Equal(expected, actual);
@@ -33,7 +36,7 @@ namespace WhyNotLang.Parser.Tests.Expressions
             var expected = new FunctionExpression(new Token(TokenType.Identifier, "foo"), 
                 new ValueExpression(new Token( TokenType.Number,"1")));
             
-            var result = _parser.ParseExpression(expression);
+            var result = _expressionParser.ParseExpression(expression);
             var actual = (FunctionExpression) result;
             
             Assert.Equal(expected, actual);
@@ -46,7 +49,7 @@ namespace WhyNotLang.Parser.Tests.Expressions
             var expected = new FunctionExpression(new Token(TokenType.Identifier, "foo"), 
                 new ValueExpression(new Token( TokenType.String,"abc")));
             
-            var result = _parser.ParseExpression(expression);
+            var result = _expressionParser.ParseExpression(expression);
             var actual = (FunctionExpression) result;
             
             Assert.Equal(expected, actual);
@@ -59,7 +62,7 @@ namespace WhyNotLang.Parser.Tests.Expressions
             var expected = new FunctionExpression(new Token(TokenType.Identifier, "foo"), 
                 TestHelpers.GetBinaryExpression(1, "+", 2));
             
-            var result = _parser.ParseExpression(expression);
+            var result = _expressionParser.ParseExpression(expression);
             var actual = (FunctionExpression) result;
             
             Assert.Equal(expected, actual);
@@ -72,7 +75,7 @@ namespace WhyNotLang.Parser.Tests.Expressions
             var expected = new FunctionExpression(new Token(TokenType.Identifier, "foo"), 
                 TestHelpers.GetBinaryExpressionWithStrings("abc", "+", "def"));
             
-            var result = _parser.ParseExpression(expression);
+            var result = _expressionParser.ParseExpression(expression);
             var actual = (FunctionExpression) result;
             
             Assert.Equal(expected, actual);
@@ -89,7 +92,7 @@ namespace WhyNotLang.Parser.Tests.Expressions
             var expected = new FunctionExpression(new Token(TokenType.Identifier, "foo"), 
                 expectedExpression);
             
-            var result = _parser.ParseExpression(expression);
+            var result = _expressionParser.ParseExpression(expression);
             var actual = (FunctionExpression) result;
             
             Assert.Equal(expected, actual);
@@ -105,7 +108,7 @@ namespace WhyNotLang.Parser.Tests.Expressions
             
             var expected = TestHelpers.GetBinaryExpression(3, "+", functionExp);
 
-            var result = _parser.ParseExpression(expression);
+            var result = _expressionParser.ParseExpression(expression);
             var actual = (BinaryExpression) result;
             
             Assert.Equal(expected, actual);
@@ -121,7 +124,7 @@ namespace WhyNotLang.Parser.Tests.Expressions
             
             var expected = TestHelpers.GetBinaryExpression(functionExp, "-", 4);
 
-            var result = _parser.ParseExpression(expression);
+            var result = _expressionParser.ParseExpression(expression);
             var actual = (BinaryExpression) result;
             
             Assert.Equal(expected, actual);
@@ -137,7 +140,7 @@ namespace WhyNotLang.Parser.Tests.Expressions
             
             var expected = TestHelpers.GetBinaryExpression(functionExp, "-", 4);
 
-            var result = _parser.ParseExpression(expression);
+            var result = _expressionParser.ParseExpression(expression);
             var actual = (BinaryExpression) result;
             
             Assert.Equal(expected, actual);
@@ -153,7 +156,7 @@ namespace WhyNotLang.Parser.Tests.Expressions
             
             var expected = TestHelpers.GetBinaryExpression(functionExp, "-", 4);
 
-            var result = _parser.ParseExpression(expression);
+            var result = _expressionParser.ParseExpression(expression);
             var actual = (BinaryExpression) result;
             
             Assert.Equal(expected, actual);
@@ -170,7 +173,7 @@ namespace WhyNotLang.Parser.Tests.Expressions
             var innerExp = TestHelpers.GetBinaryExpression(3, "+", functionExp);
             var expected = TestHelpers.GetBinaryExpression(innerExp, "-", 4);
 
-            var result = _parser.ParseExpression(expression);
+            var result = _expressionParser.ParseExpression(expression);
             var actual = (BinaryExpression) result;
             
             Assert.Equal(expected, actual);
@@ -189,7 +192,7 @@ namespace WhyNotLang.Parser.Tests.Expressions
             var expected = new FunctionExpression(new Token(TokenType.Identifier, "foo"), 
                 expectedParameters);
             
-            var result = _parser.ParseExpression(expression);
+            var result = _expressionParser.ParseExpression(expression);
             var actual = (FunctionExpression) result;
             
             Assert.Equal(expected, actual);
@@ -209,7 +212,7 @@ namespace WhyNotLang.Parser.Tests.Expressions
             var expected = new FunctionExpression(new Token(TokenType.Identifier, "foo"), 
                 expectedParameters);
             
-            var result = _parser.ParseExpression(expression);
+            var result = _expressionParser.ParseExpression(expression);
             var actual = (FunctionExpression) result;
             
             Assert.Equal(expected, actual);
@@ -230,7 +233,7 @@ namespace WhyNotLang.Parser.Tests.Expressions
             var expected = new FunctionExpression(new Token(TokenType.Identifier, "foo"), 
                 expectedParameters);
             
-            var result = _parser.ParseExpression(expression);
+            var result = _expressionParser.ParseExpression(expression);
             var actual = (FunctionExpression) result;
             
             Assert.Equal(expected, actual);
@@ -250,7 +253,7 @@ namespace WhyNotLang.Parser.Tests.Expressions
                 expectedParameters);
             var expected = TestHelpers.GetBinaryExpression(functionExpression, "+", 1);
             
-            var result = _parser.ParseExpression(expression);
+            var result = _expressionParser.ParseExpression(expression);
             var actual = (BinaryExpression) result;
             
             Assert.Equal(expected, actual);
@@ -270,7 +273,7 @@ namespace WhyNotLang.Parser.Tests.Expressions
             var right = TestHelpers.GetBinaryExpression(functionExpression, "*", 3);
             var expected = TestHelpers.GetBinaryExpression(1, "+", right);
             
-            var result = _parser.ParseExpression(expression);
+            var result = _expressionParser.ParseExpression(expression);
             var actual = (BinaryExpression) result;
             
             Assert.Equal(expected, actual);

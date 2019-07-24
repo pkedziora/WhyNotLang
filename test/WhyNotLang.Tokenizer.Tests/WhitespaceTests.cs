@@ -8,7 +8,7 @@ namespace WhyNotLang.Tokenizer.Tests
         private Tokenizer _tokenizer;
         public WhitespaceTests()
         {
-            _tokenizer = new Tokenizer(new TokenReader(), new TokenMap());
+            _tokenizer = new Tokenizer(new TokenReader(), new TokenFactory());
         }
         
         [Theory]

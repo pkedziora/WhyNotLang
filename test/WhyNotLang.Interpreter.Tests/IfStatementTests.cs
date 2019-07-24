@@ -1,4 +1,6 @@
 using System;
+using Microsoft.Extensions.DependencyInjection;
+using WhyNotLang.Cmd;
 using WhyNotLang.Interpreter.Evaluators.ExpressionValues;
 using WhyNotLang.Interpreter.State;
 using WhyNotLang.Test.Common;
@@ -8,13 +10,14 @@ namespace WhyNotLang.Interpreter.Tests
 {
     public class IfStatementTests
     {
-        private ProgramState _programState;
-        private Executor _executor;
+        private IProgramState _programState;
+        private IExecutor _executor;
 
         public IfStatementTests()
         {
-            _programState = new ProgramState();
-            _executor = TestHelpers.CreateExecutor(_programState);
+            var serviceProvider = IoC.BuildServiceProvider();
+            _executor = serviceProvider.GetService<IExecutor>();
+            _programState = serviceProvider.GetService<IProgramState>();
         }
 
         [Fact]
@@ -27,7 +30,7 @@ namespace WhyNotLang.Interpreter.Tests
             
             _executor.ExecuteAll();
             
-            var actual = _programState.CurrentScope.GetVariable("x");
+            var actual = _programState.GetVariable("x");
 
             var expected = new ExpressionValue(2, ExpressionValueTypes.Number);
             
@@ -38,20 +41,23 @@ namespace WhyNotLang.Interpreter.Tests
         public void ExecutesTrueIfStatementWithBlock()
         {
             _executor.Initialise(@"
+                var z:= 0
                 if (!(1 > 2) and 1 <= 2)
                 begin
                     var x:=3
                     x:=4
+                    z:=x
                 end
             ");
             
             _executor.ExecuteAll();
             
-            var actual = _programState.CurrentScope.GetVariable("x");
+            var actual = _programState.GetVariable("z");
 
             var expected = new ExpressionValue(4, ExpressionValueTypes.Number);
             
             Assert.Equal(expected, actual);
+            Assert.False(_programState.IsVariableDefined("x"));
         }
         
         [Fact]
@@ -64,7 +70,7 @@ namespace WhyNotLang.Interpreter.Tests
             
             _executor.ExecuteAll();
 
-            Assert.False(_programState.CurrentScope.IsVariableDefined("x"));
+            Assert.False(_programState.IsVariableDefined("x"));
         }
         
         [Fact]
@@ -79,7 +85,7 @@ namespace WhyNotLang.Interpreter.Tests
             
             _executor.ExecuteAll();
             
-            var actual = _programState.CurrentScope.GetVariable("x");
+            var actual = _programState.GetVariable("x");
 
             var expected = new ExpressionValue(3, ExpressionValueTypes.Number);
             
@@ -100,7 +106,7 @@ namespace WhyNotLang.Interpreter.Tests
             
             _executor.ExecuteAll();
             
-            var actual = _programState.CurrentScope.GetVariable("x");
+            var actual = _programState.GetVariable("x");
 
             var expected = new ExpressionValue(3, ExpressionValueTypes.Number);
             
@@ -121,7 +127,7 @@ namespace WhyNotLang.Interpreter.Tests
             
             _executor.ExecuteAll();
             
-            var actual = _programState.CurrentScope.GetVariable("x");
+            var actual = _programState.GetVariable("x");
 
             var expected = new ExpressionValue(4, ExpressionValueTypes.Number);
             
