@@ -11,6 +11,8 @@ namespace WhyNotLang.Parser.Statements
         FunctionCallStatement,
         FunctionDeclarationStatement,
         ReturnStatement,
-        EofStatement
+        EofStatement,
+        ArrayDeclarationStatement,
+        ArrayAssignmentStatement
     }
 }

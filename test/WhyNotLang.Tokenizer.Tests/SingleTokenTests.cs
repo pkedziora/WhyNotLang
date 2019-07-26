@@ -40,6 +40,8 @@ namespace WhyNotLang.Tokenizer.Tests
         [InlineData("foo", TokenType.Identifier)]
         [InlineData("\"bar\"", TokenType.String)]
         [InlineData("$", TokenType.Invalid)]
+        [InlineData("[", TokenType.LeftBracket)]
+        [InlineData("]", TokenType.RightBracket)]
         public void RecognizesSingleTokens(string tokenStr, TokenType expected)
         {
             var actual = _tokenizer.GetTokens(tokenStr);

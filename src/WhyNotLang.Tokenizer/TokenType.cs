@@ -31,6 +31,8 @@ namespace WhyNotLang.Tokenizer
         Equal,
         NotEqual,
         Invalid,
-        Eof
+        Eof,
+        LeftBracket,
+        RightBracket
     }
 }

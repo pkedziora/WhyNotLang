@@ -74,21 +74,24 @@ namespace WhyNotLang.Parser
 
         private Precedence GetNextPrecedence()
         {
-            var isFunctionCall = _tokenIterator.CurrentToken.Type == TokenType.Identifier &&
-                                 _tokenIterator.PeekToken(1).Type == TokenType.LeftParen;
+            var isFunctionCallOrArray = _tokenIterator.CurrentToken.Type == TokenType.Identifier && 
+                                 (_tokenIterator.PeekToken(1).Type == TokenType.LeftParen || 
+                                  _tokenIterator.PeekToken(1).Type == TokenType.LeftBracket);
             
-            if (isFunctionCall)
+            if (isFunctionCallOrArray)
             {
                 // Find closing paren of function call
                 var openParens = 1;
                 var peekAhead = 2;
                 while (openParens > 0)
                 {
-                    if (_tokenIterator.PeekToken(peekAhead).Type == TokenType.LeftParen)
+                    if (_tokenIterator.PeekToken(peekAhead).Type == TokenType.LeftParen || 
+                        _tokenIterator.PeekToken(peekAhead).Type == TokenType.LeftBracket)
                     {
                         openParens++;
                     }
-                    else if (_tokenIterator.PeekToken(peekAhead).Type == TokenType.RightParen)
+                    else if (_tokenIterator.PeekToken(peekAhead).Type == TokenType.RightParen ||
+                             _tokenIterator.PeekToken(peekAhead).Type == TokenType.RightBracket)
                     {
                         openParens--;
                     }
@@ -144,6 +147,23 @@ namespace WhyNotLang.Parser
             _tokenIterator.GetNextToken();
             return new FunctionExpression(functionNameToken, parameterExpressions);
         }
+        
+        private IExpression ParseArrayExpression()
+        {
+            if (_tokenIterator.CurrentToken.Type != TokenType.Identifier)
+            {
+                throw new ArgumentException("Identifier expected");
+            }
+            
+            var arrayNameToken = _tokenIterator.CurrentToken;
+            _tokenIterator.GetNextToken(); // Swallow array name
+            _tokenIterator.GetNextToken(); // Swallow [
+
+            var indexExpression = ParseExpression(Precedence.None);
+
+            _tokenIterator.GetNextToken();
+            return new ArrayExpression(arrayNameToken, indexExpression);
+        }
 
         private IExpression ParseUnaryExpression()
         {
@@ -154,6 +174,12 @@ namespace WhyNotLang.Parser
             if (isFunctionExpression)
             {
                 return ParseFunctionExpression();
+            }
+            
+            var isArrayExpression = token.Type == TokenType.Identifier && nextToken.Type == TokenType.LeftBracket;
+            if (isArrayExpression)
+            {
+                return ParseArrayExpression();
             }
 
             if (_tokenIterator.CurrentToken.Type == TokenType.LeftParen)

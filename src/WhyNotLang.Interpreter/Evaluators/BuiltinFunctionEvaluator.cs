@@ -4,7 +4,6 @@ using System.Linq;
 using WhyNotLang.Interpreter.Builtin;
 using WhyNotLang.Interpreter.Evaluators.ExpressionValues;
 using WhyNotLang.Interpreter.State;
-using WhyNotLang.Parser.Expressions;
 using WhyNotLang.Parser.Statements;
 using WhyNotLang.Tokenizer;
 

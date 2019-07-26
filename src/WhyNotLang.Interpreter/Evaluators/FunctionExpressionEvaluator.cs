@@ -4,7 +4,6 @@ using System.Linq;
 using WhyNotLang.Interpreter.Evaluators.ExpressionValues;
 using WhyNotLang.Interpreter.State;
 using WhyNotLang.Parser.Expressions;
-using WhyNotLang.Parser.Statements;
 using WhyNotLang.Tokenizer;
 
 namespace WhyNotLang.Interpreter.Evaluators
@@ -31,15 +30,15 @@ namespace WhyNotLang.Interpreter.Evaluators
             
             var functionExpression = expression as FunctionExpression;
             var functionDeclaration = _programState.GetFunction(functionExpression.Name.Value);
-            var parameterValues = EvaluateParameters(functionExpression.Parameters.Where(p => p.Type != ExpressionType.Empty).ToList());
+            var argumentsValues = EvaluateArguments(functionExpression.Parameters.Where(p => p.Type != ExpressionType.Empty).ToList());
 
             if (functionDeclaration.IsBuiltin)
             {
-                return _builtinEvaluator.Eval(functionExpression.Name.Value, parameterValues);
+                return _builtinEvaluator.Eval(functionExpression.Name.Value, argumentsValues);
             }
 
             _programState.AddScope(functionDeclaration.Name.Value, true);
-            InitialiseParameterVariables(parameterValues, functionDeclaration.Parameters);
+            InitialiseParameterVariables(argumentsValues, functionDeclaration.Parameters);
             
             var statementExecutor =
                 Executor.CreateExecutor(functionDeclaration.Body.ChildStatements, _programState);
@@ -50,27 +49,40 @@ namespace WhyNotLang.Interpreter.Evaluators
             return returnValue;
         }
 
-        private List<ExpressionValue> EvaluateParameters(List<IExpression> parameters)
+        private List<ExpressionValue> EvaluateArguments(List<IExpression> arguments)
         {
             var result = new List<ExpressionValue>();
-            foreach (var parameter in parameters)
+            foreach (var parameter in arguments)
             {
-                result.Add(_mainEvaluator.Eval(parameter));
+                var valueExpression = parameter as ValueExpression;
+                var isArray = parameter.Type == ExpressionType.Value &&
+                              valueExpression.Token.Type == TokenType.Identifier &&
+                              _programState.IsArrayDefined(valueExpression.Token.Value);
+                result.Add(isArray
+                    ? _programState.GetArrayReference(valueExpression.Token.Value)
+                    : _mainEvaluator.Eval(parameter));
             }
 
             return result;
         }
 
-        private void InitialiseParameterVariables(List<ExpressionValue> values, List<Token> parameters)
+        private void InitialiseParameterVariables(List<ExpressionValue> argumentsValues, List<Token> parameters)
         {
-            if (values.Count != parameters.Count)
+            if (argumentsValues.Count != parameters.Count)
             {
-                throw new ArgumentException($"Function called with {values.Count} arguments, expected {parameters.Count}");
+                throw new ArgumentException($"Function called with {argumentsValues.Count} arguments, expected {parameters.Count}");
             }
 
-            for (int i = 0; i < values.Count; i++)
+            for (int i = 0; i < argumentsValues.Count; i++)
             {
-                _programState.DeclareVariable(parameters[i].Value, values[i]);
+                if (argumentsValues[i].Type == ExpressionValueTypes.ArrayReference)
+                {
+                    _programState.DeclareArrayByReference(parameters[i].Value, argumentsValues[i]);
+                }
+                else
+                {
+                    _programState.DeclareVariable(parameters[i].Value, argumentsValues[i]);
+                }
             }
         }
     }

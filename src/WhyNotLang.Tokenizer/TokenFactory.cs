@@ -69,7 +69,9 @@ namespace WhyNotLang.Tokenizer
                 {"<=", TokenType.LessThanOrEqual},
                 {">=", TokenType.GreaterThanOrEqual},
                 {"==", TokenType.Equal},
-                {"!=", TokenType.NotEqual}
+                {"!=", TokenType.NotEqual},
+                {"[", TokenType.LeftBracket},
+                {"]", TokenType.RightBracket}
             };
         }
     }

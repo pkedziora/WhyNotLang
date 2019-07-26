@@ -34,6 +34,8 @@ namespace WhyNotLang.Interpreter.Evaluators
                     return new BinaryExpressionEvaluator(this);
                 case ExpressionType.Function:
                     return new FunctionExpressionEvaluator(this, _builtinEvaluator, _programState);
+                case ExpressionType.Array:
+                    return new ArrayExpressionEvaluator(this, _programState);
             }
             
             throw new ArgumentException($"Parser not found for expression {expression.Type}");

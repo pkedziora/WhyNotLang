@@ -4,7 +4,6 @@ using WhyNotLang.Interpreter.Evaluators;
 using WhyNotLang.Interpreter.Evaluators.ExpressionValues;
 using WhyNotLang.Interpreter.State;
 using WhyNotLang.Parser;
-using WhyNotLang.Test.Common;
 using Xunit;
 
 namespace WhyNotLang.Interpreter.Tests

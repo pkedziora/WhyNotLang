@@ -1,9 +1,5 @@
 using System;
-using System.Collections.Generic;
 using WhyNotLang.Interpreter.Evaluators.ExpressionValues;
-using WhyNotLang.Interpreter.State;
-using WhyNotLang.Parser.Statements;
-using WhyNotLang.Tokenizer;
 
 namespace WhyNotLang.Interpreter.Builtin
 {

@@ -1,11 +1,6 @@
 using System.Linq;
 using Microsoft.Extensions.DependencyInjection;
 using WhyNotLang.Cmd;
-using WhyNotLang.Interpreter;
-using WhyNotLang.Interpreter.Evaluators;
-using WhyNotLang.Interpreter.State;
-using WhyNotLang.Interpreter.StatementExecutors;
-using WhyNotLang.Parser;
 using WhyNotLang.Parser.Expressions;
 using WhyNotLang.Parser.Statements;
 using WhyNotLang.Tokenizer;

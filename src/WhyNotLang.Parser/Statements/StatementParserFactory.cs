@@ -21,12 +21,22 @@ namespace WhyNotLang.Parser.Statements
             switch (_tokenIterator.CurrentToken.Type)
             {
                 case TokenType.Var:
+                    if (_tokenIterator.PeekToken(2).Type == TokenType.LeftBracket)
+                    {
+                        return new ArrayDeclarationParser(_tokenIterator, _expressionParser);
+                    }
+                    
                     return new VariableDeclarationParser(_tokenIterator, _expressionParser);
                 
                 case TokenType.Identifier:
                     if (_tokenIterator.PeekToken(1).Type == TokenType.LeftParen)
                     {
                         return new FunctionCallParser(_tokenIterator, _expressionParser);
+                    }
+                    
+                    if (_tokenIterator.PeekToken(1).Type == TokenType.LeftBracket)
+                    {
+                        return new ArrayAssignmentParser(_tokenIterator, _expressionParser);
                     }
                     
                     return new VariableAssignmentParser(_tokenIterator, _expressionParser);

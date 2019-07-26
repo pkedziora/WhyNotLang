@@ -4,6 +4,7 @@ namespace WhyNotLang.Interpreter.Evaluators.ExpressionValues
     {
         Number,
         String,
+        ArrayReference,
         Empty
     }
 }

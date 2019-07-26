@@ -38,6 +38,10 @@ namespace WhyNotLang.Interpreter.StatementExecutors
                     return new FunctionCallStatementExecutor(_statementIterator, _expressionEvaluator, _programState);
                 case StatementType.ReturnStatement:
                     return new ReturnStatementExecutor(_statementIterator, _expressionEvaluator, _programState);
+                case StatementType.ArrayDeclarationStatement:
+                    return new ArrayDeclarationExecutor(_statementIterator, _expressionEvaluator, _programState);
+                case StatementType.ArrayAssignmentStatement:
+                    return new ArrayAssignmentExecutor(_statementIterator, _expressionEvaluator, _programState);
                 case StatementType.EmptyStatement:
                     return new EmptyExecutor();
             }

@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using Microsoft.Extensions.DependencyInjection;
 using WhyNotLang.Cmd;
-using WhyNotLang.Interpreter.Evaluators.ExpressionValues;
 using WhyNotLang.Interpreter.State;
 using WhyNotLang.Parser.Statements;
 using WhyNotLang.Test.Common;

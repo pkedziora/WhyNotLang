@@ -6,6 +6,7 @@ namespace WhyNotLang.Parser.Expressions
         Value,
         Unary,
         Binary,
-        Function
+        Function,
+        Array
     }
 }

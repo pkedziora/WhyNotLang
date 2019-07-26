@@ -2,7 +2,6 @@ using Microsoft.Extensions.DependencyInjection;
 using WhyNotLang.Cmd;
 using WhyNotLang.Interpreter.Evaluators.ExpressionValues;
 using WhyNotLang.Interpreter.State;
-using WhyNotLang.Test.Common;
 using Xunit;
 
 namespace WhyNotLang.Interpreter.Tests

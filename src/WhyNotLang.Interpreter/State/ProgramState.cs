@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using WhyNotLang.Interpreter.Builtin;
 using WhyNotLang.Interpreter.Evaluators;
 using WhyNotLang.Interpreter.Evaluators.ExpressionValues;
 using WhyNotLang.Parser.Statements;
@@ -55,45 +54,165 @@ namespace WhyNotLang.Interpreter.State
         
         public ExpressionValue GetVariable(string identifier)
         {
-            var scope = FindScopeForVariable(identifier);
+            var result = FindScopeForIdentifier(identifier);
 
-            if (scope != null)
+            if (result.scope != null)
             {
-                return scope.VariableValues[identifier];
+                if (result.isArray)
+                {
+                    throw new ArgumentException($"{identifier} is an array. Variable expected");    
+                }
+                
+                return result.scope.VariableValues[identifier];
             }
             
             throw new ArgumentException($"Variable {identifier} is not defined");
         }
         
+        public ExpressionValue GetArrayItem(string identifier, int index)
+        {
+            var result = FindScopeForIdentifier(identifier);
+
+            if (result.scope != null)
+            {
+                if (!result.isArray)
+                {
+                    throw new ArgumentException($"{identifier} is variable. Array expected");    
+                }
+                
+                if (index >= result.scope.Arrays[identifier].Length)
+                {
+                    throw new ArgumentException($"Index {index} is out of range"); 
+                }
+                
+                return result.scope.Arrays[identifier][index];
+            }
+            
+            throw new ArgumentException($"Array {identifier} is not defined");
+        }
+        
+        public ExpressionValue GetArrayReference(string identifier)
+        {
+            var result = FindScopeForIdentifier(identifier);
+
+            if (result.scope != null)
+            {
+                if (!result.isArray)
+                {
+                    throw new ArgumentException($"{identifier} is variable. Array expected");    
+                }
+                
+                return new ExpressionValue(result.scope.Arrays[identifier], ExpressionValueTypes.ArrayReference);
+            }
+            
+            throw new ArgumentException($"Array {identifier} is not defined");
+        }
+        
+        public void AssignArrayItem(string identifier, int index, ExpressionValue value)
+        {
+            var result = FindScopeForIdentifier(identifier);
+
+            if (result.scope != null)
+            {
+                if (!result.isArray)
+                {
+                    throw new ArgumentException($"{identifier} is variable. Array expected");    
+                }
+
+                if (index >= result.scope.Arrays[identifier].Length)
+                {
+                    throw new ArgumentException($"Index {index} is out of range"); 
+                }
+                
+                result.scope.Arrays[identifier][index] = value;
+                
+                return;
+            }
+            
+            throw new ArgumentException($"Array {identifier} is not defined");
+        }
+        
+        public ExpressionValue[] DeclareArray(string identifier, int size)
+        {
+            if (!CanBeDeclaredInCurrentScope(identifier))
+            {
+                throw new ArgumentException($"{identifier} has already been declared");
+            }
+
+            var array = new ExpressionValue[size];
+            for (int i = 0; i < size; i++)
+            {
+                array[i] = new ExpressionValue(0, ExpressionValueTypes.Number);
+            }
+            
+            CurrentScope.Arrays.Add(identifier, array);
+
+            return array;
+        }
+
+        private bool CanBeDeclaredInCurrentScope(string identifier)
+        {
+            return !CurrentScope.VariableValues.ContainsKey(identifier) &&
+                   !CurrentScope.Arrays.ContainsKey(identifier) &&
+                   !_functions.ContainsKey(identifier);
+        }
+        
         public bool IsVariableDefined(string identifier)
         {
-            return FindScopeForVariable(identifier) != null;
+            var result = FindScopeForIdentifier(identifier);
+            return result.scope != null && result.scope.VariableValues.ContainsKey(identifier);
+        }
+        
+        public bool IsArrayDefined(string identifier)
+        {
+            var result = FindScopeForIdentifier(identifier);
+            return result.scope != null && result.scope.Arrays.ContainsKey(identifier);
         }
         
         public void DeclareVariable(string identifier, ExpressionValue value)
         {
-            if (CurrentScope.VariableValues.ContainsKey(identifier))
+            if (!CanBeDeclaredInCurrentScope(identifier))
             {
-                throw new ArgumentException($"Variable {identifier} has already been declared");
+                throw new ArgumentException($"{identifier} has already been declared");
             }
             
             CurrentScope.VariableValues.Add(identifier, value);
         }
         
+        public void DeclareArrayByReference(string identifier, ExpressionValue expressionValue)
+        {
+            if (!CanBeDeclaredInCurrentScope(identifier))
+            {
+                throw new ArgumentException($"{identifier} has already been declared");
+            }
+
+            if (expressionValue.Type != ExpressionValueTypes.ArrayReference)
+            {
+                throw new ArgumentException($"{identifier} is not an array reference");
+            }
+            
+            CurrentScope.Arrays[identifier] = (ExpressionValue[]) expressionValue.Value;
+        }
+        
         public void AssignVariable(string identifier, ExpressionValue value)
         {
-            var scope = FindScopeForVariable(identifier);
+            var result = FindScopeForIdentifier(identifier);
 
-            if (scope != null)
+            if (result.scope != null)
             {
-                scope.VariableValues[identifier] = value;
+                if (result.isArray)
+                {
+                    throw new ArgumentException($"{identifier} is an array. Variable expected");    
+                }
+                
+                result.scope.VariableValues[identifier] = value;
                 return;
             }
 
             throw new ArgumentException($"Variable {identifier} is not defined");
         }
 
-        private Scope FindScopeForVariable(String identifier)
+        private (Scope scope, bool isArray) FindScopeForIdentifier(string identifier)
         {
             var scopeIndex = Scopes.Count;
             do
@@ -101,11 +220,16 @@ namespace WhyNotLang.Interpreter.State
                 scopeIndex--;
                 if (Scopes[scopeIndex].VariableValues.ContainsKey(identifier))
                 {
-                    return Scopes[scopeIndex];
+                    return (Scopes[scopeIndex], false);
+                }
+                
+                if (Scopes[scopeIndex].Arrays.ContainsKey(identifier))
+                {
+                    return (Scopes[scopeIndex], true);
                 }
             } while (!Scopes[scopeIndex].IsFunctionScope);
 
-            return null;
+            return (null, false);
         }
     }
 }
