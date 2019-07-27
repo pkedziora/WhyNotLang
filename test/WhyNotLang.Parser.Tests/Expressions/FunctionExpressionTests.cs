@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 using Microsoft.Extensions.DependencyInjection;
-using WhyNotLang.Cmd;
+using WhyNotLang.Interpreter;
 using WhyNotLang.Parser.Expressions;
 using WhyNotLang.Test.Common;
 using WhyNotLang.Tokenizer;

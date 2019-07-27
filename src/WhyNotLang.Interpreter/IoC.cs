@@ -9,7 +9,7 @@ using WhyNotLang.Parser;
 using WhyNotLang.Parser.Statements;
 using WhyNotLang.Tokenizer;
 
-namespace WhyNotLang.Cmd
+namespace WhyNotLang.Interpreter
 {
     public class IoC
     {

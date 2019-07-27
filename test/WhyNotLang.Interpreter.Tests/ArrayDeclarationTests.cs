@@ -1,5 +1,4 @@
 using Microsoft.Extensions.DependencyInjection;
-using WhyNotLang.Cmd;
 using WhyNotLang.Interpreter.State;
 using Xunit;
 
