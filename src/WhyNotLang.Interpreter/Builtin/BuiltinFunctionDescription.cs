@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using WhyNotLang.Interpreter.Evaluators.ExpressionValues;
 
-namespace WhyNotLang.Interpreter.Evaluators
+namespace WhyNotLang.Interpreter.Builtin
 {
     public class BuiltinFunctionDescription
     {

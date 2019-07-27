@@ -26,6 +26,8 @@ namespace WhyNotLang.Cmd
             }
             
             var serviceProvider = IoC.BuildServiceProvider();
+            serviceProvider.AddConsoleInputOutput();
+            
             var executor = serviceProvider.GetService<IExecutor>();
             var program = File.ReadAllText(fileName);
             executor.Initialise(program);

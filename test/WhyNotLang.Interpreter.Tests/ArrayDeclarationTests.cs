@@ -1,6 +1,5 @@
 using Microsoft.Extensions.DependencyInjection;
 using WhyNotLang.Cmd;
-using WhyNotLang.Interpreter.Evaluators.ExpressionValues;
 using WhyNotLang.Interpreter.State;
 using Xunit;
 

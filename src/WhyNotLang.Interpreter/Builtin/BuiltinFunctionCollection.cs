@@ -1,12 +1,13 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using WhyNotLang.Interpreter.Evaluators;
 using WhyNotLang.Interpreter.Evaluators.ExpressionValues;
 using WhyNotLang.Interpreter.State;
 using WhyNotLang.Parser.Statements;
 using WhyNotLang.Tokenizer;
 
-namespace WhyNotLang.Interpreter.Evaluators
+namespace WhyNotLang.Interpreter.Builtin
 {
     public class BuiltinFunctionCollection : IBuiltinFunctionCollection
     {
@@ -22,6 +23,17 @@ namespace WhyNotLang.Interpreter.Evaluators
         {
             var functionDescription = new BuiltinFunctionDescription(functionName, parameters, implementation);
             Add(functionDescription);
+        }
+        
+        public void DeclareBuiltinFunctions(IProgramState programState)
+        {
+            foreach (var description in FunctionDescriptions)
+            {
+                programState.DeclareFunction(description.Key, new FunctionDeclarationStatement(
+                    new Token(TokenType.Identifier, description.Key),
+                    description.Value.Parameters
+                        .Select((p, index) => new Token(TokenType.Identifier, $"p{index.ToString()}")).ToList()));
+            }
         }
 
         public BuiltinFunctionCollection()
@@ -53,39 +65,6 @@ namespace WhyNotLang.Interpreter.Evaluators
 
                     return new ExpressionValue(int.Parse((string) str.Value), ExpressionValueTypes.Number);
                 });
-
-            Add("Writeln",
-                new List<ExpressionValueTypes>() {ExpressionValueTypes.String},
-                arguments =>
-                {
-                    var str = arguments.Single();
-                    if (str.Type != ExpressionValueTypes.String)
-                    {
-                        throw new Exception("String expected");
-                    }
-
-                    Console.WriteLine(str.Value);
-                    return ExpressionValue.Empty;
-                });
-
-            Add("Readln",
-                new List<ExpressionValueTypes>(),
-                arguments =>
-                {
-                    var str = Console.ReadLine();
-                    return new ExpressionValue(str, ExpressionValueTypes.String);
-                });
-        }
-
-        public void DeclareBuiltinFunctions(IProgramState programState)
-        {
-            foreach (var description in FunctionDescriptions)
-            {
-                programState.DeclareFunction(description.Key, new FunctionDeclarationStatement(
-                    new Token(TokenType.Identifier, description.Key),
-                    description.Value.Parameters
-                        .Select((p, index) => new Token(TokenType.Identifier, $"p{index.ToString()}")).ToList()));
-            }
         }
     }
 }

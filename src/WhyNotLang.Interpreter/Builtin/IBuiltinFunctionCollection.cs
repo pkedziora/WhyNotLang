@@ -1,11 +1,16 @@
+using System;
 using System.Collections.Generic;
+using WhyNotLang.Interpreter.Evaluators.ExpressionValues;
 using WhyNotLang.Interpreter.State;
 
-namespace WhyNotLang.Interpreter.Evaluators
+namespace WhyNotLang.Interpreter.Builtin
 {
     public interface IBuiltinFunctionCollection
     {
         Dictionary<string, BuiltinFunctionDescription> FunctionDescriptions { get; }
         void DeclareBuiltinFunctions(IProgramState programState);
+
+        void Add(string functionName, List<ExpressionValueTypes> parameters,
+            Func<List<ExpressionValue>, ExpressionValue> implementation);
     }
 }

@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using Microsoft.Extensions.DependencyInjection;
 using WhyNotLang.Cmd;
 using WhyNotLang.Parser.Expressions;
