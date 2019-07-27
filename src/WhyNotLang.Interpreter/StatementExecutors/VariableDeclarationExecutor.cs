@@ -24,7 +24,7 @@ namespace WhyNotLang.Interpreter.StatementExecutors
             var variableDeclaration = _statementIterator.CurrentStatement as VariableDeclarationStatement;
             var variableName = variableDeclaration.VariableName.Value;
             var variableValue = _expressionEvaluator.Eval(variableDeclaration.Expression);
-            _programState.DeclareVariable(variableName, variableValue);
+            _programState.DeclareVariable(variableName, variableValue, variableDeclaration.IsGlobal);
             
             return ExpressionValue.Empty;
         }

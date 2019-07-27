@@ -61,5 +61,39 @@ namespace WhyNotLang.Interpreter.Tests
 
             Assert.Throws<ArgumentException>(() => _executor.ExecuteAll());
         }
+        
+        [Fact]
+        public void ExecutesGlobalVariableAssignementWithNumberExpression()
+        {
+            _executor.Initialise(@"
+                global x := 1
+                x := 2
+            ");
+            
+            _executor.ExecuteAll();
+            
+            var actual = _programState.GetVariable("x");
+
+            var expected = new ExpressionValue(2, ExpressionValueTypes.Number);
+            
+            Assert.Equal(expected, actual);
+        }
+        
+        [Fact]
+        public void LocalVariableAssignementHidesGlobal()
+        {
+            _executor.Initialise(@"
+                global x := 1
+                var x := 2
+            ");
+            
+            _executor.ExecuteAll();
+            
+            var actual = _programState.GetVariable("x");
+
+            var expected = new ExpressionValue(2, ExpressionValueTypes.Number);
+            
+            Assert.Equal(expected, actual);
+        }
     }
 }

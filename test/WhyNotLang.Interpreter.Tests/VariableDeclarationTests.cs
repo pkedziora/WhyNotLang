@@ -45,5 +45,18 @@ namespace WhyNotLang.Interpreter.Tests
             
             Assert.Equal(expected, actual);
         }
+        
+        [Fact]
+        public void ExecutesGlobalVariableDeclarationWithNumberExpression()
+        {
+            _executor.Initialise("global x := 1");
+            
+            _executor.ExecuteNext();
+            
+            var actual = _programState.GlobalScope.VariableValues["x"];
+            var expected = new ExpressionValue(1, ExpressionValueTypes.Number);
+            
+            Assert.Equal(expected, actual);
+        }
     }
 }

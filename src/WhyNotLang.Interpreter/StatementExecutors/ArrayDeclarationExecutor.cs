@@ -25,7 +25,7 @@ namespace WhyNotLang.Interpreter.StatementExecutors
             var arrayName = arrayDeclaration.ArrayName.Value;
             var arraySize = _expressionEvaluator.Eval(arrayDeclaration.IndexExpression);
             
-            _programState.DeclareArray(arrayName, (int)arraySize.Value);
+            _programState.DeclareArray(arrayName, (int)arraySize.Value, arrayDeclaration.IsGlobal);
             
             return ExpressionValue.Empty;
         }

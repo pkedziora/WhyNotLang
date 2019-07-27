@@ -145,5 +145,54 @@ namespace WhyNotLang.Interpreter.Tests
 
             Assert.Equal(expected, actual);
         }
+        
+        [Fact]
+        public void GlobalArrayValueAssignedInFunction()
+        {
+            _executor.Initialise(@"
+                global x[10]
+
+                function foo()
+                begin
+                    x[1] := 2
+                end
+
+                foo()
+                var y:= 1 + x[1] * 3 
+            ");
+            
+            _executor.ExecuteAll();
+            
+            var actual = _programState.GetVariable("y");
+
+            var expected = new ExpressionValue(7, ExpressionValueTypes.Number);
+
+            Assert.Equal(expected, actual);
+        }
+        
+        [Fact]
+        public void LocalArrayHidesGlobalArrayInFunction()
+        {
+            _executor.Initialise(@"
+                global x[10]
+
+                function foo()
+                begin
+                    var x[20]
+                    x[1] := 2
+                end
+                x[1] := 1
+                foo()
+                var y:= x[1] 
+            ");
+            
+            _executor.ExecuteAll();
+            
+            var actual = _programState.GetVariable("y");
+
+            var expected = new ExpressionValue(1, ExpressionValueTypes.Number);
+
+            Assert.Equal(expected, actual);
+        }
     }
 }

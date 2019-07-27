@@ -45,5 +45,19 @@ namespace WhyNotLang.Interpreter.Tests
             Assert.True(actual);
             Assert.Equal(10, actualSize);
         }
+        
+        [Fact]
+        public void ExecutesGlobalArrayDeclarationWithNumberExpression()
+        {
+            _executor.Initialise("global x[10]");
+            
+            _executor.ExecuteNext();
+            
+            var actual = _programState.IsArrayDefined("x");
+            var actualSize = _programState.GlobalScope.Arrays["x"].Length;
+
+            Assert.True(actual);
+            Assert.Equal(10, actualSize);
+        }
     }
 }

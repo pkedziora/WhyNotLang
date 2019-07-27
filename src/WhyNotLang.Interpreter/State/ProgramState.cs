@@ -9,14 +9,14 @@ namespace WhyNotLang.Interpreter.State
 {
     public class ProgramState : IProgramState
     {
-        public List<Scope> Scopes { get; }
-        public Scope CurrentScope => Scopes.LastOrDefault();
-        public Scope GlobalScope => Scopes.FirstOrDefault();
-        private Dictionary<string, FunctionDeclarationStatement> _functions;
+        public Scope GlobalScope => _scopes.FirstOrDefault();
+        public Scope CurrentScope => _scopes.LastOrDefault();
 
+        private readonly List<Scope> _scopes;
+        private readonly Dictionary<string, FunctionDeclarationStatement> _functions;
         public ProgramState()
         {
-            Scopes = new List<Scope>();
+            _scopes = new List<Scope>();
             AddScope("Global", true);
             AddScope("Main");
             _functions = new Dictionary<string, FunctionDeclarationStatement>();
@@ -25,13 +25,13 @@ namespace WhyNotLang.Interpreter.State
 
         public Scope AddScope(string name, bool isFunctionScope = false)
         {
-            Scopes.Add(new Scope(name, isFunctionScope));
+            _scopes.Add(new Scope(name, isFunctionScope));
             return CurrentScope;
         }
 
         public void RemoveScope()
         {
-            Scopes.RemoveAt(Scopes.Count - 1);
+            _scopes.RemoveAt(_scopes.Count - 1);
         }
 
         public FunctionDeclarationStatement GetFunction(string identifier)
@@ -218,20 +218,20 @@ namespace WhyNotLang.Interpreter.State
 
         private (Scope scope, bool isArray) FindScopeForIdentifier(string identifier)
         {
-            var scopeIndex = Scopes.Count;
+            var scopeIndex = _scopes.Count;
             do
             {
                 scopeIndex--;
-                if (Scopes[scopeIndex].VariableValues.ContainsKey(identifier))
+                if (_scopes[scopeIndex].VariableValues.ContainsKey(identifier))
                 {
-                    return (Scopes[scopeIndex], false);
+                    return (_scopes[scopeIndex], false);
                 }
                 
-                if (Scopes[scopeIndex].Arrays.ContainsKey(identifier))
+                if (_scopes[scopeIndex].Arrays.ContainsKey(identifier))
                 {
-                    return (Scopes[scopeIndex], true);
+                    return (_scopes[scopeIndex], true);
                 }
-            } while (!Scopes[scopeIndex].IsFunctionScope);
+            } while (!_scopes[scopeIndex].IsFunctionScope);
 
             if (GlobalScope.VariableValues.ContainsKey(identifier))
             {

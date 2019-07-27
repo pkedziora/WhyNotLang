@@ -5,6 +5,7 @@ namespace WhyNotLang.Interpreter.State
 {
     public interface IProgramState
     {
+        Scope GlobalScope { get; }
         Scope CurrentScope { get; }
         FunctionDeclarationStatement GetFunction(string identifier);
         void DeclareFunction(string identifier, FunctionDeclarationStatement statement);

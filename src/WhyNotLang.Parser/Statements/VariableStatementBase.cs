@@ -16,7 +16,7 @@ namespace WhyNotLang.Parser.Statements
         {
             VariableName = variableName;
             Expression = expression;
-            IsGlobal = false;
+            IsGlobal = isGlobal;
         }
         
         public override bool Equals(object obj)
