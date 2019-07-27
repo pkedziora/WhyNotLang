@@ -12,83 +12,80 @@ namespace WhyNotLang.Interpreter.Evaluators
     {
         public Dictionary<string, BuiltinFunctionDescription> FunctionDescriptions { get; }
 
+        public void Add(BuiltinFunctionDescription description)
+        {
+            FunctionDescriptions[description.FunctionName] = description;
+        }
+
+        public void Add(string functionName, List<ExpressionValueTypes> parameters,
+            Func<List<ExpressionValue>, ExpressionValue> implementation)
+        {
+            var functionDescription = new BuiltinFunctionDescription(functionName, parameters, implementation);
+            Add(functionDescription);
+        }
+
         public BuiltinFunctionCollection()
         {
-            FunctionDescriptions =
-                new Dictionary<string, BuiltinFunctionDescription>()
+            FunctionDescriptions = new Dictionary<string, BuiltinFunctionDescription>();
+            Add("ToString",
+                new List<ExpressionValueTypes> {ExpressionValueTypes.Number},
+                arguments =>
                 {
+                    var number = arguments.Single();
+                    if (number.Type != ExpressionValueTypes.Number)
                     {
-                        "ToString", new BuiltinFunctionDescription("ToString",
-                            new List<ExpressionValueTypes>() {ExpressionValueTypes.Number},
-                            arguments =>
-                            {
-                                var number = arguments.Single();
-                                if (number.Type != ExpressionValueTypes.Number)
-                                {
-                                    throw new Exception("Number expected");
-                                }
-
-                                return new ExpressionValue(number.Value.ToString(), ExpressionValueTypes.String);
-                            })
-                    },
-                    {
-                        "ToNumber", new BuiltinFunctionDescription("ToNumber",
-                            new List<ExpressionValueTypes>() {ExpressionValueTypes.Number},
-                            arguments =>
-                            {
-                                var str = arguments.Single();
-                                if (str.Type != ExpressionValueTypes.String)
-                                {
-                                    throw new Exception("String expected");
-                                }
-
-                                return new ExpressionValue(int.Parse((string) str.Value), ExpressionValueTypes.Number);
-                            })
-                    },
-                    {
-                        "Writeln", new BuiltinFunctionDescription("Writeln",
-                            new List<ExpressionValueTypes>() {ExpressionValueTypes.Number},
-                            arguments =>
-                            {
-                                var str = arguments.Single();
-                                if (str.Type != ExpressionValueTypes.String)
-                                {
-                                    throw new Exception("String expected");
-                                }
-
-                                Console.WriteLine(str.Value);
-                                return ExpressionValue.Empty;
-                            })
-                    },
-                    {
-                        "Readln", new BuiltinFunctionDescription("Readln",
-                            new List<ExpressionValueTypes>() {ExpressionValueTypes.Number},
-                            arguments =>
-                            {
-                                var str = Console.ReadLine();
-                                return new ExpressionValue(str, ExpressionValueTypes.String);
-                            })
+                        throw new Exception("Number expected");
                     }
-                };
+
+                    return new ExpressionValue(number.Value.ToString(), ExpressionValueTypes.String);
+                }
+            );
+
+            Add("ToNumber",
+                new List<ExpressionValueTypes> {ExpressionValueTypes.String},
+                arguments =>
+                {
+                    var str = arguments.Single();
+                    if (str.Type != ExpressionValueTypes.String)
+                    {
+                        throw new Exception("String expected");
+                    }
+
+                    return new ExpressionValue(int.Parse((string) str.Value), ExpressionValueTypes.Number);
+                });
+
+            Add("Writeln",
+                new List<ExpressionValueTypes>() {ExpressionValueTypes.String},
+                arguments =>
+                {
+                    var str = arguments.Single();
+                    if (str.Type != ExpressionValueTypes.String)
+                    {
+                        throw new Exception("String expected");
+                    }
+
+                    Console.WriteLine(str.Value);
+                    return ExpressionValue.Empty;
+                });
+
+            Add("Readln",
+                new List<ExpressionValueTypes>(),
+                arguments =>
+                {
+                    var str = Console.ReadLine();
+                    return new ExpressionValue(str, ExpressionValueTypes.String);
+                });
         }
-        
+
         public void DeclareBuiltinFunctions(IProgramState programState)
         {
-            programState.DeclareFunction("ToString",
-                new FunctionDeclarationStatement(new Token(TokenType.Identifier, "ToString"),
-                    new List<Token>() {new Token(TokenType.Identifier, "number")}));
-
-            programState.DeclareFunction("ToNumber",
-                new FunctionDeclarationStatement(new Token(TokenType.Identifier, "ToNumber"),
-                    new List<Token>() {new Token(TokenType.Identifier, "str")}));
-
-            programState.DeclareFunction("Writeln",
-                new FunctionDeclarationStatement(new Token(TokenType.Identifier, "Writeln"),
-                    new List<Token>() {new Token(TokenType.Identifier, "str")}));
-
-            programState.DeclareFunction("Readln",
-                new FunctionDeclarationStatement(new Token(TokenType.Identifier, "Readln"),
-                    new List<Token>()));
+            foreach (var description in FunctionDescriptions)
+            {
+                programState.DeclareFunction(description.Key, new FunctionDeclarationStatement(
+                    new Token(TokenType.Identifier, description.Key),
+                    description.Value.Parameters
+                        .Select((p, index) => new Token(TokenType.Identifier, $"p{index.ToString()}")).ToList()));
+            }
         }
     }
 }
