@@ -1,3 +1,4 @@
+using WhyNotLang.Interpreter.Evaluators;
 using WhyNotLang.Interpreter.Evaluators.ExpressionValues;
 using WhyNotLang.Parser.Statements;
 
@@ -5,6 +6,7 @@ namespace WhyNotLang.Interpreter.State
 {
     public interface IProgramState
     {
+        IBuiltinFunctionCollection BuiltinFunctionCollection { get; }
         Scope GlobalScope { get; }
         Scope CurrentScope { get; }
         FunctionDeclarationStatement GetFunction(string identifier);

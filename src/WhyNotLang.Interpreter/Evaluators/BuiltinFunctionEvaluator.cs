@@ -17,41 +17,15 @@ namespace WhyNotLang.Interpreter.Evaluators
         {
             _programState = programState;
         }
-        
-        public ExpressionValue Eval(string functionName, List<ExpressionValue> parameterValues)
+
+        public ExpressionValue Eval(string functionName, List<ExpressionValue> argumentValues)
         {
-            switch (functionName)
+            if (!_programState.BuiltinFunctionCollection.FunctionDescriptions.TryGetValue(functionName, out var functionDescription))
             {
-                case "ToString":
-                    return Functions.ToString(parameterValues.Single());
-                case "ToNumber":
-                    return Functions.ToNumber(parameterValues.Single());
-                case "Writeln":
-                    return Functions.Writeln(parameterValues.Single());
-                case "Readln":
-                    return Functions.Readln();
+                throw new ArgumentException($"Unexpected builtin function name {functionName}");
             }
-            
-            throw new ArgumentException("Unexpected builtin function name");
-        }
-        
-        public static void DeclareBuiltinFunctions(IProgramState programState)
-        {
-            programState.DeclareFunction("ToString", 
-                new FunctionDeclarationStatement(new Token(TokenType.Identifier, "ToString"),
-                    new List<Token>() {new Token(TokenType.Identifier, "number")}));
-            
-            programState.DeclareFunction("ToNumber", 
-                new FunctionDeclarationStatement(new Token(TokenType.Identifier, "ToNumber"),
-                    new List<Token>() {new Token(TokenType.Identifier, "str")}));
-            
-            programState.DeclareFunction("Writeln", 
-                new FunctionDeclarationStatement(new Token(TokenType.Identifier, "Writeln"),
-                    new List<Token>() {new Token(TokenType.Identifier, "str")}));
-            
-            programState.DeclareFunction("Readln", 
-                new FunctionDeclarationStatement(new Token(TokenType.Identifier, "Readln"),
-                    new List<Token>()));
+
+            return functionDescription.Implementation(argumentValues);
         }
     }
 }

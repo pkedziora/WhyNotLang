@@ -9,18 +9,20 @@ namespace WhyNotLang.Interpreter.State
 {
     public class ProgramState : IProgramState
     {
+        public IBuiltinFunctionCollection BuiltinFunctionCollection { get; }
         public Scope GlobalScope => _scopes.FirstOrDefault();
         public Scope CurrentScope => _scopes.LastOrDefault();
 
         private readonly List<Scope> _scopes;
         private readonly Dictionary<string, FunctionDeclarationStatement> _functions;
-        public ProgramState()
+        public ProgramState(IBuiltinFunctionCollection builtinFunctionCollection)
         {
+            BuiltinFunctionCollection = builtinFunctionCollection;
             _scopes = new List<Scope>();
             AddScope("Global", true);
             AddScope("Main");
             _functions = new Dictionary<string, FunctionDeclarationStatement>();
-            BuiltinFunctionEvaluator.DeclareBuiltinFunctions(this);
+            builtinFunctionCollection.DeclareBuiltinFunctions(this);
         }
 
         public Scope AddScope(string name, bool isFunctionScope = false)

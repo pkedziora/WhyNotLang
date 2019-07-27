@@ -30,6 +30,7 @@ namespace WhyNotLang.Cmd
                 .AddSingleton<IStatementIterator, StatementIterator>()
                 .AddSingleton<IExpressionEvaluator, ExpressionEvaluator>()
                 .AddSingleton<IProgramState, ProgramState>()
+                .AddSingleton<IBuiltinFunctionCollection, BuiltinFunctionCollection>()
                 .BuildServiceProvider();
 
             return serviceProvider;

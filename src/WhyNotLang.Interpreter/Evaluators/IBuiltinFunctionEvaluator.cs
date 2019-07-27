@@ -5,6 +5,6 @@ namespace WhyNotLang.Interpreter.Evaluators
 {
     public interface IBuiltinFunctionEvaluator
     {
-        ExpressionValue Eval(string functionName, List<ExpressionValue> parameterValues);
+        ExpressionValue Eval(string functionName, List<ExpressionValue> argumentValues);
     }
 }
