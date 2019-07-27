@@ -10,7 +10,6 @@ namespace WhyNotLang.Interpreter.Builtin
         Dictionary<string, BuiltinFunctionDescription> FunctionDescriptions { get; }
         void DeclareBuiltinFunctions(IProgramState programState);
 
-        void Add(string functionName, List<ExpressionValueTypes> parameters,
-            Func<List<ExpressionValue>, ExpressionValue> implementation);
+        void Add(string functionName, Func<List<ExpressionValue>, ExpressionValue> implementation);
     }
 }

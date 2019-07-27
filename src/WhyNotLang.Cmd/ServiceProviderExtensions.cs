@@ -13,7 +13,6 @@ namespace WhyNotLang.Cmd
         {
             var functionCollection = serviceProvider.GetRequiredService<IBuiltinFunctionCollection>();
             functionCollection.Add("Writeln",
-                new List<ExpressionValueTypes>() {ExpressionValueTypes.String},
                 arguments =>
                 {
                     var str = arguments.Single();
@@ -27,7 +26,6 @@ namespace WhyNotLang.Cmd
                 });
 
             functionCollection.Add("Readln",
-                new List<ExpressionValueTypes>(),
                 arguments =>
                 {
                     var str = Console.ReadLine();

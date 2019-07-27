@@ -18,10 +18,9 @@ namespace WhyNotLang.Interpreter.Builtin
             FunctionDescriptions[description.FunctionName] = description;
         }
 
-        public void Add(string functionName, List<ExpressionValueTypes> parameters,
-            Func<List<ExpressionValue>, ExpressionValue> implementation)
+        public void Add(string functionName, Func<List<ExpressionValue>, ExpressionValue> implementation)
         {
-            var functionDescription = new BuiltinFunctionDescription(functionName, parameters, implementation);
+            var functionDescription = new BuiltinFunctionDescription(functionName, implementation);
             Add(functionDescription);
         }
         
@@ -30,9 +29,7 @@ namespace WhyNotLang.Interpreter.Builtin
             foreach (var description in FunctionDescriptions)
             {
                 programState.DeclareFunction(description.Key, new FunctionDeclarationStatement(
-                    new Token(TokenType.Identifier, description.Key),
-                    description.Value.Parameters
-                        .Select((p, index) => new Token(TokenType.Identifier, $"p{index.ToString()}")).ToList()));
+                    new Token(TokenType.Identifier, description.Key), new List<Token>()));
             }
         }
 
@@ -40,7 +37,6 @@ namespace WhyNotLang.Interpreter.Builtin
         {
             FunctionDescriptions = new Dictionary<string, BuiltinFunctionDescription>();
             Add("ToString",
-                new List<ExpressionValueTypes> {ExpressionValueTypes.Number},
                 arguments =>
                 {
                     var number = arguments.Single();
@@ -54,7 +50,6 @@ namespace WhyNotLang.Interpreter.Builtin
             );
 
             Add("ToNumber",
-                new List<ExpressionValueTypes> {ExpressionValueTypes.String},
                 arguments =>
                 {
                     var str = arguments.Single();
