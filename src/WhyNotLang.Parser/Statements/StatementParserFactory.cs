@@ -21,6 +21,7 @@ namespace WhyNotLang.Parser.Statements
             switch (_tokenIterator.CurrentToken.Type)
             {
                 case TokenType.Var:
+                case TokenType.Global:
                     if (_tokenIterator.PeekToken(2).Type == TokenType.LeftBracket)
                     {
                         return new ArrayDeclarationParser(_tokenIterator, _expressionParser);

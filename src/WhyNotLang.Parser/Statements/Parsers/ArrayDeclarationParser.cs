@@ -16,11 +16,12 @@ namespace WhyNotLang.Parser.Statements.Parsers
         
         public IStatement Parse()
         {
-            if (_tokenIterator.CurrentToken.Type != TokenType.Var)
+            if (_tokenIterator.CurrentToken.Type != TokenType.Var && _tokenIterator.CurrentToken.Type != TokenType.Global)
             {
-                throw new ArgumentException("var expected");
+                throw new ArgumentException("var or global expected");
             }
             
+            var isGlobal = _tokenIterator.CurrentToken.Type == TokenType.Global;
             var arrayName = _tokenIterator.GetNextToken();
             
             //Parse brackets, should contain array size expression
@@ -41,7 +42,7 @@ namespace WhyNotLang.Parser.Statements.Parsers
             
             _tokenIterator.GetNextToken(); // Swallow ]
 
-            var statement = new ArrayDeclarationStatement(arrayName, arraySizeExpression);
+            var statement = new ArrayDeclarationStatement(arrayName, arraySizeExpression, isGlobal);
 
             return statement;
         }

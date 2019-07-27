@@ -42,6 +42,7 @@ namespace WhyNotLang.Tokenizer.Tests
         [InlineData("$", TokenType.Invalid)]
         [InlineData("[", TokenType.LeftBracket)]
         [InlineData("]", TokenType.RightBracket)]
+        [InlineData("global", TokenType.Global)]
         public void RecognizesSingleTokens(string tokenStr, TokenType expected)
         {
             var actual = _tokenizer.GetTokens(tokenStr);

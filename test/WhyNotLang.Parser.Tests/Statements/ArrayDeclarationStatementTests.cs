@@ -85,5 +85,20 @@ namespace WhyNotLang.Parser.Tests.Statements
             
             Assert.Equal(expected, actual);
         }
+        
+        [Fact]
+        public void ParsesGlobalArrayDeclarationWith3PartExpressionWithParens()
+        {
+            _parser.Initialise("global x[(1 + 2) * 3]");
+            var inner = TestHelpers.GetBinaryExpression(1, "+", 2);
+            var expression = TestHelpers.GetBinaryExpression(inner, "*", 3);
+            var expected = new ArrayDeclarationStatement(
+                new Token(TokenType.Identifier, "x"), 
+                expression, true);
+            
+            var actual = _parser.ParseNext();
+            
+            Assert.Equal(expected, actual);
+        }
     }
 }

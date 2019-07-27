@@ -8,13 +8,15 @@ namespace WhyNotLang.Parser.Statements
         public Token ArrayName { get; }
         public IExpression IndexExpression { get; }
         public StatementType Type => StatementType.ArrayDeclarationStatement;
-
-        public ArrayDeclarationStatement(Token arrayName, IExpression indexExpression)
+        public bool IsGlobal { get; }
+        
+        public ArrayDeclarationStatement(Token arrayName, IExpression indexExpression, bool isGlobal = false)
         {
             ArrayName = arrayName;
             IndexExpression = indexExpression;
+            IsGlobal = isGlobal;
         }
-        
+
         public override bool Equals(object obj)
         {
             var statement = obj as ArrayDeclarationStatement;
@@ -25,6 +27,7 @@ namespace WhyNotLang.Parser.Statements
 
             return ArrayName.Equals(statement.ArrayName) &&
                    IndexExpression.Equals(statement.IndexExpression) &&
+                   IsGlobal.Equals(statement.IsGlobal) &&
                    Type.Equals(statement.Type);
         }
 
@@ -35,6 +38,7 @@ namespace WhyNotLang.Parser.Statements
                 int hash = 17;
                 hash = hash * 23 + ArrayName.GetHashCode();
                 hash = hash * 23 + IndexExpression.GetHashCode();
+                hash = hash * 23 + IsGlobal.GetHashCode();
                 hash = hash * 23 + Type.GetHashCode();
                 
                 return hash;

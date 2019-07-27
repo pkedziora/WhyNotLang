@@ -71,7 +71,8 @@ namespace WhyNotLang.Tokenizer
                 {"==", TokenType.Equal},
                 {"!=", TokenType.NotEqual},
                 {"[", TokenType.LeftBracket},
-                {"]", TokenType.RightBracket}
+                {"]", TokenType.RightBracket},
+                {"global", TokenType.Global}
             };
         }
     }

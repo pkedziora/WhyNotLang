@@ -33,6 +33,7 @@ namespace WhyNotLang.Tokenizer
         Invalid,
         Eof,
         LeftBracket,
-        RightBracket
+        RightBracket,
+        Global
     }
 }

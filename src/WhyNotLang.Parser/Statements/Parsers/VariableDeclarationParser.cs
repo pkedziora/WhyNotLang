@@ -16,11 +16,12 @@ namespace WhyNotLang.Parser.Statements.Parsers
         
         public IStatement Parse()
         {
-            if (_tokenIterator.CurrentToken.Type != TokenType.Var)
+            if (_tokenIterator.CurrentToken.Type != TokenType.Var && _tokenIterator.CurrentToken.Type != TokenType.Global)
             {
-                throw new ArgumentException("var expected");
+                throw new ArgumentException("var or global expected");
             }
-            
+
+            var isGlobal = _tokenIterator.CurrentToken.Type == TokenType.Global;
             var variableName = _tokenIterator.GetNextToken();
             _tokenIterator.GetNextToken();
             if (_tokenIterator.CurrentToken.Type != TokenType.Assign)
@@ -30,7 +31,7 @@ namespace WhyNotLang.Parser.Statements.Parsers
 
             _tokenIterator.GetNextToken();
             var expression = _expressionParser.ParseNextExpression();
-            var statement = new VariableDeclarationStatement(variableName, expression);
+            var statement = new VariableDeclarationStatement(variableName, expression, isGlobal);
 
             return statement;
         }
