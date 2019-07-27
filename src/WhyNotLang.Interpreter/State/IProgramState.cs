@@ -14,7 +14,7 @@ namespace WhyNotLang.Interpreter.State
         ExpressionValue GetVariable(string identifier);
         bool IsVariableDefined(string identifier);
         bool IsArrayDefined(string identifier);
-        void DeclareVariable(string identifier, ExpressionValue value, bool isGlobal = false);
+        ExpressionValue DeclareVariable(string identifier, ExpressionValue value, bool isGlobal = false);
         void AssignVariable(string identifier, ExpressionValue value);
         Scope AddScope(string name, bool isFunctionScope = false);
         void RemoveScope();

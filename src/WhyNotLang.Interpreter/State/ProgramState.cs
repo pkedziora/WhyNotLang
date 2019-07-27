@@ -174,7 +174,7 @@ namespace WhyNotLang.Interpreter.State
             return array;
         }
         
-        public void DeclareVariable(string identifier, ExpressionValue value, bool isGlobal = false)
+        public ExpressionValue DeclareVariable(string identifier, ExpressionValue value, bool isGlobal = false)
         {
             var scope = isGlobal ? GlobalScope : CurrentScope;
             if (!CanBeDeclaredInScope(identifier, scope))
@@ -183,6 +183,8 @@ namespace WhyNotLang.Interpreter.State
             }
             
             scope.VariableValues.Add(identifier, value);
+
+            return value;
         }
         
         public void DeclareArrayByReference(string identifier, ExpressionValue expressionValue)

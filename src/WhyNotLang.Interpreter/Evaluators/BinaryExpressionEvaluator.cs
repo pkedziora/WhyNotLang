@@ -42,6 +42,11 @@ namespace WhyNotLang.Interpreter.Evaluators
                 case ExpressionValueTypes.Number:
                     return new ExpressionValue(CalculateNumberOperation((int) left.Value, op, (int) right.Value), ExpressionValueTypes.Number);
                 case ExpressionValueTypes.String:
+                    if (op.Value == "==")
+                    {
+                        return new ExpressionValue(CastBoolToInt(left.Equals(right)), ExpressionValueTypes.Number);
+                    }
+                    
                     return new ExpressionValue(CalculateStringOperation((string)left.Value, op, (string)right.Value), ExpressionValueTypes.String);
             }
             
@@ -52,11 +57,12 @@ namespace WhyNotLang.Interpreter.Evaluators
         {
             if (op.Type != TokenType.Plus)
             {
-                throw new ArgumentException("Only + operation supported for strings");
+                throw new ArgumentException("Only + and == operation supported for strings");
             }
 
             return left + right;
         }
+        
         private int CalculateNumberOperation(int left, Token op, int right)
         {
             switch (op.Type)

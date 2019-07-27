@@ -119,5 +119,18 @@ namespace WhyNotLang.Interpreter.Tests
             
             Assert.Equal(expected, actual);
         }
+        
+        [Theory]
+        [InlineData("\"abc\" == \"def\"", 0)]
+        [InlineData("\"abc\" == \"abc\"", 1)]
+        public void EvalBinaryExpressionWithStringEquality(string strExpression, int expectedResult)
+        {
+            var input = _expressionParser.ParseExpression("\"abc\" == \"def\"");
+
+            var actual = _expressionEvaluator.Eval(input);
+            var expected = new ExpressionValue(0, ExpressionValueTypes.Number);
+            
+            Assert.Equal(expected, actual);
+        }
     }
 }
