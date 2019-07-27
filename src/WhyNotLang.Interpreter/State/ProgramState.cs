@@ -11,12 +11,14 @@ namespace WhyNotLang.Interpreter.State
     {
         public List<Scope> Scopes { get; }
         public Scope CurrentScope => Scopes.LastOrDefault();
+        public Scope GlobalScope => Scopes.FirstOrDefault();
         private Dictionary<string, FunctionDeclarationStatement> _functions;
 
         public ProgramState()
         {
             Scopes = new List<Scope>();
-            AddScope("Main", true);
+            AddScope("Global", true);
+            AddScope("Main");
             _functions = new Dictionary<string, FunctionDeclarationStatement>();
             BuiltinFunctionEvaluator.DeclareBuiltinFunctions(this);
         }
@@ -131,29 +133,11 @@ namespace WhyNotLang.Interpreter.State
             
             throw new ArgumentException($"Array {identifier} is not defined");
         }
-        
-        public ExpressionValue[] DeclareArray(string identifier, int size)
+
+        private bool CanBeDeclaredInScope(string identifier, Scope scope)
         {
-            if (!CanBeDeclaredInCurrentScope(identifier))
-            {
-                throw new ArgumentException($"{identifier} has already been declared");
-            }
-
-            var array = new ExpressionValue[size];
-            for (int i = 0; i < size; i++)
-            {
-                array[i] = new ExpressionValue(0, ExpressionValueTypes.Number);
-            }
-            
-            CurrentScope.Arrays.Add(identifier, array);
-
-            return array;
-        }
-
-        private bool CanBeDeclaredInCurrentScope(string identifier)
-        {
-            return !CurrentScope.VariableValues.ContainsKey(identifier) &&
-                   !CurrentScope.Arrays.ContainsKey(identifier) &&
+            return !scope.VariableValues.ContainsKey(identifier) &&
+                   !scope.Arrays.ContainsKey(identifier) &&
                    !_functions.ContainsKey(identifier);
         }
         
@@ -169,19 +153,39 @@ namespace WhyNotLang.Interpreter.State
             return result.scope != null && result.scope.Arrays.ContainsKey(identifier);
         }
         
-        public void DeclareVariable(string identifier, ExpressionValue value)
+        public ExpressionValue[] DeclareArray(string identifier, int size, bool isGlobal = false)
         {
-            if (!CanBeDeclaredInCurrentScope(identifier))
+            var scope = isGlobal ? GlobalScope : CurrentScope;
+            if (!CanBeDeclaredInScope(identifier, scope))
+            {
+                throw new ArgumentException($"{identifier} has already been declared");
+            }
+
+            var array = new ExpressionValue[size];
+            for (int i = 0; i < size; i++)
+            {
+                array[i] = new ExpressionValue(0, ExpressionValueTypes.Number);
+            }
+            
+            scope.Arrays.Add(identifier, array);
+
+            return array;
+        }
+        
+        public void DeclareVariable(string identifier, ExpressionValue value, bool isGlobal = false)
+        {
+            var scope = isGlobal ? GlobalScope : CurrentScope;
+            if (!CanBeDeclaredInScope(identifier, scope))
             {
                 throw new ArgumentException($"{identifier} has already been declared");
             }
             
-            CurrentScope.VariableValues.Add(identifier, value);
+            scope.VariableValues.Add(identifier, value);
         }
         
         public void DeclareArrayByReference(string identifier, ExpressionValue expressionValue)
         {
-            if (!CanBeDeclaredInCurrentScope(identifier))
+            if (!CanBeDeclaredInScope(identifier, CurrentScope))
             {
                 throw new ArgumentException($"{identifier} has already been declared");
             }
@@ -229,6 +233,16 @@ namespace WhyNotLang.Interpreter.State
                 }
             } while (!Scopes[scopeIndex].IsFunctionScope);
 
+            if (GlobalScope.VariableValues.ContainsKey(identifier))
+            {
+                return (GlobalScope, false);
+            }
+                
+            if (GlobalScope.Arrays.ContainsKey(identifier))
+            {
+                return (GlobalScope, true);
+            }
+            
             return (null, false);
         }
     }
