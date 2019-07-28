@@ -1,0 +1,38 @@
+﻿@page "/"
+@using WhyNotLang.Interpreter
+@using WhyNotLang.Interpreter.State
+@using Interpreter.Evaluators.ExpressionValues;
+@inject IExecutor Executor
+@inject IProgramState ProgramState
+
+<h1>Hello, world!</h1>
+
+<button class="btn btn-primary" @onclick="Toggle">Toggle</button>
+
+<button class="btn btn-primary" @onclick="Execute">Execute</button>
+@code {
+    bool toggle = false;
+
+    void Toggle()
+    {
+        toggle = !toggle;
+        ProgramState.AssignVariable("toggle", new ExpressionValue(IntToBool(toggle), ExpressionValueTypes.Number));
+    }
+
+    void Execute()
+    {
+        Executor.Initialise(@"
+        while (1)
+            Writeln(""Toggle value: "" + ToString(toggle))
+");
+
+
+        ProgramState.DeclareVariable("toggle", new ExpressionValue(IntToBool(toggle), ExpressionValueTypes.Number), true);
+        Executor.ExecuteAll();
+    }
+
+    private int IntToBool(bool val)
+    {
+        return val ? 1 : 0;
+    }
+}

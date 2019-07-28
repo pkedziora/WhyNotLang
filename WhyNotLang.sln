@@ -1,22 +1,27 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WhyNotLang.Tokenizer", "src\WhyNotLang.Tokenizer\WhyNotLang.Tokenizer.csproj", "{242BF67C-87D0-462E-AD69-4DF97E060A05}"
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29123.89
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WhyNotLang.Tokenizer", "src\WhyNotLang.Tokenizer\WhyNotLang.Tokenizer.csproj", "{242BF67C-87D0-462E-AD69-4DF97E060A05}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WhyNotLang.Tokenizer.Tests", "test\WhyNotLang.Tokenizer.Tests\WhyNotLang.Tokenizer.Tests.csproj", "{660712F2-EC67-4BEC-BB36-90CDBCBB242A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WhyNotLang.Tokenizer.Tests", "test\WhyNotLang.Tokenizer.Tests\WhyNotLang.Tokenizer.Tests.csproj", "{660712F2-EC67-4BEC-BB36-90CDBCBB242A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WhyNotLang.Parser", "src\WhyNotLang.Parser\WhyNotLang.Parser.csproj", "{7CF2A44B-976C-464B-B908-720CFF83BAF5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WhyNotLang.Parser", "src\WhyNotLang.Parser\WhyNotLang.Parser.csproj", "{7CF2A44B-976C-464B-B908-720CFF83BAF5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WhyNotLang.Parser.Tests", "test\WhyNotLang.Parser.Tests\WhyNotLang.Parser.Tests.csproj", "{BB6353DC-A9B7-43FD-9769-4FCE012FA048}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WhyNotLang.Parser.Tests", "test\WhyNotLang.Parser.Tests\WhyNotLang.Parser.Tests.csproj", "{BB6353DC-A9B7-43FD-9769-4FCE012FA048}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WhyNotLang.Interpreter", "src\WhyNotLang.Interpreter\WhyNotLang.Interpreter.csproj", "{90B8F30A-50C7-4B7F-A05C-1E89AEE428F3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WhyNotLang.Interpreter", "src\WhyNotLang.Interpreter\WhyNotLang.Interpreter.csproj", "{90B8F30A-50C7-4B7F-A05C-1E89AEE428F3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WhyNotLang.Interpreter.Tests", "test\WhyNotLang.Interpreter.Tests\WhyNotLang.Interpreter.Tests.csproj", "{C76566AB-2F02-4CE2-AEB0-54DA8669A997}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WhyNotLang.Interpreter.Tests", "test\WhyNotLang.Interpreter.Tests\WhyNotLang.Interpreter.Tests.csproj", "{C76566AB-2F02-4CE2-AEB0-54DA8669A997}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WhyNotLang.Test.Common", "test\WhyNotLang.Test.Common\WhyNotLang.Test.Common.csproj", "{F9DD8476-F43E-42EE-AB7B-5993ABBEFFBB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WhyNotLang.Test.Common", "test\WhyNotLang.Test.Common\WhyNotLang.Test.Common.csproj", "{F9DD8476-F43E-42EE-AB7B-5993ABBEFFBB}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{C715721F-7979-4494-9035-21DEB20C2FA1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WhyNotLang.Cmd", "src\WhyNotLang.Cmd\WhyNotLang.Cmd.csproj", "{4347D711-A9E9-4C83-AAC2-BB2A5CD1D82E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WhyNotLang.Cmd", "src\WhyNotLang.Cmd\WhyNotLang.Cmd.csproj", "{4347D711-A9E9-4C83-AAC2-BB2A5CD1D82E}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WhyNotLang.Web", "src\WhyNotLang.Web\WhyNotLang.Web.csproj", "{34FDFAAB-D8EF-4E4F-92F9-17E02779EC45}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -56,11 +61,21 @@ Global
 		{4347D711-A9E9-4C83-AAC2-BB2A5CD1D82E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4347D711-A9E9-4C83-AAC2-BB2A5CD1D82E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4347D711-A9E9-4C83-AAC2-BB2A5CD1D82E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{34FDFAAB-D8EF-4E4F-92F9-17E02779EC45}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{34FDFAAB-D8EF-4E4F-92F9-17E02779EC45}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{34FDFAAB-D8EF-4E4F-92F9-17E02779EC45}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{34FDFAAB-D8EF-4E4F-92F9-17E02779EC45}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
-		{C76566AB-2F02-4CE2-AEB0-54DA8669A997} = {C715721F-7979-4494-9035-21DEB20C2FA1}
-		{BB6353DC-A9B7-43FD-9769-4FCE012FA048} = {C715721F-7979-4494-9035-21DEB20C2FA1}
 		{660712F2-EC67-4BEC-BB36-90CDBCBB242A} = {C715721F-7979-4494-9035-21DEB20C2FA1}
+		{BB6353DC-A9B7-43FD-9769-4FCE012FA048} = {C715721F-7979-4494-9035-21DEB20C2FA1}
+		{C76566AB-2F02-4CE2-AEB0-54DA8669A997} = {C715721F-7979-4494-9035-21DEB20C2FA1}
 		{F9DD8476-F43E-42EE-AB7B-5993ABBEFFBB} = {C715721F-7979-4494-9035-21DEB20C2FA1}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {6EFD968D-6CA2-494E-BCCD-9373203E7605}
 	EndGlobalSection
 EndGlobal
