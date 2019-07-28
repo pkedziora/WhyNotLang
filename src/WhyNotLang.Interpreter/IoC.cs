@@ -11,11 +11,20 @@ using WhyNotLang.Tokenizer;
 
 namespace WhyNotLang.Interpreter
 {
-    public class IoC
+    public static class IoC
     {
         public static IServiceProvider BuildServiceProvider()
         {
             var serviceProvider = new ServiceCollection()
+                .RegisterWhyNotLangServices()
+                .BuildServiceProvider();
+
+            return serviceProvider;
+        }
+
+        public static IServiceCollection RegisterWhyNotLangServices(this IServiceCollection serviceCollection)
+        {
+            serviceCollection
                 .AddSingleton<IExecutor, Executor>()
                 .AddSingleton<IStatementIterator, StatementIterator>()
                 .AddSingleton<IStatementExecutorFactory, StatementExecutorFactory>()
@@ -31,10 +40,9 @@ namespace WhyNotLang.Interpreter
                 .AddSingleton<IStatementIterator, StatementIterator>()
                 .AddSingleton<IExpressionEvaluator, ExpressionEvaluator>()
                 .AddSingleton<IProgramState, ProgramState>()
-                .AddSingleton<IBuiltinFunctionCollection, BuiltinFunctionCollection>()
-                .BuildServiceProvider();
+                .AddSingleton<IBuiltinFunctionCollection, BuiltinFunctionCollection>();
 
-            return serviceProvider;
+            return serviceCollection;
         }
     }
 }
