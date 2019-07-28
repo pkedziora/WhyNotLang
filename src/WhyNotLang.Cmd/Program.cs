@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Threading.Tasks;
 using Microsoft.Extensions.DependencyInjection;
 using WhyNotLang.Interpreter;
 
@@ -7,7 +8,7 @@ namespace WhyNotLang.Cmd
 {
     class Program
     {
-        static void Main(string[] args)
+        static async Task Main(string[] args)
         {
             string fileName;
             if(System.Diagnostics.Debugger.IsAttached)
@@ -31,7 +32,7 @@ namespace WhyNotLang.Cmd
             var executor = serviceProvider.GetService<IExecutor>();
             var program = File.ReadAllText(fileName);
             executor.Initialise(program);
-            executor.ExecuteAll();
+            await executor.ExecuteAll();
 
             if (System.Diagnostics.Debugger.IsAttached)
             {
