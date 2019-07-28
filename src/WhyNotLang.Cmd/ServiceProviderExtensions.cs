@@ -1,5 +1,6 @@
 using System;
 using System.Linq;
+using System.Threading.Tasks;
 using Microsoft.Extensions.DependencyInjection;
 using WhyNotLang.Interpreter.Builtin;
 using WhyNotLang.Interpreter.Evaluators.ExpressionValues;
@@ -12,7 +13,7 @@ namespace WhyNotLang.Cmd
         {
             var functionCollection = serviceProvider.GetRequiredService<IBuiltinFunctionCollection>();
             functionCollection.Add("Writeln",
-                arguments =>
+                async arguments =>
                 {
                     var str = arguments.Single();
                     if (str.Type != ExpressionValueTypes.String)
@@ -25,7 +26,7 @@ namespace WhyNotLang.Cmd
                 });
 
             functionCollection.Add("Readln",
-                arguments =>
+                async arguments =>
                 {
                     var str = Console.ReadLine();
                     return new ExpressionValue(str, ExpressionValueTypes.String);

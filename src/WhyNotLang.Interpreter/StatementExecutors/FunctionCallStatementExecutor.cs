@@ -22,7 +22,7 @@ namespace WhyNotLang.Interpreter.StatementExecutors
         public async Task<ExpressionValue> Execute()
         {
             var callStatement = _statementIterator.CurrentStatement as FunctionCallStatement;
-            _expressionEvaluator.Eval(callStatement.FunctionExpression);
+            await _expressionEvaluator.Eval(callStatement.FunctionExpression);
             
             return ExpressionValue.Empty;
         }

@@ -28,7 +28,6 @@ namespace WhyNotLang.Interpreter.StatementExecutors
             {
                 await newExecutor.ExecuteAll();
                 newExecutor.ResetPosition();
-                await Task.Delay(1);
             }
             
             return ExpressionValue.Empty;

@@ -35,7 +35,7 @@ namespace WhyNotLang.Interpreter.Evaluators
 
             if (functionDeclaration.IsBuiltin)
             {
-                return _builtinEvaluator.Eval(functionExpression.Name.Value, argumentsValues);
+                return await _builtinEvaluator.Eval(functionExpression.Name.Value, argumentsValues);
             }
 
             _programState.AddScope(functionDeclaration.Name.Value, true);

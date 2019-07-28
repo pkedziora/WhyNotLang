@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using WhyNotLang.Interpreter.Evaluators.ExpressionValues;
 using WhyNotLang.Interpreter.State;
 using WhyNotLang.Parser.Statements;
@@ -17,7 +18,7 @@ namespace WhyNotLang.Interpreter.Builtin
             FunctionDescriptions[description.FunctionName] = description;
         }
 
-        public void Add(string functionName, Func<List<ExpressionValue>, ExpressionValue> implementation)
+        public void Add(string functionName, Func<List<ExpressionValue>, Task<ExpressionValue>> implementation)
         {
             var functionDescription = new BuiltinFunctionDescription(functionName, implementation);
             Add(functionDescription);
@@ -36,7 +37,7 @@ namespace WhyNotLang.Interpreter.Builtin
         {
             FunctionDescriptions = new Dictionary<string, BuiltinFunctionDescription>();
             Add("ToString",
-                arguments =>
+                async arguments =>
                 {
                     var number = arguments.Single();
                     if (number.Type != ExpressionValueTypes.Number)
@@ -49,7 +50,7 @@ namespace WhyNotLang.Interpreter.Builtin
             );
 
             Add("ToNumber",
-                arguments =>
+                async arguments =>
                 {
                     var str = arguments.Single();
                     if (str.Type != ExpressionValueTypes.String)
@@ -58,6 +59,20 @@ namespace WhyNotLang.Interpreter.Builtin
                     }
 
                     return new ExpressionValue(int.Parse((string) str.Value), ExpressionValueTypes.Number);
+            });
+
+            Add("Delay",
+                async arguments =>
+                {
+                    var number = arguments.Single();
+                    if (number.Type != ExpressionValueTypes.Number)
+                    {
+                        throw new Exception("Number expected");
+                    }
+
+                    await Task.Delay((int)number.Value);
+
+                    return ExpressionValue.Empty;
                 });
         }
     }

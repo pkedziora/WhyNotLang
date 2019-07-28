@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using WhyNotLang.Interpreter.Evaluators.ExpressionValues;
 using WhyNotLang.Interpreter.State;
 
@@ -14,14 +15,14 @@ namespace WhyNotLang.Interpreter.Evaluators
             _programState = programState;
         }
 
-        public ExpressionValue Eval(string functionName, List<ExpressionValue> argumentValues)
+        public async Task<ExpressionValue> Eval(string functionName, List<ExpressionValue> argumentValues)
         {
             if (!_programState.BuiltinFunctionCollection.FunctionDescriptions.TryGetValue(functionName, out var functionDescription))
             {
                 throw new ArgumentException($"Unexpected builtin function name {functionName}");
             }
 
-            return functionDescription.Implementation(argumentValues);
+            return await functionDescription.Implementation(argumentValues);
         }
     }
 }

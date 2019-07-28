@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using WhyNotLang.Interpreter.Evaluators.ExpressionValues;
 using WhyNotLang.Interpreter.State;
 
@@ -10,6 +11,6 @@ namespace WhyNotLang.Interpreter.Builtin
         Dictionary<string, BuiltinFunctionDescription> FunctionDescriptions { get; }
         void DeclareBuiltinFunctions(IProgramState programState);
 
-        void Add(string functionName, Func<List<ExpressionValue>, ExpressionValue> implementation);
+        void Add(string functionName, Func<List<ExpressionValue>, Task<ExpressionValue>> implementation);
     }
 }

@@ -12,7 +12,7 @@ namespace WhyNotLang.Web
         {
             var functionCollection = serviceProvider.GetRequiredService<IBuiltinFunctionCollection>();
             functionCollection.Add("Writeln",
-                arguments =>
+                async arguments =>
                 {
                     var str = arguments.Single();
                     if (str.Type != ExpressionValueTypes.String)

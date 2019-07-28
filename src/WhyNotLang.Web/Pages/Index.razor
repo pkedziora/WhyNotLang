@@ -19,16 +19,19 @@
         ProgramState.AssignVariable("toggle", new ExpressionValue(IntToBool(toggle), ExpressionValueTypes.Number));
     }
 
-    void Execute()
+    async Task Execute()
     {
         Executor.Initialise(@"
         while (1)
+        begin
             Writeln(""Toggle value: "" + ToString(toggle))
+            Delay(1)
+        end
 ");
 
 
         ProgramState.DeclareVariable("toggle", new ExpressionValue(IntToBool(toggle), ExpressionValueTypes.Number), true);
-        Executor.ExecuteAll();
+        await Executor.ExecuteAll();
     }
 
     private int IntToBool(bool val)
