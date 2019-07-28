@@ -16,13 +16,13 @@ namespace WhyNotLang.Interpreter
         public static IServiceProvider BuildServiceProvider()
         {
             var serviceProvider = new ServiceCollection()
-                .RegisterWhyNotLangServices()
+                .AddWhyNotLang()
                 .BuildServiceProvider();
 
             return serviceProvider;
         }
 
-        public static IServiceCollection RegisterWhyNotLangServices(this IServiceCollection serviceCollection)
+        public static IServiceCollection AddWhyNotLang(this IServiceCollection serviceCollection)
         {
             serviceCollection
                 .AddSingleton<IExecutor, Executor>()

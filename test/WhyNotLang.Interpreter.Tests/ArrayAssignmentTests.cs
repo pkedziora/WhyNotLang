@@ -1,4 +1,5 @@
 using System;
+using System.Threading.Tasks;
 using Microsoft.Extensions.DependencyInjection;
 using WhyNotLang.Interpreter.Evaluators.ExpressionValues;
 using WhyNotLang.Interpreter.State;
@@ -19,14 +20,14 @@ namespace WhyNotLang.Interpreter.Tests
         }
 
         [Fact]
-        public void ExecutesArrayAssignementWithNumberExpression()
+        public async Task ExecutesArrayAssignementWithNumberExpression()
         {
             _executor.Initialise(@"
                 var x[10]
                 x[0] := 1
             ");
             
-            _executor.ExecuteAll();
+            await _executor.ExecuteAll();
 
             var actual = _programState.CurrentScope.Arrays["x"][0].Value;
 
@@ -34,7 +35,7 @@ namespace WhyNotLang.Interpreter.Tests
         }
         
         [Fact]
-        public void Executes2ArrayAssignementsWithComplexExpressions()
+        public async Task Executes2ArrayAssignementsWithComplexExpressions()
         {
             _executor.Initialise(@"
                 var x[10]
@@ -42,7 +43,7 @@ namespace WhyNotLang.Interpreter.Tests
                 x[1] := (10 * (4/4) + (2 - 1))
             ");
             
-            _executor.ExecuteAll();
+            await _executor.ExecuteAll();
 
             var actual0 = _programState.CurrentScope.Arrays["x"][0].Value;
             var actual1 = _programState.CurrentScope.Arrays["x"][1].Value;
@@ -52,13 +53,13 @@ namespace WhyNotLang.Interpreter.Tests
         }
 
         [Fact]
-        public void ExecutesVariableDeclarationWithComplexExpression()
+        public async Task ExecutesVariableDeclarationWithComplexExpression()
         {
             _executor.Initialise(@"
                 var abc:=100
                 abc := (10 * (4/4) + (2 - 1))");
             
-            _executor.ExecuteAll();
+            await _executor.ExecuteAll();
             
             var actual = _programState.GetVariable("abc");
 
@@ -68,28 +69,28 @@ namespace WhyNotLang.Interpreter.Tests
         }
         
         [Fact]
-        public void ThrowsDuringArrayAssignementWhenUndeclared()
+        public async Task ThrowsDuringArrayAssignementWhenUndeclared()
         {
             _executor.Initialise(@"
                 x[0] := 2
             ");
 
-            Assert.Throws<ArgumentException>(() => _executor.ExecuteAll());
+            await Assert.ThrowsAsync<ArgumentException>(async () => await _executor.ExecuteAll());
         }
         
         [Fact]
-        public void ThrowsDuringArrayAssignementWhenOutOfRange()
+        public async Task ThrowsDuringArrayAssignementWhenOutOfRange()
         {
             _executor.Initialise(@"
                 var x[10]
                 x[10] := 2
             ");
 
-            Assert.Throws<ArgumentException>(() => _executor.ExecuteAll());
+            await Assert.ThrowsAsync<ArgumentException>(async () => await _executor.ExecuteAll());
         }
         
         [Fact]
-        public void ArrayValueCanBeRetrieved()
+        public async Task ArrayValueCanBeRetrieved()
         {
             _executor.Initialise(@"
                 var x[10]
@@ -97,7 +98,7 @@ namespace WhyNotLang.Interpreter.Tests
                 var y:= x[1] 
             ");
             
-            _executor.ExecuteAll();
+            await _executor.ExecuteAll();
             
             var actual = _programState.GetVariable("y");
 
@@ -107,7 +108,7 @@ namespace WhyNotLang.Interpreter.Tests
         }
         
         [Fact]
-        public void ArrayValueUsedInExpressionWithHighPrecedenceOnTheRight()
+        public async Task ArrayValueUsedInExpressionWithHighPrecedenceOnTheRight()
         {
             _executor.Initialise(@"
                 var x[10]
@@ -115,7 +116,7 @@ namespace WhyNotLang.Interpreter.Tests
                 var y:= 1 + x[1] * 3 
             ");
             
-            _executor.ExecuteAll();
+            await _executor.ExecuteAll();
             
             var actual = _programState.GetVariable("y");
 
@@ -125,7 +126,7 @@ namespace WhyNotLang.Interpreter.Tests
         }
         
         [Fact]
-        public void ArrayCanBePassedByReferenceToFunctionAndModified()
+        public async Task ArrayCanBePassedByReferenceToFunctionAndModified()
         {
             _executor.Initialise(@"
                 function foo(array)
@@ -136,7 +137,7 @@ namespace WhyNotLang.Interpreter.Tests
                 foo(bar)         
             ");
             
-            _executor.ExecuteAll();
+            await _executor.ExecuteAll();
             
             var actual = _programState.GetArrayItem("bar", 0);
 
@@ -146,7 +147,7 @@ namespace WhyNotLang.Interpreter.Tests
         }
         
         [Fact]
-        public void GlobalArrayValueAssignedInFunction()
+        public async Task GlobalArrayValueAssignedInFunction()
         {
             _executor.Initialise(@"
                 global x[10]
@@ -160,7 +161,7 @@ namespace WhyNotLang.Interpreter.Tests
                 var y:= 1 + x[1] * 3 
             ");
             
-            _executor.ExecuteAll();
+            await _executor.ExecuteAll();
             
             var actual = _programState.GetVariable("y");
 
@@ -170,7 +171,7 @@ namespace WhyNotLang.Interpreter.Tests
         }
         
         [Fact]
-        public void LocalArrayHidesGlobalArrayInFunction()
+        public async Task LocalArrayHidesGlobalArrayInFunction()
         {
             _executor.Initialise(@"
                 global x[10]
@@ -185,7 +186,7 @@ namespace WhyNotLang.Interpreter.Tests
                 var y:= x[1] 
             ");
             
-            _executor.ExecuteAll();
+            await _executor.ExecuteAll();
             
             var actual = _programState.GetVariable("y");
 

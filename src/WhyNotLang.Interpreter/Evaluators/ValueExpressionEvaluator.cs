@@ -1,4 +1,5 @@
 using System;
+using System.Threading.Tasks;
 using WhyNotLang.Interpreter.Evaluators.ExpressionValues;
 using WhyNotLang.Interpreter.State;
 using WhyNotLang.Parser.Expressions;
@@ -15,7 +16,7 @@ namespace WhyNotLang.Interpreter.Evaluators
             _programState = programState;
         }
 
-        public ExpressionValue Eval(IExpression expression)
+        public async Task<ExpressionValue> Eval(IExpression expression)
         {
             if (expression.Type != ExpressionType.Value)
             {

@@ -1,4 +1,5 @@
 using Microsoft.Extensions.DependencyInjection;
+using System.Threading.Tasks;
 using WhyNotLang.Interpreter.State;
 using Xunit;
 
@@ -17,11 +18,11 @@ namespace WhyNotLang.Interpreter.Tests
         }
 
         [Fact]
-        public void ExecutesArrayDeclarationWithNumberExpression()
+        public async Task ExecutesArrayDeclarationWithNumberExpression()
         {
             _executor.Initialise("var x[10]");
             
-            _executor.ExecuteNext();
+            await _executor.ExecuteNext();
             
             var actual = _programState.IsArrayDefined("x");
             var actualSize = _programState.CurrentScope.Arrays["x"].Length;
@@ -31,11 +32,11 @@ namespace WhyNotLang.Interpreter.Tests
         }
         
         [Fact]
-        public void ExecutesArrayDeclarationWithArithmeticExpressionAsSize()
+        public async Task ExecutesArrayDeclarationWithArithmeticExpressionAsSize()
         {
             _executor.Initialise("var x[2 + 2 * 4]");
             
-            _executor.ExecuteNext();
+            await _executor.ExecuteNext();
             
             var actual = _programState.IsArrayDefined("x");
             var actualSize = _programState.CurrentScope.Arrays["x"].Length;
@@ -45,11 +46,11 @@ namespace WhyNotLang.Interpreter.Tests
         }
         
         [Fact]
-        public void ExecutesGlobalArrayDeclarationWithNumberExpression()
+        public async Task ExecutesGlobalArrayDeclarationWithNumberExpression()
         {
             _executor.Initialise("global x[10]");
             
-            _executor.ExecuteNext();
+            await _executor.ExecuteNext();
             
             var actual = _programState.IsArrayDefined("x");
             var actualSize = _programState.GlobalScope.Arrays["x"].Length;

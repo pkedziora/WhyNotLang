@@ -1,4 +1,5 @@
 using System;
+using System.Threading.Tasks;
 using WhyNotLang.Interpreter.Evaluators;
 using WhyNotLang.Interpreter.Evaluators.ExpressionValues;
 using WhyNotLang.Interpreter.State;
@@ -20,12 +21,12 @@ namespace WhyNotLang.Interpreter.StatementExecutors
             _programState = programState;
         }
         
-        public ExpressionValue Execute()
+        public async Task<ExpressionValue> Execute()
         {
             var arrayAssignement = _statementIterator.CurrentStatement as ArrayAssignmentStatement;
             var arrayName = arrayAssignement.ArrayName.Value;
-            var arrayIndexValue = _expressionEvaluator.Eval(arrayAssignement.IndexExpression);
-            var arrayItemValue = _expressionEvaluator.Eval(arrayAssignement.ValExpression);
+            var arrayIndexValue = await _expressionEvaluator.Eval(arrayAssignement.IndexExpression);
+            var arrayItemValue = await _expressionEvaluator.Eval(arrayAssignement.ValExpression);
 
             if (arrayIndexValue.Type != ExpressionValueTypes.Number)
             {

@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using WhyNotLang.Interpreter.Evaluators;
 using WhyNotLang.Interpreter.Evaluators.ExpressionValues;
 using WhyNotLang.Interpreter.State;
@@ -19,10 +20,10 @@ namespace WhyNotLang.Interpreter.StatementExecutors
             _programState = programState;
         }
         
-        public ExpressionValue Execute()
+        public async Task<ExpressionValue> Execute()
         {
             var ifStatement = _statementIterator.CurrentStatement as IfStatement;
-            var conditionValue = _expressionEvaluator.Eval(ifStatement.Condition);
+            var conditionValue = await _expressionEvaluator.Eval(ifStatement.Condition);
 
             IStatement statementToExecute;
             if ((int) conditionValue.Value != 0)
@@ -35,7 +36,7 @@ namespace WhyNotLang.Interpreter.StatementExecutors
             }
             
             var newExecutor = Executor.CreateExecutor(new List<IStatement> {statementToExecute}, _programState);
-            newExecutor.ExecuteAll();
+            await newExecutor.ExecuteAll();
             
             return ExpressionValue.Empty;
         }

@@ -1,3 +1,4 @@
+using System.Threading.Tasks;
 using WhyNotLang.Interpreter.Evaluators;
 using WhyNotLang.Interpreter.Evaluators.ExpressionValues;
 using WhyNotLang.Interpreter.State;
@@ -18,7 +19,7 @@ namespace WhyNotLang.Interpreter.StatementExecutors
             _programState = programState;
         }
         
-        public ExpressionValue Execute()
+        public async Task<ExpressionValue> Execute()
         {
             var callStatement = _statementIterator.CurrentStatement as FunctionCallStatement;
             _expressionEvaluator.Eval(callStatement.FunctionExpression);

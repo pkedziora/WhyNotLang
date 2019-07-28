@@ -1,4 +1,5 @@
 using Microsoft.Extensions.DependencyInjection;
+using System.Threading.Tasks;
 using WhyNotLang.Interpreter.Evaluators.ExpressionValues;
 using WhyNotLang.Interpreter.State;
 using Xunit;
@@ -18,14 +19,14 @@ namespace WhyNotLang.Interpreter.Tests
         }
 
         [Fact]
-        public void ExecutesSimpleTrueIfStatement()
+        public async Task ExecutesSimpleTrueIfStatement()
         {
             _executor.Initialise(@"
                 if (1 == 1)
                     var x := 2
             ");
             
-            _executor.ExecuteAll();
+            await _executor.ExecuteAll();
             
             var actual = _programState.GetVariable("x");
 
@@ -35,7 +36,7 @@ namespace WhyNotLang.Interpreter.Tests
         }
         
         [Fact]
-        public void ExecutesTrueIfStatementWithBlock()
+        public async Task ExecutesTrueIfStatementWithBlock()
         {
             _executor.Initialise(@"
                 var z:= 0
@@ -47,7 +48,7 @@ namespace WhyNotLang.Interpreter.Tests
                 end
             ");
             
-            _executor.ExecuteAll();
+            await _executor.ExecuteAll();
             
             var actual = _programState.GetVariable("z");
 
@@ -58,20 +59,20 @@ namespace WhyNotLang.Interpreter.Tests
         }
         
         [Fact]
-        public void ExecutesSimpleFalseIfStatement()
+        public async Task ExecutesSimpleFalseIfStatement()
         {
             _executor.Initialise(@"
                 if (1 != 1)
                     var x := 2
             ");
             
-            _executor.ExecuteAll();
+            await _executor.ExecuteAll();
 
             Assert.False(_programState.IsVariableDefined("x"));
         }
         
         [Fact]
-        public void ExecutesIfElseStatement()
+        public async Task ExecutesIfElseStatement()
         {
             _executor.Initialise(@"
                 if (1 == 2)
@@ -80,7 +81,7 @@ namespace WhyNotLang.Interpreter.Tests
                     var x:= 3
             ");
             
-            _executor.ExecuteAll();
+            await _executor.ExecuteAll();
             
             var actual = _programState.GetVariable("x");
 
@@ -90,7 +91,7 @@ namespace WhyNotLang.Interpreter.Tests
         }
         
         [Fact]
-        public void ExecutesIfElseIfStatementMiddleTrue()
+        public async Task ExecutesIfElseIfStatementMiddleTrue()
         {
             _executor.Initialise(@"
                 if (1 == 2)
@@ -101,7 +102,7 @@ namespace WhyNotLang.Interpreter.Tests
                     var x:= 4
             ");
             
-            _executor.ExecuteAll();
+            await _executor.ExecuteAll();
             
             var actual = _programState.GetVariable("x");
 
@@ -111,7 +112,7 @@ namespace WhyNotLang.Interpreter.Tests
         }
         
         [Fact]
-        public void ExecutesIfElseIfStatementLastTrue()
+        public async Task ExecutesIfElseIfStatementLastTrue()
         {
             _executor.Initialise(@"
                 if (1 == 2)
@@ -122,7 +123,7 @@ namespace WhyNotLang.Interpreter.Tests
                     var x:= 4
             ");
             
-            _executor.ExecuteAll();
+            await _executor.ExecuteAll();
             
             var actual = _programState.GetVariable("x");
 

@@ -1,4 +1,5 @@
 using System;
+using System.Threading.Tasks;
 using WhyNotLang.Interpreter.Evaluators.ExpressionValues;
 using WhyNotLang.Parser.Expressions;
 using WhyNotLang.Tokenizer;
@@ -14,7 +15,7 @@ namespace WhyNotLang.Interpreter.Evaluators
             _mainEvaluator = mainEvaluator;
         }
         
-        public ExpressionValue Eval(IExpression expression)
+        public async Task<ExpressionValue> Eval(IExpression expression)
         {
             if (expression.Type != ExpressionType.Unary)
             {
@@ -22,7 +23,7 @@ namespace WhyNotLang.Interpreter.Evaluators
             }
             
             var unaryExpression = expression as UnaryExpression;
-            var innerExpressionValue = _mainEvaluator.Eval(unaryExpression.Inner);
+            var innerExpressionValue = await _mainEvaluator.Eval(unaryExpression.Inner);
             var result =
                 CalculateValue(unaryExpression.Operator, innerExpressionValue);
 

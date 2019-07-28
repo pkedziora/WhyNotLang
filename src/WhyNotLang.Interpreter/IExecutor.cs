@@ -1,3 +1,4 @@
+using System.Threading.Tasks;
 using WhyNotLang.Interpreter.Evaluators.ExpressionValues;
 
 namespace WhyNotLang.Interpreter
@@ -5,8 +6,8 @@ namespace WhyNotLang.Interpreter
     public interface IExecutor
     {
         void Initialise(string program);
-        ExpressionValue ExecuteNext();
+        Task<ExpressionValue> ExecuteNext();
         void ResetPosition();
-        ExpressionValue ExecuteAll();
+        Task<ExpressionValue> ExecuteAll();
     }
 }

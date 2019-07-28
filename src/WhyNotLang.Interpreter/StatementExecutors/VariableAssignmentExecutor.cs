@@ -1,3 +1,4 @@
+using System.Threading.Tasks;
 using WhyNotLang.Interpreter.Evaluators;
 using WhyNotLang.Interpreter.Evaluators.ExpressionValues;
 using WhyNotLang.Interpreter.State;
@@ -19,11 +20,11 @@ namespace WhyNotLang.Interpreter.StatementExecutors
             _programState = programState;
         }
         
-        public ExpressionValue Execute()
+        public async Task<ExpressionValue> Execute()
         {
             var variableAssignment = _statementIterator.CurrentStatement as VariableAssignmentStatement;
             var variableName = variableAssignment.VariableName.Value;
-            var variableValue = _expressionEvaluator.Eval(variableAssignment.Expression);
+            var variableValue = await _expressionEvaluator.Eval(variableAssignment.Expression);
             _programState.AssignVariable(variableName, variableValue);
             
             return ExpressionValue.Empty;

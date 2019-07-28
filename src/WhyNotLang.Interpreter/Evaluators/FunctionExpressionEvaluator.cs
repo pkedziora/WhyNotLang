@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using WhyNotLang.Interpreter.Evaluators.ExpressionValues;
 using WhyNotLang.Interpreter.State;
 using WhyNotLang.Parser.Expressions;
@@ -21,7 +22,7 @@ namespace WhyNotLang.Interpreter.Evaluators
             _programState = programState;
         }
         
-        public ExpressionValue Eval(IExpression expression)
+        public async Task<ExpressionValue> Eval(IExpression expression)
         {
             if (expression.Type != ExpressionType.Function)
             {
@@ -30,7 +31,7 @@ namespace WhyNotLang.Interpreter.Evaluators
             
             var functionExpression = expression as FunctionExpression;
             var functionDeclaration = _programState.GetFunction(functionExpression.Name.Value);
-            var argumentsValues = EvaluateArguments(functionExpression.Parameters.Where(p => p.Type != ExpressionType.Empty).ToList());
+            var argumentsValues = await EvaluateArguments(functionExpression.Parameters.Where(p => p.Type != ExpressionType.Empty).ToList());
 
             if (functionDeclaration.IsBuiltin)
             {
@@ -43,13 +44,13 @@ namespace WhyNotLang.Interpreter.Evaluators
             var statementExecutor =
                 Executor.CreateExecutor(functionDeclaration.Body.ChildStatements, _programState);
             
-            var returnValue = statementExecutor.ExecuteAll();
+            var returnValue = await statementExecutor.ExecuteAll();
             _programState.RemoveScope();
 
             return returnValue;
         }
 
-        private List<ExpressionValue> EvaluateArguments(List<IExpression> arguments)
+        private async Task<List<ExpressionValue>> EvaluateArguments(List<IExpression> arguments)
         {
             var result = new List<ExpressionValue>();
             foreach (var parameter in arguments)
@@ -60,7 +61,7 @@ namespace WhyNotLang.Interpreter.Evaluators
                               _programState.IsArrayDefined(valueExpression.Token.Value);
                 result.Add(isArray
                     ? _programState.GetArrayReference(valueExpression.Token.Value)
-                    : _mainEvaluator.Eval(parameter));
+                    : await _mainEvaluator.Eval(parameter));
             }
 
             return result;

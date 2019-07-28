@@ -18,7 +18,7 @@ namespace WhyNotLang.Interpreter.Tests
         }
 
         [Fact]
-        public void ExecutesCountingWhileStatement()
+        public async void ExecutesCountingWhileStatement()
         {
             _executor.Initialise(@"
                 var x := 0
@@ -26,7 +26,7 @@ namespace WhyNotLang.Interpreter.Tests
                     x := x + 1
             ");
             
-            _executor.ExecuteAll();
+            await _executor.ExecuteAll();
             
             var actual = _programState.GetVariable("x");
 
@@ -36,7 +36,7 @@ namespace WhyNotLang.Interpreter.Tests
         }
         
         [Fact]
-        public void ExecutesWhileStatementWithBlock()
+        public async void ExecutesWhileStatementWithBlock()
         {
             _executor.Initialise(@"
                 var x := 0
@@ -48,7 +48,7 @@ namespace WhyNotLang.Interpreter.Tests
                 end
             ");
             
-            _executor.ExecuteAll();
+            await _executor.ExecuteAll();
             
             var actual = _programState.GetVariable("pow");
 

@@ -1,4 +1,5 @@
 using System;
+using System.Threading.Tasks;
 using Microsoft.Extensions.DependencyInjection;
 using WhyNotLang.Interpreter.Evaluators.ExpressionValues;
 using WhyNotLang.Interpreter.State;
@@ -19,14 +20,14 @@ namespace WhyNotLang.Interpreter.Tests
         }
 
         [Fact]
-        public void ExecutesVariableAssignementWithNumberExpression()
+        public async Task ExecutesVariableAssignementWithNumberExpression()
         {
             _executor.Initialise(@"
                 var x := 1
                 x := 2
             ");
             
-            _executor.ExecuteAll();
+            await _executor.ExecuteAll();
             
             var actual = _programState.GetVariable("x");
 
@@ -36,13 +37,13 @@ namespace WhyNotLang.Interpreter.Tests
         }
 
         [Fact]
-        public void ExecutesVariableDeclarationWithComplexExpression()
+        public async Task ExecutesVariableDeclarationWithComplexExpression()
         {
             _executor.Initialise(@"
                 var abc:=100
                 abc := (10 * (4/4) + (2 - 1))");
             
-            _executor.ExecuteAll();
+            await _executor.ExecuteAll();
             
             var actual = _programState.GetVariable("abc");
 
@@ -52,24 +53,24 @@ namespace WhyNotLang.Interpreter.Tests
         }
         
         [Fact]
-        public void ThrowsDuringVariableAssignementWhenUndeclared()
+        public async Task ThrowsDuringVariableAssignementWhenUndeclared()
         {
             _executor.Initialise(@"
                 x := 2
             ");
 
-            Assert.Throws<ArgumentException>(() => _executor.ExecuteAll());
+            await Assert.ThrowsAsync<ArgumentException>(async () => await _executor.ExecuteAll());
         }
         
         [Fact]
-        public void ExecutesGlobalVariableAssignementWithNumberExpression()
+        public async Task ExecutesGlobalVariableAssignementWithNumberExpression()
         {
             _executor.Initialise(@"
                 global x := 1
                 x := 2
             ");
             
-            _executor.ExecuteAll();
+            await _executor.ExecuteAll();
             
             var actual = _programState.GetVariable("x");
 
@@ -79,14 +80,14 @@ namespace WhyNotLang.Interpreter.Tests
         }
         
         [Fact]
-        public void LocalVariableAssignementHidesGlobal()
+        public async Task LocalVariableAssignementHidesGlobal()
         {
             _executor.Initialise(@"
                 global x := 1
                 var x := 2
             ");
             
-            _executor.ExecuteAll();
+            await _executor.ExecuteAll();
             
             var actual = _programState.GetVariable("x");
 

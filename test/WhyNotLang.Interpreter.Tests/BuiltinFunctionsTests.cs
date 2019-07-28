@@ -1,4 +1,5 @@
 using Microsoft.Extensions.DependencyInjection;
+using System.Threading.Tasks;
 using WhyNotLang.Interpreter.Evaluators.ExpressionValues;
 using WhyNotLang.Interpreter.State;
 using Xunit;
@@ -18,13 +19,13 @@ namespace WhyNotLang.Interpreter.Tests
         }
         
         [Fact]
-        public void ExecutesBuiltinFunctionToNumber()
+        public async Task ExecutesBuiltinFunctionToNumber()
         {
             _executor.Initialise(@"
                 var x:= 100 + ToNumber(""2"")       
             ");
             
-            _executor.ExecuteAll();
+            await _executor.ExecuteAll();
             
             var actual = _programState.GetVariable("x");
 
@@ -34,13 +35,13 @@ namespace WhyNotLang.Interpreter.Tests
         }
         
         [Fact]
-        public void ExecutesBuiltinFunctionToString()
+        public async Task ExecutesBuiltinFunctionToString()
         {
             _executor.Initialise(@"
                 var x:= ""1"" + ToString(0)      
             ");
             
-            _executor.ExecuteAll();
+            await _executor.ExecuteAll();
             
             var actual = _programState.GetVariable("x");
 

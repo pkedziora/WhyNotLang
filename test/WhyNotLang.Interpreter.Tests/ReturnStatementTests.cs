@@ -1,4 +1,5 @@
 using Microsoft.Extensions.DependencyInjection;
+using System.Threading.Tasks;
 using WhyNotLang.Interpreter.Evaluators.ExpressionValues;
 using WhyNotLang.Interpreter.State;
 using Xunit;
@@ -18,7 +19,7 @@ namespace WhyNotLang.Interpreter.Tests
         }
 
         [Fact]
-        public void ExecutesFunctionWithoutParamsWithSimpleReturn()
+        public async Task ExecutesFunctionWithoutParamsWithSimpleReturn()
         {
             _executor.Initialise(@"
                 function foo()
@@ -28,7 +29,7 @@ namespace WhyNotLang.Interpreter.Tests
                 var x:= foo()         
             ");
             
-            _executor.ExecuteAll();
+            await _executor.ExecuteAll();
             
             var actual = _programState.GetVariable("x");
 
@@ -38,7 +39,7 @@ namespace WhyNotLang.Interpreter.Tests
         }
         
         [Fact]
-        public void ExecutesFunctionWithParamsAndReturnStatementWithExpression()
+        public async Task ExecutesFunctionWithParamsAndReturnStatementWithExpression()
         {
             _executor.Initialise(@"
                 function foo(y)
@@ -49,7 +50,7 @@ namespace WhyNotLang.Interpreter.Tests
                 var z:= foo(100)         
             ");
             
-            _executor.ExecuteAll();
+            await _executor.ExecuteAll();
             
             var actual = _programState.GetVariable("z");
 
@@ -59,7 +60,7 @@ namespace WhyNotLang.Interpreter.Tests
         }
         
         [Fact]
-        public void ExecutesFunctionWith2ParamsAndReturnStatementWithExpression()
+        public async Task ExecutesFunctionWith2ParamsAndReturnStatementWithExpression()
         {
             _executor.Initialise(@"
                 function foo(x,y)
@@ -69,7 +70,7 @@ namespace WhyNotLang.Interpreter.Tests
                 var z:= foo(2,3)         
             ");
             
-            _executor.ExecuteAll();
+            await _executor.ExecuteAll();
             
             var actual = _programState.GetVariable("z");
 
@@ -79,7 +80,7 @@ namespace WhyNotLang.Interpreter.Tests
         }
         
         [Fact]
-        public void ReturnStatementStopsExecutionInFunction()
+        public async Task ReturnStatementStopsExecutionInFunction()
         {
             _executor.Initialise(@"
                 function foo()
@@ -90,7 +91,7 @@ namespace WhyNotLang.Interpreter.Tests
                 var x:= foo()         
             ");
             
-            _executor.ExecuteAll();
+            await _executor.ExecuteAll();
             
             var actual = _programState.GetVariable("x");
 
@@ -101,7 +102,7 @@ namespace WhyNotLang.Interpreter.Tests
         }
         
         [Fact]
-        public void ReturnStatementStopsExecutionOutsideFunction()
+        public async Task ReturnStatementStopsExecutionOutsideFunction()
         {
             _executor.Initialise(@"
                 var x := 100
@@ -109,7 +110,7 @@ namespace WhyNotLang.Interpreter.Tests
                 var y := 2
             ");
             
-            _executor.ExecuteAll();
+            await _executor.ExecuteAll();
             
             var actual = _programState.GetVariable("x");
 

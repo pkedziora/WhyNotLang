@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using WhyNotLang.Interpreter.Evaluators;
 using WhyNotLang.Interpreter.Evaluators.ExpressionValues;
 using WhyNotLang.Interpreter.State;
@@ -23,10 +24,10 @@ namespace WhyNotLang.Interpreter
             _statementIterator.InitStatements(program);
         }
         
-        public ExpressionValue ExecuteNext()
+        public async Task<ExpressionValue> ExecuteNext()
         {
             var executor = _statementExecutorFactory.CreateStatementExecutor();
-            var value = executor.Execute();
+            var value = await executor.Execute();
             if (!Equals(value, ExpressionValue.Empty))
             {
                 return value;
@@ -42,11 +43,11 @@ namespace WhyNotLang.Interpreter
             _statementIterator.ResetPosition();
         }
         
-        public ExpressionValue ExecuteAll()
+        public async Task<ExpressionValue> ExecuteAll()
         {
             while (_statementIterator.CurrentStatement.Type != StatementType.EofStatement)
             {
-                var value = ExecuteNext();
+                var value = await ExecuteNext();
                 if (!Equals(value, ExpressionValue.Empty))
                 {
                     return value;

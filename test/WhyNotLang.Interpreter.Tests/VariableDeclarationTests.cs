@@ -1,4 +1,5 @@
 using Microsoft.Extensions.DependencyInjection;
+using System.Threading.Tasks;
 using WhyNotLang.Interpreter.Evaluators.ExpressionValues;
 using WhyNotLang.Interpreter.State;
 using Xunit;
@@ -18,11 +19,11 @@ namespace WhyNotLang.Interpreter.Tests
         }
 
         [Fact]
-        public void ExecutesVariableDeclarationWithNumberExpression()
+        public async Task ExecutesVariableDeclarationWithNumberExpression()
         {
             _executor.Initialise("var x := 1");
             
-            _executor.ExecuteNext();
+            await _executor.ExecuteNext();
             
             var actual = _programState.GetVariable("x");
 
@@ -32,11 +33,11 @@ namespace WhyNotLang.Interpreter.Tests
         }
         
         [Fact]
-        public void ExecutesVariableDeclarationWithComplexExpression()
+        public async Task ExecutesVariableDeclarationWithComplexExpression()
         {
             _executor.Initialise("var abc := (10 * (4/4) + (2 - 1))");
             
-            _executor.ExecuteNext();
+            await _executor.ExecuteNext();
             
             var actual = _programState.GetVariable("abc");
 
@@ -46,11 +47,11 @@ namespace WhyNotLang.Interpreter.Tests
         }
         
         [Fact]
-        public void ExecutesGlobalVariableDeclarationWithNumberExpression()
+        public async Task ExecutesGlobalVariableDeclarationWithNumberExpression()
         {
             _executor.Initialise("global x := 1");
             
-            _executor.ExecuteNext();
+            await _executor.ExecuteNext();
             
             var actual = _programState.GlobalScope.VariableValues["x"];
             var expected = new ExpressionValue(1, ExpressionValueTypes.Number);

@@ -1,4 +1,5 @@
 using Microsoft.Extensions.DependencyInjection;
+using System.Threading.Tasks;
 using WhyNotLang.Interpreter.Evaluators.ExpressionValues;
 using WhyNotLang.Interpreter.State;
 using Xunit;
@@ -18,7 +19,7 @@ namespace WhyNotLang.Interpreter.Tests
         }
 
         [Fact]
-        public void ExecutesFunctionWithoutParams()
+        public async Task ExecutesFunctionWithoutParams()
         {
             _executor.Initialise(@"
                 function foo()
@@ -29,7 +30,7 @@ namespace WhyNotLang.Interpreter.Tests
                 var x:= foo()         
             ");
             
-            _executor.ExecuteAll();
+            await _executor.ExecuteAll();
             
             var actual = _programState.GetVariable("x");
 
@@ -39,7 +40,7 @@ namespace WhyNotLang.Interpreter.Tests
         }
         
         [Fact]
-        public void ExecutesFunctionWithParams()
+        public async Task ExecutesFunctionWithParams()
         {
             _executor.Initialise(@"
                 function foo(y)
@@ -50,7 +51,7 @@ namespace WhyNotLang.Interpreter.Tests
                 var z := foo(100)         
             ");
             
-            _executor.ExecuteAll();
+            await _executor.ExecuteAll();
             
             var actual = _programState.GetVariable("z");
 
@@ -60,7 +61,7 @@ namespace WhyNotLang.Interpreter.Tests
         }
         
         [Fact]
-        public void ExecutesFunctionWith2Params()
+        public async Task ExecutesFunctionWith2Params()
         {
             _executor.Initialise(@"
                 function foo(x,y)
@@ -71,7 +72,7 @@ namespace WhyNotLang.Interpreter.Tests
                 var x:= foo(2,3)         
             ");
             
-            _executor.ExecuteAll();
+            await _executor.ExecuteAll();
             
             var actual = _programState.GetVariable("x");
 
@@ -81,7 +82,7 @@ namespace WhyNotLang.Interpreter.Tests
         }
         
         [Fact]
-        public void FunctionCanBeUsedWithinExpression()
+        public async Task FunctionCanBeUsedWithinExpression()
         {
             _executor.Initialise(@"
                 function square(a)
@@ -91,7 +92,7 @@ namespace WhyNotLang.Interpreter.Tests
                 var x:= 1 + square(2) * 3
             ");
             
-            _executor.ExecuteAll();
+            await _executor.ExecuteAll();
             
             var actual = _programState.GetVariable("x");
 

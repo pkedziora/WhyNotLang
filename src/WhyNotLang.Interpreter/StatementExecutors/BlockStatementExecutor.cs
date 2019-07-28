@@ -1,3 +1,4 @@
+using System.Threading.Tasks;
 using WhyNotLang.Interpreter.Evaluators.ExpressionValues;
 using WhyNotLang.Interpreter.State;
 using WhyNotLang.Parser.Statements;
@@ -15,13 +16,13 @@ namespace WhyNotLang.Interpreter.StatementExecutors
             _programState = programState;
         }
         
-        public ExpressionValue Execute()
+        public async Task<ExpressionValue> Execute()
         {
             var blockStatement = _statementIterator.CurrentStatement as BlockStatement;
 
             _programState.AddScope("Block");
             var newExecutor = Executor.CreateExecutor(blockStatement.ChildStatements, _programState);
-            var returnValue = newExecutor.ExecuteAll();
+            var returnValue = await newExecutor.ExecuteAll();
             _programState.RemoveScope();
             
             return returnValue;

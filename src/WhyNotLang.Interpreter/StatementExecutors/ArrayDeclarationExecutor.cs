@@ -1,3 +1,4 @@
+using System.Threading.Tasks;
 using WhyNotLang.Interpreter.Evaluators;
 using WhyNotLang.Interpreter.Evaluators.ExpressionValues;
 using WhyNotLang.Interpreter.State;
@@ -19,11 +20,11 @@ namespace WhyNotLang.Interpreter.StatementExecutors
             _programState = programState;
         }
         
-        public ExpressionValue Execute()
+        public async Task<ExpressionValue> Execute()
         {
             var arrayDeclaration = _statementIterator.CurrentStatement as ArrayDeclarationStatement;
             var arrayName = arrayDeclaration.ArrayName.Value;
-            var arraySize = _expressionEvaluator.Eval(arrayDeclaration.IndexExpression);
+            var arraySize = await _expressionEvaluator.Eval(arrayDeclaration.IndexExpression);
             
             _programState.DeclareArray(arrayName, (int)arraySize.Value, arrayDeclaration.IsGlobal);
             

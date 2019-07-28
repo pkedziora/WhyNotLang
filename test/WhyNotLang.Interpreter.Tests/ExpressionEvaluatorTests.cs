@@ -1,4 +1,5 @@
 using Microsoft.Extensions.DependencyInjection;
+using System.Threading.Tasks;
 using WhyNotLang.Interpreter.Evaluators;
 using WhyNotLang.Interpreter.Evaluators.ExpressionValues;
 using WhyNotLang.Interpreter.State;
@@ -30,11 +31,11 @@ namespace WhyNotLang.Interpreter.Tests
         [InlineData("(1 + 2) * 3", 9)]
         [InlineData("2*(1 + 2) * 3", 18)]
         [InlineData("2*(1 + 2) * -3", -18)]
-        public void EvalBinaryExpressionWithNumbers(string strExpression, int expectedResult)
+        public async Task EvalBinaryExpressionWithNumbers(string strExpression, int expectedResult)
         {
             var input = _expressionParser.ParseExpression(strExpression);
 
-            var actual = _expressionEvaluator.Eval(input);
+            var actual = await _expressionEvaluator.Eval(input);
             var expected = new ExpressionValue(expectedResult, ExpressionValueTypes.Number);
             
             Assert.Equal(expected, actual);
@@ -49,7 +50,7 @@ namespace WhyNotLang.Interpreter.Tests
         [InlineData("(a + b) * 3", 9)]
         [InlineData("2*(a + 2) * c", 18)]
         [InlineData("2*(1 + b) * -c", -18)]
-        public void EvalBinaryExpressionWithNumbersAndVariables(string strExpression, int expectedResult)
+        public async Task EvalBinaryExpressionWithNumbersAndVariables(string strExpression, int expectedResult)
         {
             _programState.DeclareVariable("a", new ExpressionValue(1,ExpressionValueTypes.Number));
             _programState.DeclareVariable("b", new ExpressionValue(2,ExpressionValueTypes.Number));
@@ -57,7 +58,7 @@ namespace WhyNotLang.Interpreter.Tests
             
             var input = _expressionParser.ParseExpression(strExpression);
 
-            var actual = _expressionEvaluator.Eval(input);
+            var actual = await _expressionEvaluator.Eval(input);
             var expected = new ExpressionValue(expectedResult, ExpressionValueTypes.Number);
             
             Assert.Equal(expected, actual);
@@ -70,11 +71,11 @@ namespace WhyNotLang.Interpreter.Tests
         [InlineData("--1", 1)]
         [InlineData("---1", -1)]
         [InlineData("--+-1", -1)]
-        public void EvalUnaryExpressionWithNumbers(string strExpression, int expectedResult)
+        public async Task EvalUnaryExpressionWithNumbers(string strExpression, int expectedResult)
         {
             var input = _expressionParser.ParseExpression(strExpression);
 
-            var actual = _expressionEvaluator.Eval(input);
+            var actual = await _expressionEvaluator.Eval(input);
             var expected = new ExpressionValue(expectedResult, ExpressionValueTypes.Number);
             
             Assert.Equal(expected, actual);
@@ -88,33 +89,33 @@ namespace WhyNotLang.Interpreter.Tests
         [InlineData("1 >= 2 or 1 == 1 and 2 >= 1", 1)]
         [InlineData("(1 == 1 or 2 == 3) and 2 > 1", 1)]
         [InlineData("1 == 2", 0)]
-        public void EvalConditionalBinaryExpressionWithNumbers(string strExpression, int expectedResult)
+        public async Task EvalConditionalBinaryExpressionWithNumbers(string strExpression, int expectedResult)
         {
             var input = _expressionParser.ParseExpression(strExpression);
 
-            var actual = _expressionEvaluator.Eval(input);
+            var actual = await _expressionEvaluator.Eval(input);
             var expected = new ExpressionValue(expectedResult, ExpressionValueTypes.Number);
             
             Assert.Equal(expected, actual);
         }
         
         [Fact]
-        public void EvalSingleString()
+        public async Task EvalSingleString()
         {
             var input = _expressionParser.ParseExpression("\"abc\"");
 
-            var actual = _expressionEvaluator.Eval(input);
+            var actual = await _expressionEvaluator.Eval(input);
             var expected = new ExpressionValue("abc", ExpressionValueTypes.String);
             
             Assert.Equal(expected, actual);
         }
 
         [Fact]
-        public void EvalBinaryExpressionWithStrings()
+        public async Task EvalBinaryExpressionWithStrings()
         {
             var input = _expressionParser.ParseExpression("\"abc\" + \"def\"");
 
-            var actual = _expressionEvaluator.Eval(input);
+            var actual = await _expressionEvaluator.Eval(input);
             var expected = new ExpressionValue("abcdef", ExpressionValueTypes.String);
             
             Assert.Equal(expected, actual);
@@ -123,11 +124,11 @@ namespace WhyNotLang.Interpreter.Tests
         [Theory]
         [InlineData("\"abc\" == \"def\"", 0)]
         [InlineData("\"abc\" == \"abc\"", 1)]
-        public void EvalBinaryExpressionWithStringEquality(string strExpression, int expectedResult)
+        public async Task EvalBinaryExpressionWithStringEquality(string strExpression, int expectedResult)
         {
             var input = _expressionParser.ParseExpression("\"abc\" == \"def\"");
 
-            var actual = _expressionEvaluator.Eval(input);
+            var actual = await _expressionEvaluator.Eval(input);
             var expected = new ExpressionValue(0, ExpressionValueTypes.Number);
             
             Assert.Equal(expected, actual);

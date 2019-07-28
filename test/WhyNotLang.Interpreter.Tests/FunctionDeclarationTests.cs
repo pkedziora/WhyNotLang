@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using Microsoft.Extensions.DependencyInjection;
 using WhyNotLang.Interpreter.State;
 using WhyNotLang.Parser.Statements;
@@ -21,7 +22,7 @@ namespace WhyNotLang.Interpreter.Tests
         }
 
         [Fact]
-        public void ExecutesFunctionDeclarationWithoutParamsAndEmptyBody()
+        public async Task ExecutesFunctionDeclarationWithoutParamsAndEmptyBody()
         {
             _executor.Initialise(@"
                 function foo()
@@ -29,7 +30,7 @@ namespace WhyNotLang.Interpreter.Tests
                 end                
             ");
             
-            _executor.ExecuteNext();
+            await _executor.ExecuteNext();
             
             var expected = new FunctionDeclarationStatement(
                 new Token(TokenType.Identifier, "foo"), new List<Token>(), new BlockStatement(new List<IStatement>()));
@@ -40,7 +41,7 @@ namespace WhyNotLang.Interpreter.Tests
         }
 
         [Fact]
-        public void ExecutesFunctionDeclarationWith3ParameterAndBodySet()
+        public async Task ExecutesFunctionDeclarationWith3ParameterAndBodySet()
         {
             _executor.Initialise(@"
                 function foo(abc,d,e)
@@ -51,7 +52,7 @@ namespace WhyNotLang.Interpreter.Tests
                 end                
             ");
             
-            _executor.ExecuteNext();
+            await _executor.ExecuteNext();
             
             var expected = new FunctionDeclarationStatement(
                 new Token(TokenType.Identifier, "foo"), 

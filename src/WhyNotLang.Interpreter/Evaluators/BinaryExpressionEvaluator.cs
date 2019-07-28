@@ -1,4 +1,5 @@
 using System;
+using System.Threading.Tasks;
 using WhyNotLang.Interpreter.Evaluators.ExpressionValues;
 using WhyNotLang.Parser.Expressions;
 using WhyNotLang.Tokenizer;
@@ -14,7 +15,7 @@ namespace WhyNotLang.Interpreter.Evaluators
             _mainEvaluator = mainEvaluator;
         }
         
-        public ExpressionValue Eval(IExpression expression)
+        public async Task<ExpressionValue> Eval(IExpression expression)
         {
             if (expression.Type != ExpressionType.Binary)
             {
@@ -22,8 +23,8 @@ namespace WhyNotLang.Interpreter.Evaluators
             }
             
             var binaryExpression = expression as BinaryExpression;
-            var leftExpressionValue = _mainEvaluator.Eval(binaryExpression.Left);
-            var rightExpressionValue = _mainEvaluator.Eval(binaryExpression.Right);
+            var leftExpressionValue = await _mainEvaluator.Eval(binaryExpression.Left);
+            var rightExpressionValue = await _mainEvaluator.Eval(binaryExpression.Right);
             var result =
                 CalculateValue(leftExpressionValue, binaryExpression.Operator, rightExpressionValue);
 
