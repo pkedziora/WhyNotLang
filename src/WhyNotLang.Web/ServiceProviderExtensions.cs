@@ -11,7 +11,7 @@ namespace WhyNotLang.Web
         public static void AddWebInputOutput(this IServiceProvider serviceProvider, Microsoft.JSInterop.IJSRuntime jsRuntime)
         {
             var functionCollection = serviceProvider.GetRequiredService<IBuiltinFunctionCollection>();
-            functionCollection.Add("Writeln",
+            functionCollection.Add("Log",
                 async arguments =>
                 {
                     var str = arguments.Single();

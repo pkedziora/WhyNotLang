@@ -2,6 +2,7 @@
 @using WhyNotLang.Interpreter
 @using WhyNotLang.Interpreter.Evaluators.ExpressionValues;
 @inject IExecutor Executor
+@inject IJSRuntime JsRuntime
 
 <h1>Hello, world!</h1>
 
@@ -13,18 +14,40 @@
     <button class="btn btn-primary" @onclick="Execute">Execute</button>
 </p>
 
+<textarea id="output" @bind="@output" readonly="readonly" class="form-control" rows="10">
+</textarea>
+
 @code {
     bool toggle = false;
     bool isRunning { get; set; } = false;
-    public string programCode { get; set; } = 
+    public string output { get; set; } = "";
+    public string programCode { get; set; } =
 @"var x:= 0
-while (x < 10)
+while (x < 100)
 begin
-    Writeln(""Toggle value: "" + ToString(toggle))
-    Delay(1)
-    x := x+1
+Writeln(""Line: "" + ToString(x) + "", Toggle value: "" + ToString(toggle))
+x := x+1
+Delay(100)
 end
 ";
+
+    protected override async Task OnInitAsync()
+    {
+        Executor.ProgramState.BuiltinFunctionCollection.Add("Writeln",
+            async arguments =>
+            {
+                var str = arguments.Single();
+                if (str.Type != ExpressionValueTypes.String)
+                {
+                    throw new Exception("String expected");
+                }
+
+                output += str.Value + Environment.NewLine;
+                this.StateHasChanged();
+                await JsRuntime.InvokeAsync<string>("WhyNotLang.scrollOutput");
+                return ExpressionValue.Empty;
+            });
+    }
 
     void Toggle()
     {
