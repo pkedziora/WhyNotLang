@@ -5,11 +5,26 @@
 
 <h1>Hello, world!</h1>
 
-<button class="btn btn-primary" @onclick="Toggle">Toggle</button>
 
-<button class="btn btn-primary" @onclick="Execute">Execute</button>
+<textarea id="main_text" @bind="@programCode" readonly="@isRunning" class="form-control" rows="10">
+</textarea>
+<p>
+    <button class="btn btn-primary" @onclick="Toggle">Toggle variable</button>
+    <button class="btn btn-primary" @onclick="Execute">Execute</button>
+</p>
+
 @code {
     bool toggle = false;
+    bool isRunning { get; set; } = false;
+    public string programCode { get; set; } = 
+@"var x:= 0
+while (x < 10)
+begin
+    Writeln(""Toggle value: "" + ToString(toggle))
+    Delay(1)
+    x := x+1
+end
+";
 
     void Toggle()
     {
@@ -19,17 +34,13 @@
 
     async Task Execute()
     {
-        Executor.Initialise(@"
-    while (1)
-    begin
-        Writeln(""Toggle value: "" + ToString(toggle))
-        Delay(1)
-    end
-");
-
-
+        Executor.ProgramState.Clear();
+        isRunning = true;
+        Executor.Initialise(programCode);
         Executor.ProgramState.DeclareVariable("toggle", new ExpressionValue(IntToBool(toggle), ExpressionValueTypes.Number), true);
         await Executor.ExecuteAll();
+
+        isRunning = false;
     }
 
     private int IntToBool(bool val)
