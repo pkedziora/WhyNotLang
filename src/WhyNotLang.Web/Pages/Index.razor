@@ -1,5 +1,6 @@
 ﻿@page "/"
 @using WhyNotLang.Interpreter
+@using WhyNotLang.Interpreter.Evaluators.ExpressionValues;
 @inject IExecutor Executor
 
 <h1>Hello, world!</h1>
@@ -19,11 +20,11 @@
     async Task Execute()
     {
         Executor.Initialise(@"
-        while (1)
-        begin
-            Writeln(""Toggle value: "" + ToString(toggle))
-            Delay(1)
-        end
+    while (1)
+    begin
+        Writeln(""Toggle value: "" + ToString(toggle))
+        Delay(1)
+    end
 ");
 
 
