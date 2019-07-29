@@ -1,9 +1,6 @@
 ﻿@page "/"
 @using WhyNotLang.Interpreter
-@using WhyNotLang.Interpreter.State
-@using Interpreter.Evaluators.ExpressionValues;
 @inject IExecutor Executor
-@inject IProgramState ProgramState
 
 <h1>Hello, world!</h1>
 
@@ -16,7 +13,7 @@
     void Toggle()
     {
         toggle = !toggle;
-        ProgramState.AssignVariable("toggle", new ExpressionValue(IntToBool(toggle), ExpressionValueTypes.Number));
+        Executor.ProgramState.AssignVariable("toggle", new ExpressionValue(IntToBool(toggle), ExpressionValueTypes.Number));
     }
 
     async Task Execute()
@@ -30,7 +27,7 @@
 ");
 
 
-        ProgramState.DeclareVariable("toggle", new ExpressionValue(IntToBool(toggle), ExpressionValueTypes.Number), true);
+        Executor.ProgramState.DeclareVariable("toggle", new ExpressionValue(IntToBool(toggle), ExpressionValueTypes.Number), true);
         await Executor.ExecuteAll();
     }
 

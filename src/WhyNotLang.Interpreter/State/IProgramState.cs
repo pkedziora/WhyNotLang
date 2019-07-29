@@ -9,6 +9,7 @@ namespace WhyNotLang.Interpreter.State
         IBuiltinFunctionCollection BuiltinFunctionCollection { get; }
         Scope GlobalScope { get; }
         Scope CurrentScope { get; }
+        void Clear();
         FunctionDeclarationStatement GetFunction(string identifier);
         void DeclareFunction(string identifier, FunctionDeclarationStatement statement);
         ExpressionValue GetVariable(string identifier);

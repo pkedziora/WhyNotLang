@@ -9,11 +9,9 @@ namespace WhyNotLang.Interpreter.StatementExecutors
         public IStatement CurrentStatement => _currentIndex < _statements.Count ? _statements[_currentIndex] : new EofStatement();
         private List<IStatement> _statements;
         private int _currentIndex;
-        private readonly IParser _parser;
 
-        public StatementIterator(IParser parser)
+        public StatementIterator()
         {
-            _parser = parser;
         }
 
         public StatementIterator(List<IStatement> statements)
@@ -22,10 +20,9 @@ namespace WhyNotLang.Interpreter.StatementExecutors
             _currentIndex = 0;
         }
         
-        public void InitStatements(string program)
+        public void InitStatements(List<IStatement> statements)
         {
-            _parser.Initialise(program);
-            _statements = _parser.ParseAll();
+            _statements = statements;
             _currentIndex = 0;
         }
 

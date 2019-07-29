@@ -15,7 +15,7 @@ namespace WhyNotLang.Interpreter.Tests
         {
             var serviceProvider = IoC.BuildServiceProvider();
             _executor = serviceProvider.GetService<IExecutor>();
-            _programState = serviceProvider.GetService<IProgramState>();
+            _programState = _executor.ProgramState;
         }
         
         [Fact]

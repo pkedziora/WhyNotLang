@@ -7,41 +7,37 @@ namespace WhyNotLang.Interpreter.StatementExecutors
 {
     public class StatementExecutorFactory : IStatementExecutorFactory
     {
-        private readonly IStatementIterator _statementIterator;
         private readonly IExpressionEvaluator _expressionEvaluator;
-        private readonly IProgramState _programState;
 
-        public StatementExecutorFactory(IStatementIterator statementIterator, IExpressionEvaluator expressionEvaluator, IProgramState programState)
+        public StatementExecutorFactory(IExpressionEvaluator expressionEvaluator)
         {
-            _statementIterator = statementIterator;
             _expressionEvaluator = expressionEvaluator;
-            _programState = programState;
         }
 
-        public IStatementExecutor CreateStatementExecutor()
+        public IStatementExecutor CreateStatementExecutor(StatementType statementType, IExecutor mainExecutor)
         {
-            switch (_statementIterator.CurrentStatement.Type)
+            switch (statementType)
             {
                 case StatementType.VariableDeclarationStatement:
-                    return new VariableDeclarationExecutor(_statementIterator, _expressionEvaluator, _programState);
+                    return new VariableDeclarationExecutor(_expressionEvaluator, mainExecutor);
                 case StatementType.VariableAssignmentStatement:
-                    return new VariableAssignmentExecutor(_statementIterator, _expressionEvaluator, _programState);
+                    return new VariableAssignmentExecutor(_expressionEvaluator, mainExecutor);
                 case StatementType.FunctionDeclarationStatement:
-                    return new FunctionDeclarationStatementExecutor(_statementIterator, _programState);
+                    return new FunctionDeclarationStatementExecutor(mainExecutor);
                 case StatementType.IfStatement:
-                    return new IfStatementExecutor(_statementIterator, _expressionEvaluator, _programState);
+                    return new IfStatementExecutor(_expressionEvaluator, mainExecutor);
                 case StatementType.BlockStatement:
-                    return new BlockStatementExecutor(_statementIterator, _programState);
+                    return new BlockStatementExecutor(mainExecutor);
                 case StatementType.WhileStatement:
-                    return new WhileStatementExecutor(_statementIterator, _expressionEvaluator, _programState);
+                    return new WhileStatementExecutor(_expressionEvaluator, mainExecutor);
                 case StatementType.FunctionCallStatement:
-                    return new FunctionCallStatementExecutor(_statementIterator, _expressionEvaluator, _programState);
+                    return new FunctionCallStatementExecutor(_expressionEvaluator, mainExecutor);
                 case StatementType.ReturnStatement:
-                    return new ReturnStatementExecutor(_statementIterator, _expressionEvaluator, _programState);
+                    return new ReturnStatementExecutor(_expressionEvaluator, mainExecutor);
                 case StatementType.ArrayDeclarationStatement:
-                    return new ArrayDeclarationExecutor(_statementIterator, _expressionEvaluator, _programState);
+                    return new ArrayDeclarationExecutor(_expressionEvaluator, mainExecutor);
                 case StatementType.ArrayAssignmentStatement:
-                    return new ArrayAssignmentExecutor(_statementIterator, _expressionEvaluator, _programState);
+                    return new ArrayAssignmentExecutor(_expressionEvaluator, mainExecutor);
                 case StatementType.EmptyStatement:
                     return new EmptyExecutor();
             }

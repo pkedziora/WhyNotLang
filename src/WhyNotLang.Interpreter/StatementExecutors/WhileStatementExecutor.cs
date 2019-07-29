@@ -2,34 +2,31 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using WhyNotLang.Interpreter.Evaluators;
 using WhyNotLang.Interpreter.Evaluators.ExpressionValues;
-using WhyNotLang.Interpreter.State;
 using WhyNotLang.Parser.Statements;
 
 namespace WhyNotLang.Interpreter.StatementExecutors
 {
     public class WhileStatementExecutor : IStatementExecutor
     {
-        private readonly IStatementIterator _statementIterator;
         private readonly IExpressionEvaluator _expressionEvaluator;
-        private readonly IProgramState _programState;
+        private readonly IExecutor _mainExecutor;
 
-        public WhileStatementExecutor(IStatementIterator statementIterator, IExpressionEvaluator expressionEvaluator, IProgramState programState)
+        public WhileStatementExecutor(IExpressionEvaluator expressionEvaluator, IExecutor mainExecutor)
         {
-            _statementIterator = statementIterator;
             _expressionEvaluator = expressionEvaluator;
-            _programState = programState;
+            _mainExecutor = mainExecutor;
         }
         
         public async Task<ExpressionValue> Execute()
         {
-            var whileStatement = _statementIterator.CurrentStatement as WhileStatement;
-            var newExecutor = Executor.CreateExecutor(new List<IStatement> { whileStatement.Body}, _programState);
+            var whileStatement = _mainExecutor.CurrentContext.StatementIterator.CurrentStatement as WhileStatement;
+            _mainExecutor.CreateNewContext(new List<IStatement> { whileStatement.Body});
             while ((int) (await _expressionEvaluator.Eval(whileStatement.Condition)).Value != 0)
             {
-                await newExecutor.ExecuteAll();
-                newExecutor.ResetPosition();
+                await _mainExecutor.ExecuteAll();
+                _mainExecutor.ResetPosition();
             }
-            
+            _mainExecutor.LeaveContext();
             return ExpressionValue.Empty;
         }
     }

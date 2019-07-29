@@ -1,31 +1,27 @@
 using System.Threading.Tasks;
 using WhyNotLang.Interpreter.Evaluators;
 using WhyNotLang.Interpreter.Evaluators.ExpressionValues;
-using WhyNotLang.Interpreter.State;
 using WhyNotLang.Parser.Statements;
 
 namespace WhyNotLang.Interpreter.StatementExecutors
 {
     public class VariableDeclarationExecutor : IStatementExecutor
     {
-        private readonly IStatementIterator _statementIterator;
         private readonly IExpressionEvaluator _expressionEvaluator;
-        private readonly IProgramState _programState;
+        private readonly IExecutor _mainExecutor;
 
-        public VariableDeclarationExecutor(IStatementIterator statementIterator,
-            IExpressionEvaluator expressionEvaluator, IProgramState programState)
+        public VariableDeclarationExecutor(IExpressionEvaluator expressionEvaluator, IExecutor mainExecutor)
         {
-            _statementIterator = statementIterator;
             _expressionEvaluator = expressionEvaluator;
-            _programState = programState;
+            _mainExecutor = mainExecutor;
         }
         
         public async Task<ExpressionValue> Execute()
         {
-            var variableDeclaration = _statementIterator.CurrentStatement as VariableDeclarationStatement;
+            var variableDeclaration = _mainExecutor.CurrentContext.StatementIterator.CurrentStatement as VariableDeclarationStatement;
             var variableName = variableDeclaration.VariableName.Value;
             var variableValue = await _expressionEvaluator.Eval(variableDeclaration.Expression);
-            _programState.DeclareVariable(variableName, variableValue, variableDeclaration.IsGlobal);
+            _mainExecutor.ProgramState.DeclareVariable(variableName, variableValue, variableDeclaration.IsGlobal);
             
             return ExpressionValue.Empty;
         }

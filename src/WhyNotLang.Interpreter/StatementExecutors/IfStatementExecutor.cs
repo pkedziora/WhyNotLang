@@ -2,27 +2,24 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using WhyNotLang.Interpreter.Evaluators;
 using WhyNotLang.Interpreter.Evaluators.ExpressionValues;
-using WhyNotLang.Interpreter.State;
 using WhyNotLang.Parser.Statements;
 
 namespace WhyNotLang.Interpreter.StatementExecutors
 {
     public class IfStatementExecutor : IStatementExecutor
     {
-        private readonly IStatementIterator _statementIterator;
         private readonly IExpressionEvaluator _expressionEvaluator;
-        private readonly IProgramState _programState;
+        private readonly IExecutor _mainExecutor;
 
-        public IfStatementExecutor(IStatementIterator statementIterator, IExpressionEvaluator expressionEvaluator, IProgramState programState)
+        public IfStatementExecutor(IExpressionEvaluator expressionEvaluator, IExecutor mainExecutor)
         {
-            _statementIterator = statementIterator;
             _expressionEvaluator = expressionEvaluator;
-            _programState = programState;
+            _mainExecutor = mainExecutor;
         }
         
         public async Task<ExpressionValue> Execute()
         {
-            var ifStatement = _statementIterator.CurrentStatement as IfStatement;
+            var ifStatement = _mainExecutor.CurrentContext.StatementIterator.CurrentStatement as IfStatement;
             var conditionValue = await _expressionEvaluator.Eval(ifStatement.Condition);
 
             IStatement statementToExecute;
@@ -35,8 +32,10 @@ namespace WhyNotLang.Interpreter.StatementExecutors
                 statementToExecute = ifStatement.ElseStatement;
             }
             
-            var newExecutor = Executor.CreateExecutor(new List<IStatement> {statementToExecute}, _programState);
-            await newExecutor.ExecuteAll();
+            
+            _mainExecutor.CreateNewContext(new List<IStatement> {statementToExecute});
+            await _mainExecutor.ExecuteAll();
+            _mainExecutor.LeaveContext();
             
             return ExpressionValue.Empty;
         }

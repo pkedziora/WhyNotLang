@@ -2,28 +2,24 @@ using System;
 using System.Threading.Tasks;
 using WhyNotLang.Interpreter.Evaluators;
 using WhyNotLang.Interpreter.Evaluators.ExpressionValues;
-using WhyNotLang.Interpreter.State;
 using WhyNotLang.Parser.Statements;
 
 namespace WhyNotLang.Interpreter.StatementExecutors
 {
     public class ArrayAssignmentExecutor : IStatementExecutor
     {
-        private readonly IStatementIterator _statementIterator;
         private readonly IExpressionEvaluator _expressionEvaluator;
-        private readonly IProgramState _programState;
+        private readonly IExecutor _mainExecutor;
 
-        public ArrayAssignmentExecutor(IStatementIterator statementIterator,
-            IExpressionEvaluator expressionEvaluator, IProgramState programState)
+        public ArrayAssignmentExecutor(IExpressionEvaluator expressionEvaluator, IExecutor mainExecutor)
         {
-            _statementIterator = statementIterator;
             _expressionEvaluator = expressionEvaluator;
-            _programState = programState;
+            _mainExecutor = mainExecutor;
         }
         
         public async Task<ExpressionValue> Execute()
         {
-            var arrayAssignement = _statementIterator.CurrentStatement as ArrayAssignmentStatement;
+            var arrayAssignement = _mainExecutor.CurrentContext.StatementIterator.CurrentStatement as ArrayAssignmentStatement;
             var arrayName = arrayAssignement.ArrayName.Value;
             var arrayIndexValue = await _expressionEvaluator.Eval(arrayAssignement.IndexExpression);
             var arrayItemValue = await _expressionEvaluator.Eval(arrayAssignement.ValExpression);
@@ -33,7 +29,7 @@ namespace WhyNotLang.Interpreter.StatementExecutors
                 throw new ArgumentException("Index needs to be a number");
             }
             
-            _programState.AssignArrayItem(arrayName, (int) arrayIndexValue.Value, arrayItemValue);
+            _mainExecutor.ProgramState.AssignArrayItem(arrayName, (int) arrayIndexValue.Value, arrayItemValue);
             
             return ExpressionValue.Empty;
         }

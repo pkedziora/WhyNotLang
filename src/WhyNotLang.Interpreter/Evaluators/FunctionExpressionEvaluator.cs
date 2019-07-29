@@ -13,13 +13,13 @@ namespace WhyNotLang.Interpreter.Evaluators
     {
         private readonly IExpressionEvaluator _mainEvaluator;
         private readonly IBuiltinFunctionEvaluator _builtinEvaluator;
-        private readonly IProgramState _programState;
+        private readonly IExecutor _mainExecutor;
 
-        public FunctionExpressionEvaluator(IExpressionEvaluator mainEvaluator, IBuiltinFunctionEvaluator builtinEvaluator, IProgramState programState)
+        public FunctionExpressionEvaluator(IExpressionEvaluator mainEvaluator, IBuiltinFunctionEvaluator builtinEvaluator, IExecutor mainExecutor)
         {
             _mainEvaluator = mainEvaluator;
             _builtinEvaluator = builtinEvaluator;
-            _programState = programState;
+            _mainExecutor = mainExecutor;
         }
         
         public async Task<ExpressionValue> Eval(IExpression expression)
@@ -30,7 +30,7 @@ namespace WhyNotLang.Interpreter.Evaluators
             }
             
             var functionExpression = expression as FunctionExpression;
-            var functionDeclaration = _programState.GetFunction(functionExpression.Name.Value);
+            var functionDeclaration = _mainExecutor.ProgramState.GetFunction(functionExpression.Name.Value);
             var argumentsValues = await EvaluateArguments(functionExpression.Parameters.Where(p => p.Type != ExpressionType.Empty).ToList());
 
             if (functionDeclaration.IsBuiltin)
@@ -38,14 +38,13 @@ namespace WhyNotLang.Interpreter.Evaluators
                 return await _builtinEvaluator.Eval(functionExpression.Name.Value, argumentsValues);
             }
 
-            _programState.AddScope(functionDeclaration.Name.Value, true);
+            _mainExecutor.ProgramState.AddScope(functionDeclaration.Name.Value, true);
             InitialiseParameterVariables(argumentsValues, functionDeclaration.Parameters);
             
-            var statementExecutor =
-                Executor.CreateExecutor(functionDeclaration.Body.ChildStatements, _programState);
-            
-            var returnValue = await statementExecutor.ExecuteAll();
-            _programState.RemoveScope();
+            _mainExecutor.CreateNewContext(functionDeclaration.Body.ChildStatements);
+            var returnValue = await _mainExecutor.ExecuteAll();
+            _mainExecutor.LeaveContext();
+            _mainExecutor.ProgramState.RemoveScope();
 
             return returnValue;
         }
@@ -58,9 +57,9 @@ namespace WhyNotLang.Interpreter.Evaluators
                 var valueExpression = parameter as ValueExpression;
                 var isArray = parameter.Type == ExpressionType.Value &&
                               valueExpression.Token.Type == TokenType.Identifier &&
-                              _programState.IsArrayDefined(valueExpression.Token.Value);
+                              _mainExecutor.ProgramState.IsArrayDefined(valueExpression.Token.Value);
                 result.Add(isArray
-                    ? _programState.GetArrayReference(valueExpression.Token.Value)
+                    ? _mainExecutor.ProgramState.GetArrayReference(valueExpression.Token.Value)
                     : await _mainEvaluator.Eval(parameter));
             }
 
@@ -78,11 +77,11 @@ namespace WhyNotLang.Interpreter.Evaluators
             {
                 if (argumentsValues[i].Type == ExpressionValueTypes.ArrayReference)
                 {
-                    _programState.DeclareArrayByReference(parameters[i].Value, argumentsValues[i]);
+                    _mainExecutor.ProgramState.DeclareArrayByReference(parameters[i].Value, argumentsValues[i]);
                 }
                 else
                 {
-                    _programState.DeclareVariable(parameters[i].Value, argumentsValues[i]);
+                    _mainExecutor.ProgramState.DeclareVariable(parameters[i].Value, argumentsValues[i]);
                 }
             }
         }

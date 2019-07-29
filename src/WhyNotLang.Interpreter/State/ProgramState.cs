@@ -19,10 +19,20 @@ namespace WhyNotLang.Interpreter.State
         {
             BuiltinFunctionCollection = builtinFunctionCollection;
             _scopes = new List<Scope>();
+            _functions = new Dictionary<string, FunctionDeclarationStatement>();
+            
             AddScope("Global", true);
             AddScope("Main");
-            _functions = new Dictionary<string, FunctionDeclarationStatement>();
             builtinFunctionCollection.DeclareBuiltinFunctions(this);
+        }
+
+        public void Clear()
+        {
+            _scopes.Clear();
+            _functions.Clear();
+            AddScope("Global", true);
+            AddScope("Main");
+            BuiltinFunctionCollection.DeclareBuiltinFunctions(this);
         }
 
         public Scope AddScope(string name, bool isFunctionScope = false)
