@@ -56,5 +56,27 @@ namespace WhyNotLang.Interpreter.Tests
             
             Assert.Equal(expected, actual);
         }
+
+        [Fact]
+        public async void VariableInWhileStatementBlockHidesOuterScope()
+        {
+            _executor.Initialise(@"
+                var x := 0
+                var y := 1
+                while (x < 10)
+                begin
+                    var y := 2
+                    x := x + 1
+                end
+            ");
+
+            await _executor.ExecuteAll();
+
+            var actual = _programState.GetVariable("y");
+
+            var expected = new ExpressionValue(1, ExpressionValueTypes.Number);
+
+            Assert.Equal(expected, actual);
+        }
     }
 }
