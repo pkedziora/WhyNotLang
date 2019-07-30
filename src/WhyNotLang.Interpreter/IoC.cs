@@ -34,7 +34,6 @@ namespace WhyNotLang.Interpreter
                 .AddSingleton<ITokenFactory, TokenFactory>()
                 .AddSingleton<IStatementParserFactory, StatementParserFactory>()
                 .AddSingleton<IExpressionParser, ExpressionParser>()
-                .AddSingleton<IStatementExecutorFactory, StatementExecutorFactory>()
                 .AddSingleton<IStatementIterator, StatementIterator>()
                 .AddSingleton<IExpressionEvaluator, ExpressionEvaluator>()
                 .AddSingleton<IProgramState, ProgramState>()

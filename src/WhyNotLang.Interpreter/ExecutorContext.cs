@@ -10,5 +10,10 @@ namespace WhyNotLang.Interpreter
         {
             StatementIterator = statementIterator;
         }
+
+        public void ResetPosition()
+        {
+            StatementIterator.ResetPosition();
+        }
     }
 }

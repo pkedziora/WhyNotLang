@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using WhyNotLang.Interpreter.Evaluators.ExpressionValues;
 using WhyNotLang.Parser.Expressions;
@@ -8,22 +9,35 @@ namespace WhyNotLang.Interpreter.Evaluators
 {
     public class ExpressionEvaluator : IExpressionEvaluator
     {
+        private Dictionary<ExpressionType, IExpressionEvaluator> _evaluatorCache;
         private readonly IExecutor _mainExecutor;
 
         public ExpressionEvaluator(IExecutor mainExecutor)
         {
             _mainExecutor = mainExecutor;
+            _evaluatorCache = new Dictionary<ExpressionType, IExpressionEvaluator>();
         }
         
         public async Task<ExpressionValue> Eval(IExpression expression)
         {
-            var evaluator = GetExpressionEvaluator(expression);
+            var evaluator = CreateOrGetFromCache(expression.Type);
             return await evaluator.Eval(expression);
         }
 
-        private IExpressionEvaluator GetExpressionEvaluator(IExpression expression)
+        public IExpressionEvaluator CreateOrGetFromCache(ExpressionType expressionType)
         {
-            switch (expression.Type)
+            if (!_evaluatorCache.TryGetValue(expressionType, out var expressionEvaluator))
+            {
+                expressionEvaluator = CreateExpressionEvaluator(expressionType);
+                _evaluatorCache[expressionType] = expressionEvaluator;
+            }
+
+            return expressionEvaluator;
+        }
+
+        private IExpressionEvaluator CreateExpressionEvaluator(ExpressionType expressionType)
+        {
+            switch (expressionType)
             {
                 case ExpressionType.Value:
                     return new ValueExpressionEvaluator(_mainExecutor.ProgramState);
@@ -37,7 +51,7 @@ namespace WhyNotLang.Interpreter.Evaluators
                     return new ArrayExpressionEvaluator(this, _mainExecutor.ProgramState);
             }
             
-            throw new WhyNotLangException($"Parser not found for expression {expression.Type}");
+            throw new WhyNotLangException($"Parser not found for expression {expressionType}");
         }
     }
 }

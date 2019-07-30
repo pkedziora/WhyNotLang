@@ -12,11 +12,12 @@ namespace WhyNotLang.Interpreter
     {
         public IProgramState ProgramState { get; }
         public IExecutorContext CurrentContext => _executorContexts.Peek();
-        
+        public bool Stopped { get; private set; }
+
         private readonly IParser _parser;
         private readonly IStatementExecutorFactory _statementExecutorFactory;
         private readonly Stack<IExecutorContext> _executorContexts;
-        
+
         public Executor(IProgramState programState, IParser parser, IStatementExecutorFactory statementExecutorFactory)
         {
             _parser = parser;
@@ -28,6 +29,7 @@ namespace WhyNotLang.Interpreter
 
         public void Initialise(string program)
         {
+            Stopped = false;
             _parser.Initialise(program);
             var statements = _parser.ParseAll();
             CurrentContext.StatementIterator.InitStatements(statements);
@@ -49,14 +51,9 @@ namespace WhyNotLang.Interpreter
             return await Task.FromResult(ExpressionValue.Empty);
         }
 
-        public void ResetPosition()
-        {
-            CurrentContext.StatementIterator.ResetPosition();
-        }
-        
         public async Task<ExpressionValue> ExecuteAll()
         {
-            while (CurrentContext.StatementIterator.CurrentStatement.Type != StatementType.EofStatement)
+            while (!Stopped && CurrentContext.StatementIterator.CurrentStatement.Type != StatementType.EofStatement)
             {
                 var value = await ExecuteNext();
                 if (!Equals(value, ExpressionValue.Empty))
@@ -78,6 +75,11 @@ namespace WhyNotLang.Interpreter
         public void LeaveContext()
         {
             _executorContexts.Pop();
+        }
+
+        public void Stop()
+        {
+            Stopped = true;
         }
     }
 }

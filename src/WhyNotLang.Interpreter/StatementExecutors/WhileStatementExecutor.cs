@@ -21,10 +21,10 @@ namespace WhyNotLang.Interpreter.StatementExecutors
         {
             var whileStatement = _mainExecutor.CurrentContext.StatementIterator.CurrentStatement as WhileStatement;
             _mainExecutor.CreateNewContext(new List<IStatement> { whileStatement.Body});
-            while ((int) (await _expressionEvaluator.Eval(whileStatement.Condition)).Value != 0)
+            while (!_mainExecutor.Stopped && (int) (await _expressionEvaluator.Eval(whileStatement.Condition)).Value != 0)
             {
                 await _mainExecutor.ExecuteAll();
-                _mainExecutor.ResetPosition();
+                _mainExecutor.CurrentContext.ResetPosition();
             }
             _mainExecutor.LeaveContext();
             return ExpressionValue.Empty;
