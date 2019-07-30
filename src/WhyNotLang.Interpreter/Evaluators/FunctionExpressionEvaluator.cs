@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using WhyNotLang.Interpreter.Evaluators.ExpressionValues;
-using WhyNotLang.Interpreter.State;
 using WhyNotLang.Parser.Expressions;
 using WhyNotLang.Tokenizer;
 
@@ -12,13 +11,11 @@ namespace WhyNotLang.Interpreter.Evaluators
     public class FunctionExpressionEvaluator : IExpressionEvaluator
     {
         private readonly IExpressionEvaluator _mainEvaluator;
-        private readonly IBuiltinFunctionEvaluator _builtinEvaluator;
         private readonly IExecutor _mainExecutor;
 
-        public FunctionExpressionEvaluator(IExpressionEvaluator mainEvaluator, IBuiltinFunctionEvaluator builtinEvaluator, IExecutor mainExecutor)
+        public FunctionExpressionEvaluator(IExpressionEvaluator mainEvaluator, IExecutor mainExecutor)
         {
             _mainEvaluator = mainEvaluator;
-            _builtinEvaluator = builtinEvaluator;
             _mainExecutor = mainExecutor;
         }
         
@@ -26,7 +23,7 @@ namespace WhyNotLang.Interpreter.Evaluators
         {
             if (expression.Type != ExpressionType.Function)
             {
-                throw new ArgumentException("FunctionExpression expected");
+                throw new WhyNotLangException("FunctionExpression expected");
             }
             
             var functionExpression = expression as FunctionExpression;
@@ -35,7 +32,7 @@ namespace WhyNotLang.Interpreter.Evaluators
 
             if (functionDeclaration.IsBuiltin)
             {
-                return await _builtinEvaluator.Eval(functionExpression.Name.Value, argumentsValues);
+                return await EvalBuiltInFunction(functionExpression.Name.Value, argumentsValues);
             }
 
             _mainExecutor.ProgramState.AddScope(functionDeclaration.Name.Value, true);
@@ -47,6 +44,16 @@ namespace WhyNotLang.Interpreter.Evaluators
             _mainExecutor.ProgramState.RemoveScope();
 
             return returnValue;
+        }
+
+        private async Task<ExpressionValue> EvalBuiltInFunction(string functionName, List<ExpressionValue> argumentValues)
+        {
+            if (!_mainExecutor.ProgramState.BuiltinFunctionCollection.FunctionDescriptions.TryGetValue(functionName, out var functionDescription))
+            {
+                throw new WhyNotLangException($"Unexpected builtin function name {functionName}");
+            }
+
+            return await functionDescription.Implementation(argumentValues);
         }
 
         private async Task<List<ExpressionValue>> EvaluateArguments(List<IExpression> arguments)
@@ -70,7 +77,7 @@ namespace WhyNotLang.Interpreter.Evaluators
         {
             if (argumentsValues.Count != parameters.Count)
             {
-                throw new ArgumentException($"Function called with {argumentsValues.Count} arguments, expected {parameters.Count}");
+                throw new WhyNotLangException($"Function called with {argumentsValues.Count} arguments, expected {parameters.Count}");
             }
 
             for (int i = 0; i < argumentsValues.Count; i++)

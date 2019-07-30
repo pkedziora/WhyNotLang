@@ -109,7 +109,7 @@ namespace WhyNotLang.Parser
         {
             if (_tokenIterator.CurrentToken.Type != TokenType.LeftParen)
             {
-                throw new ArgumentException("( expected");
+                throw new WhyNotLangException("( expected");
             }
 
             _tokenIterator.GetNextToken(); // Swallow (
@@ -124,7 +124,7 @@ namespace WhyNotLang.Parser
         {
             if (_tokenIterator.CurrentToken.Type != TokenType.Identifier)
             {
-                throw new ArgumentException("Identifier expected");
+                throw new WhyNotLangException("Identifier expected");
             }
             
             var functionNameToken = _tokenIterator.CurrentToken;
@@ -152,7 +152,7 @@ namespace WhyNotLang.Parser
         {
             if (_tokenIterator.CurrentToken.Type != TokenType.Identifier)
             {
-                throw new ArgumentException("Identifier expected");
+                throw new WhyNotLangException("Identifier expected");
             }
             
             var arrayNameToken = _tokenIterator.CurrentToken;

@@ -22,7 +22,7 @@ namespace WhyNotLang.Parser.Statements.Parsers
             _tokenIterator.GetNextToken(); // Swallow arrayName
             if (_tokenIterator.CurrentToken.Type != TokenType.LeftBracket)
             {
-                throw new ArgumentException("[ expected");
+                throw new WhyNotLangException("[ expected");
             }
             
             _tokenIterator.GetNextToken(); // Swallow [
@@ -31,13 +31,13 @@ namespace WhyNotLang.Parser.Statements.Parsers
             
             if (_tokenIterator.CurrentToken.Type != TokenType.RightBracket)
             {
-                throw new ArgumentException("] expected");
+                throw new WhyNotLangException("] expected");
             }
             _tokenIterator.GetNextToken(); // Swallow ]
             
             if (_tokenIterator.CurrentToken.Type != TokenType.Assign)
             {
-                throw new ArgumentException(":= expected");
+                throw new WhyNotLangException(":= expected");
             }
             _tokenIterator.GetNextToken(); // Swallow :=
             

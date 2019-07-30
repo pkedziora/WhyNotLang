@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using WhyNotLang.Parser;
 using WhyNotLang.Parser.Statements;
 
 namespace WhyNotLang.Interpreter.StatementExecutors

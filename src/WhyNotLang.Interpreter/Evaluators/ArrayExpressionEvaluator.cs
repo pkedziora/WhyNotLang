@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using WhyNotLang.Interpreter.Evaluators.ExpressionValues;
 using WhyNotLang.Interpreter.State;
 using WhyNotLang.Parser.Expressions;
+using WhyNotLang.Tokenizer;
 
 namespace WhyNotLang.Interpreter.Evaluators
 {
@@ -21,7 +22,7 @@ namespace WhyNotLang.Interpreter.Evaluators
         {
             if (expression.Type != ExpressionType.Array)
             {
-                throw new ArgumentException("ArrayExpression expected");
+                throw new WhyNotLangException("ArrayExpression expected");
             }
             
             var arrayExpression = expression as ArrayExpression;
@@ -30,7 +31,7 @@ namespace WhyNotLang.Interpreter.Evaluators
 
             if (indexExpression.Type != ExpressionValueTypes.Number)
             {
-                throw new ArgumentException("Index must be a number");
+                throw new WhyNotLangException("Index must be a number");
             }
             
             return _programState.GetArrayItem(arrayExpression.Name.Value, (int) indexExpression.Value);

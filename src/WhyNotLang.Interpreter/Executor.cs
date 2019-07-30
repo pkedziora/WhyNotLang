@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using WhyNotLang.Interpreter.Evaluators;
 using WhyNotLang.Interpreter.Evaluators.ExpressionValues;
 using WhyNotLang.Interpreter.State;
 using WhyNotLang.Interpreter.StatementExecutors;
@@ -11,14 +10,18 @@ namespace WhyNotLang.Interpreter
 {
     public class Executor : IExecutor
     {
-        private readonly IParser _parser;
         public IProgramState ProgramState { get; }
         public IExecutorContext CurrentContext => _executorContexts.Peek();
+        
+        private readonly IParser _parser;
+        private readonly IStatementExecutorFactory _statementExecutorFactory;
         private readonly Stack<IExecutorContext> _executorContexts;
-        public Executor(IProgramState programState, IParser parser)
+        
+        public Executor(IProgramState programState, IParser parser, IStatementExecutorFactory statementExecutorFactory)
         {
             _parser = parser;
             ProgramState = programState;
+            _statementExecutorFactory = statementExecutorFactory;
             _executorContexts = new Stack<IExecutorContext>();
             CreateNewContext(new List<IStatement>());
         }
@@ -32,8 +35,8 @@ namespace WhyNotLang.Interpreter
         
         public async Task<ExpressionValue> ExecuteNext()
         {
-            var executor =  CurrentContext.StatementExecutorFactory
-                                .CreateStatementExecutor(CurrentContext.StatementIterator.CurrentStatement.Type, 
+            var executor =  _statementExecutorFactory
+                                .CreateOrGetFromCache(CurrentContext.StatementIterator.CurrentStatement.Type, 
                                     this);
             var value = await executor.Execute();
             if (!Equals(value, ExpressionValue.Empty))
@@ -43,7 +46,7 @@ namespace WhyNotLang.Interpreter
             
             CurrentContext.StatementIterator.GetNextStatement();
             
-            return ExpressionValue.Empty;
+            return await Task.FromResult(ExpressionValue.Empty);
         }
 
         public void ResetPosition()
@@ -62,16 +65,14 @@ namespace WhyNotLang.Interpreter
                 }
             }
             
-            return ExpressionValue.Empty;
+            return await Task.FromResult(ExpressionValue.Empty);
         }
         
         public void CreateNewContext(List<IStatement> statements)
         {
             var iterator = new StatementIterator(statements);
-
-            var statementExecutionFactory = new StatementExecutorFactory(
-                new ExpressionEvaluator(this, new BuiltinFunctionEvaluator(ProgramState)));
-            _executorContexts.Push(new ExecutorContext(iterator, ProgramState, statementExecutionFactory));
+            
+            _executorContexts.Push(new ExecutorContext(iterator));
         }
 
         public void LeaveContext()

@@ -1,20 +1,18 @@
 using System;
 using System.Threading.Tasks;
 using WhyNotLang.Interpreter.Evaluators.ExpressionValues;
-using WhyNotLang.Interpreter.State;
 using WhyNotLang.Parser.Expressions;
+using WhyNotLang.Tokenizer;
 
 namespace WhyNotLang.Interpreter.Evaluators
 {
     public class ExpressionEvaluator : IExpressionEvaluator
     {
         private readonly IExecutor _mainExecutor;
-        private readonly IBuiltinFunctionEvaluator _builtinEvaluator;
 
-        public ExpressionEvaluator(IExecutor mainExecutor, IBuiltinFunctionEvaluator builtinEvaluator)
+        public ExpressionEvaluator(IExecutor mainExecutor)
         {
             _mainExecutor = mainExecutor;
-            _builtinEvaluator = builtinEvaluator;
         }
         
         public async Task<ExpressionValue> Eval(IExpression expression)
@@ -22,8 +20,8 @@ namespace WhyNotLang.Interpreter.Evaluators
             var evaluator = GetExpressionEvaluator(expression);
             return await evaluator.Eval(expression);
         }
-        
-        public IExpressionEvaluator GetExpressionEvaluator(IExpression expression)
+
+        private IExpressionEvaluator GetExpressionEvaluator(IExpression expression)
         {
             switch (expression.Type)
             {
@@ -34,12 +32,12 @@ namespace WhyNotLang.Interpreter.Evaluators
                 case ExpressionType.Binary:
                     return new BinaryExpressionEvaluator(this);
                 case ExpressionType.Function:
-                    return new FunctionExpressionEvaluator(this, _builtinEvaluator, _mainExecutor);
+                    return new FunctionExpressionEvaluator(this, _mainExecutor);
                 case ExpressionType.Array:
                     return new ArrayExpressionEvaluator(this, _mainExecutor.ProgramState);
             }
             
-            throw new ArgumentException($"Parser not found for expression {expression.Type}");
+            throw new WhyNotLangException($"Parser not found for expression {expression.Type}");
         }
     }
 }

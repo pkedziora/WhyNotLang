@@ -19,7 +19,7 @@ namespace WhyNotLang.Interpreter.StatementExecutors
             var functionName = functionDeclaration.Name.Value;
             _mainExecutor.ProgramState.DeclareFunction(functionName, functionDeclaration);
             
-            return ExpressionValue.Empty;
+            return await Task.FromResult(ExpressionValue.Empty);
         }
     }
 }

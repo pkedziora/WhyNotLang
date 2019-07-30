@@ -19,7 +19,7 @@ namespace WhyNotLang.Parser.Statements.Parsers
         {
             if (_tokenIterator.CurrentToken.Type != TokenType.Identifier && _tokenIterator.PeekToken(1).Type != TokenType.LeftParen)
             {
-                throw new ArgumentException("function call expected");
+                throw new WhyNotLangException("function call expected");
             }
             
             var functionExpression = (FunctionExpression) _expressionParser.ParseNextExpression();

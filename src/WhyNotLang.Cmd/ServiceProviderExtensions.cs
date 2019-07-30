@@ -1,5 +1,6 @@
 using System;
 using System.Linq;
+using System.Threading.Tasks;
 using Microsoft.Extensions.DependencyInjection;
 using WhyNotLang.Interpreter.Builtin;
 using WhyNotLang.Interpreter.Evaluators.ExpressionValues;
@@ -21,14 +22,14 @@ namespace WhyNotLang.Cmd
                     }
 
                     Console.WriteLine((string)str.Value);
-                    return ExpressionValue.Empty;
+                    return await Task.FromResult(ExpressionValue.Empty);
                 });
 
             functionCollection.Add("Readln",
                 async arguments =>
                 {
                     var str = Console.ReadLine();
-                    return new ExpressionValue(str, ExpressionValueTypes.String);
+                    return await Task.FromResult(new ExpressionValue(str, ExpressionValueTypes.String));
                 });
         }
     }

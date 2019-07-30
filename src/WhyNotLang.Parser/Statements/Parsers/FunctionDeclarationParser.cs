@@ -19,14 +19,14 @@ namespace WhyNotLang.Parser.Statements.Parsers
         {
             if (_tokenIterator.CurrentToken.Type != TokenType.Function)
             {
-                throw new ArgumentException("function expected");
+                throw new WhyNotLangException("function expected");
             }
             
             _tokenIterator.GetNextToken(); // Set current to function name
             
             if (_tokenIterator.CurrentToken.Type != TokenType.Identifier)
             {
-                throw new ArgumentException("identifier expected");
+                throw new WhyNotLangException("identifier expected");
             }
 
             var name = _tokenIterator.CurrentToken;
@@ -36,7 +36,7 @@ namespace WhyNotLang.Parser.Statements.Parsers
             
             if (_tokenIterator.CurrentToken.Type != TokenType.Begin)
             {
-                throw new ArgumentException("begin expected");
+                throw new WhyNotLangException("begin expected");
             }
             
             var body = (BlockStatement) _parser.ParseNext();
@@ -48,7 +48,7 @@ namespace WhyNotLang.Parser.Statements.Parsers
         {
             if (_tokenIterator.CurrentToken.Type != TokenType.LeftParen)
             {
-                throw new ArgumentException("( expected");
+                throw new WhyNotLangException("( expected");
             }
 
             _tokenIterator.GetNextToken(); // Swallow (
@@ -57,7 +57,7 @@ namespace WhyNotLang.Parser.Statements.Parsers
             {
                 if (_tokenIterator.CurrentToken.Type != TokenType.Identifier)
                 {
-                    throw new ArgumentException("identifier expected");
+                    throw new WhyNotLangException("identifier expected");
                 }
                 
                 parameters.Add(_tokenIterator.CurrentToken);

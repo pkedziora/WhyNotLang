@@ -5,12 +5,15 @@ namespace WhyNotLang.Tokenizer
         public TokenType Type { get; }
         public string Value { get; }
 
+        public int LineNumber { get; set; }
+
         public static Token Eof => new Token(TokenType.Eof, "");
         
-        public Token(TokenType type, string value)
+        public Token(TokenType type, string value, int lineNumber = 0)
         {
             Type = type;
             Value = value;
+            LineNumber = lineNumber;
         }
 
         public override bool Equals(object obj)

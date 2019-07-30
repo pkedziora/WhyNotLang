@@ -7,14 +7,17 @@ namespace WhyNotLang.Tokenizer
     {
         private readonly ITokenReader _tokenReader;
         private readonly ITokenFactory _tokenFactory;
+        private int _lineNumber;
         public Tokenizer(ITokenReader tokenReader, ITokenFactory tokenFactory)
         {
             _tokenReader = tokenReader;
             _tokenFactory = tokenFactory;
+            _lineNumber = 1;
         }
         
         public IList<Token> GetTokens(string input)
         {
+            _lineNumber = 1;
             input = input.Trim();
             var tokens = new List<Token>();
             var index = 0;
@@ -22,7 +25,7 @@ namespace WhyNotLang.Tokenizer
             {
                 var result = GetNextToken(input, index);
                 index = result.endIndex + 1;
-                tokens.Add(result.token);
+                tokens.Add(result.token.AddLineNumber(_lineNumber));
             }
 
             return tokens;
@@ -30,7 +33,8 @@ namespace WhyNotLang.Tokenizer
 
         private (Token token, int endIndex) GetNextToken(string input, int startIndex)
         {
-            var index = _tokenReader.SkipWhitespace(input, startIndex);
+            var (index, newLineCount) = _tokenReader.SkipWhitespace(input, startIndex);
+            _lineNumber += newLineCount;
             var endIndex = index;
             
             if (_tokenReader.CanReadNumber(input, index))

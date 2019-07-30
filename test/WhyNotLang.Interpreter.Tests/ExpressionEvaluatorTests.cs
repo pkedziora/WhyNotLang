@@ -126,10 +126,10 @@ namespace WhyNotLang.Interpreter.Tests
         [InlineData("\"abc\" == \"abc\"", 1)]
         public async Task EvalBinaryExpressionWithStringEquality(string strExpression, int expectedResult)
         {
-            var input = _expressionParser.ParseExpression("\"abc\" == \"def\"");
+            var input = _expressionParser.ParseExpression(strExpression);
 
             var actual = await _expressionEvaluator.Eval(input);
-            var expected = new ExpressionValue(0, ExpressionValueTypes.Number);
+            var expected = new ExpressionValue(expectedResult, ExpressionValueTypes.Number);
             
             Assert.Equal(expected, actual);
         }

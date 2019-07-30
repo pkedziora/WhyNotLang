@@ -5,14 +5,20 @@ namespace WhyNotLang.Tokenizer
 {
     public class TokenReader : ITokenReader
     {
-        public int SkipWhitespace(string input, int index)
+        public (int newIndex, int newLineCount) SkipWhitespace(string input, int index)
         {
+            int newLineCount = 0;
             while (index < input.Length && char.IsWhiteSpace(input[index]))
             {
+                if (input[index] == '\n')
+                {
+                    newLineCount++;
+                }
+
                 index++;
             }
 
-            return index;
+            return (index, newLineCount);
         }
         
         public bool CanReadIdentifier(string input, int index)

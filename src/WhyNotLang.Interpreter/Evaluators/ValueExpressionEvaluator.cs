@@ -20,7 +20,7 @@ namespace WhyNotLang.Interpreter.Evaluators
         {
             if (expression.Type != ExpressionType.Value)
             {
-                throw new ArgumentException("ValueExpression expected");
+                throw new WhyNotLangException("ValueExpression expected");
             }
             
             var valueExpression = expression as ValueExpression;
@@ -28,14 +28,14 @@ namespace WhyNotLang.Interpreter.Evaluators
             switch (valueExpression.Token.Type)
             {
                 case TokenType.Number:
-                    return new ExpressionValue(int.Parse(token.Value), ExpressionValueTypes.Number);
+                    return await Task.FromResult(new ExpressionValue(int.Parse(token.Value), ExpressionValueTypes.Number));
                 case TokenType.String:
-                    return new ExpressionValue(token.Value, ExpressionValueTypes.String);
+                    return await Task.FromResult(new ExpressionValue(token.Value, ExpressionValueTypes.String));
                 case TokenType.Identifier:
-                    return GetVariableValue(token.Value);
+                    return await Task.FromResult(GetVariableValue(token.Value));
             }
             
-            throw new ArgumentException("Unsupported token type");
+            throw new WhyNotLangException("Unsupported token type");
         }
 
         private ExpressionValue GetVariableValue(string identifier)

@@ -25,19 +25,19 @@ namespace WhyNotLang.Tokenizer
             return result;
         }
 
-        public Token CreateToken(TokenType type, string val = null)
+        public Token CreateToken(TokenType type, string val = null, int lineNumber = 0)
         {
             switch (type)
             {
                 case TokenType.Identifier:
-                    return new Token(TokenType.Identifier, val);
+                    return new Token(TokenType.Identifier, val, lineNumber);
                 case TokenType.Number:
-                    return new Token(TokenType.Number, val);
+                    return new Token(TokenType.Number, val, lineNumber);
                 case TokenType.String:
-                    return new Token(TokenType.String, val);
+                    return new Token(TokenType.String, val, lineNumber);
                 default:
                     var key = Map.First(keyVal => keyVal.Value == type).Key;
-                    return new Token(type, key);
+                    return new Token(type, key, lineNumber);
             }
         }
 

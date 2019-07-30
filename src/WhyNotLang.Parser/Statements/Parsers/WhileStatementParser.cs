@@ -20,13 +20,13 @@ namespace WhyNotLang.Parser.Statements.Parsers
         {
             if (_tokenIterator.CurrentToken.Type != TokenType.While)
             {
-                throw new ArgumentException("while expected");
+                throw new WhyNotLangException("while expected");
             }
             
             _tokenIterator.GetNextToken(); // Set current to (
             if (_tokenIterator.CurrentToken.Type != TokenType.LeftParen)
             {
-                throw new ArgumentException("( expected");
+                throw new WhyNotLangException("( expected");
             }
             
             var condition = _expressionParser.ParseNextExpression();

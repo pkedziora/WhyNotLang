@@ -19,7 +19,7 @@ namespace WhyNotLang.Interpreter.Evaluators
         {
             if (expression.Type != ExpressionType.Unary)
             {
-                throw new ArgumentException("UnaryExpression expected");
+                throw new WhyNotLangException("UnaryExpression expected");
             }
             
             var unaryExpression = expression as UnaryExpression;
@@ -34,7 +34,7 @@ namespace WhyNotLang.Interpreter.Evaluators
         {
             if (inner.Type != ExpressionValueTypes.Number)
             {
-                throw new ArgumentException("Number expression expected");
+                throw new WhyNotLangException("Number expression expected");
             }
             
             return new ExpressionValue(CalculateNumberOperation(op, (int)inner.Value), ExpressionValueTypes.Number);
@@ -52,7 +52,7 @@ namespace WhyNotLang.Interpreter.Evaluators
                     return value != 0 ? 0 : 1;
             }
             
-            throw new ArgumentException("Unsupported token type");
+            throw new WhyNotLangException("Unsupported token type");
         }
     }
 }

@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using WhyNotLang.Interpreter.Evaluators;
 using WhyNotLang.Interpreter.Evaluators.ExpressionValues;
 using WhyNotLang.Parser.Statements;
+using WhyNotLang.Tokenizer;
 
 namespace WhyNotLang.Interpreter.StatementExecutors
 {
@@ -26,7 +27,7 @@ namespace WhyNotLang.Interpreter.StatementExecutors
 
             if (arrayIndexValue.Type != ExpressionValueTypes.Number)
             {
-                throw new ArgumentException("Index needs to be a number");
+                throw new WhyNotLangException("Index needs to be a number");
             }
             
             _mainExecutor.ProgramState.AssignArrayItem(arrayName, (int) arrayIndexValue.Value, arrayItemValue);

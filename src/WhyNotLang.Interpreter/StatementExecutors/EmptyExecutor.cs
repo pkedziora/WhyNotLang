@@ -7,7 +7,7 @@ namespace WhyNotLang.Interpreter.StatementExecutors
     {
         public async Task<ExpressionValue> Execute()
         {
-            return ExpressionValue.Empty;
+            return await Task.FromResult(ExpressionValue.Empty);
         }
     }
 }

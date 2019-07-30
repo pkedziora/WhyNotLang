@@ -19,7 +19,7 @@ namespace WhyNotLang.Parser.Statements.Parsers
         {
             if (_tokenIterator.CurrentToken.Type != TokenType.Begin)
             {
-                throw new ArgumentException("begin expected");
+                throw new WhyNotLangException("begin expected");
             }
             
             _tokenIterator.GetNextToken(); // Swallow begin

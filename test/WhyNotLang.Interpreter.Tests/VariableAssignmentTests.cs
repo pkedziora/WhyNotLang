@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using Microsoft.Extensions.DependencyInjection;
 using WhyNotLang.Interpreter.Evaluators.ExpressionValues;
 using WhyNotLang.Interpreter.State;
+using WhyNotLang.Tokenizer;
 using Xunit;
 
 namespace WhyNotLang.Interpreter.Tests
@@ -59,7 +60,7 @@ namespace WhyNotLang.Interpreter.Tests
                 x := 2
             ");
 
-            await Assert.ThrowsAsync<ArgumentException>(async () => await _executor.ExecuteAll());
+            await Assert.ThrowsAsync<WhyNotLangException>(async () => await _executor.ExecuteAll());
         }
         
         [Fact]

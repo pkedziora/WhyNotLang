@@ -1,21 +1,35 @@
 using System;
+using System.Collections.Generic;
 using WhyNotLang.Interpreter.Evaluators;
-using WhyNotLang.Interpreter.State;
 using WhyNotLang.Parser.Statements;
+using WhyNotLang.Tokenizer;
 
 namespace WhyNotLang.Interpreter.StatementExecutors
 {
     public class StatementExecutorFactory : IStatementExecutorFactory
     {
-        private readonly IExpressionEvaluator _expressionEvaluator;
-
-        public StatementExecutorFactory(IExpressionEvaluator expressionEvaluator)
+        private Dictionary<StatementType, IStatementExecutor> _executorsCache;
+        private IExpressionEvaluator _expressionEvaluator;
+        
+        public StatementExecutorFactory()
         {
-            _expressionEvaluator = expressionEvaluator;
+            _executorsCache = new Dictionary<StatementType, IStatementExecutor>();
         }
 
-        public IStatementExecutor CreateStatementExecutor(StatementType statementType, IExecutor mainExecutor)
+        public IStatementExecutor CreateOrGetFromCache(StatementType statementType, IExecutor mainExecutor)
         {
+            if (!_executorsCache.TryGetValue(statementType, out var statementExecutor))
+            {
+                statementExecutor = CreateStatementExecutor(statementType, mainExecutor);
+                _executorsCache[statementType] = statementExecutor;
+            }
+
+            return statementExecutor;
+        }
+        
+        private IStatementExecutor CreateStatementExecutor(StatementType statementType, IExecutor mainExecutor)
+        {
+            _expressionEvaluator = _expressionEvaluator ?? new ExpressionEvaluator(mainExecutor);
             switch (statementType)
             {
                 case StatementType.VariableDeclarationStatement:
@@ -42,7 +56,7 @@ namespace WhyNotLang.Interpreter.StatementExecutors
                     return new EmptyExecutor();
             }
             
-            throw new ArgumentException("Executor not found for current statement");
+            throw new WhyNotLangException("Executor not found for current statement");
         }
     }
 }

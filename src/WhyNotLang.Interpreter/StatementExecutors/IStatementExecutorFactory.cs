@@ -4,6 +4,6 @@ namespace WhyNotLang.Interpreter.StatementExecutors
 {
     public interface IStatementExecutorFactory
     {
-        IStatementExecutor CreateStatementExecutor(StatementType statementType, IExecutor mainExecutor);
+        IStatementExecutor CreateOrGetFromCache(StatementType statementType, IExecutor mainExecutor);
     }
 }

@@ -6,6 +6,6 @@ namespace WhyNotLang.Tokenizer
     {
         Dictionary<string, TokenType> Map { get; }
         Dictionary<string, TokenType> GetTokenTypesStartingWith(string prefix);
-        Token CreateToken(TokenType type, string val = null);
+        Token CreateToken(TokenType type, string val = null, int lineNumber = 0);
     }
 }

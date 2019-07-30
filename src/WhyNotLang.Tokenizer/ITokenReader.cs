@@ -2,7 +2,7 @@ namespace WhyNotLang.Tokenizer
 {
     public interface ITokenReader
     {
-        int SkipWhitespace(string input, int index);
+        (int newIndex, int newLineCount) SkipWhitespace(string input, int index);
         bool CanReadIdentifier(string input, int index);
         (Token token, int endIndex) ReadIdentifier(string input, int index);
         bool CanReadNumber(string input, int index);

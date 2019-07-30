@@ -19,7 +19,7 @@ namespace WhyNotLang.Parser.Statements.Parsers
         {
             if (_tokenIterator.CurrentToken.Type != TokenType.Return)
             {
-                throw new ArgumentException("return expected");
+                throw new WhyNotLangException("return expected");
             }
             
             _tokenIterator.GetNextToken(); // Swallow return

@@ -33,7 +33,6 @@ namespace WhyNotLang.Interpreter
                 .AddSingleton<ITokenReader, TokenReader>()
                 .AddSingleton<ITokenFactory, TokenFactory>()
                 .AddSingleton<IStatementParserFactory, StatementParserFactory>()
-                .AddSingleton<IBuiltinFunctionEvaluator, BuiltinFunctionEvaluator>()
                 .AddSingleton<IExpressionParser, ExpressionParser>()
                 .AddSingleton<IStatementExecutorFactory, StatementExecutorFactory>()
                 .AddSingleton<IStatementIterator, StatementIterator>()

@@ -18,7 +18,7 @@ namespace WhyNotLang.Parser.Statements.Parsers
         {
             if (_tokenIterator.CurrentToken.Type != TokenType.Var && _tokenIterator.CurrentToken.Type != TokenType.Global)
             {
-                throw new ArgumentException("var or global expected");
+                throw new WhyNotLangException("var or global expected");
             }
 
             var isGlobal = _tokenIterator.CurrentToken.Type == TokenType.Global;
@@ -26,7 +26,7 @@ namespace WhyNotLang.Parser.Statements.Parsers
             _tokenIterator.GetNextToken();
             if (_tokenIterator.CurrentToken.Type != TokenType.Assign)
             {
-                throw new ArgumentException(":= expected. Variables need to be initialised with value");
+                throw new WhyNotLangException(":= expected. Variables need to be initialised with value");
             }
 
             _tokenIterator.GetNextToken();

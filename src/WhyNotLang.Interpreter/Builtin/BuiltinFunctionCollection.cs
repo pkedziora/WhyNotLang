@@ -45,7 +45,7 @@ namespace WhyNotLang.Interpreter.Builtin
                         throw new Exception("Number expected");
                     }
 
-                    return new ExpressionValue(number.Value.ToString(), ExpressionValueTypes.String);
+                    return await Task.FromResult(new ExpressionValue(number.Value.ToString(), ExpressionValueTypes.String));
                 }
             );
 
@@ -58,7 +58,7 @@ namespace WhyNotLang.Interpreter.Builtin
                         throw new Exception("String expected");
                     }
 
-                    return new ExpressionValue(int.Parse((string) str.Value), ExpressionValueTypes.Number);
+                    return await Task.FromResult(new ExpressionValue(int.Parse((string) str.Value), ExpressionValueTypes.Number));
             });
 
             Add("Delay",

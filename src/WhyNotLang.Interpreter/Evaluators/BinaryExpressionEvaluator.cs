@@ -19,7 +19,7 @@ namespace WhyNotLang.Interpreter.Evaluators
         {
             if (expression.Type != ExpressionType.Binary)
             {
-                throw new ArgumentException("BinaryExpression expected");
+                throw new WhyNotLangException("BinaryExpression expected");
             }
             
             var binaryExpression = expression as BinaryExpression;
@@ -35,7 +35,7 @@ namespace WhyNotLang.Interpreter.Evaluators
         {
             if (left.Type != right.Type)
             {
-                throw new ArgumentException("Left and right expressions need to be of same type");
+                throw new WhyNotLangException("Left and right expressions need to be of same type");
             }
 
             switch (left.Type)
@@ -51,14 +51,14 @@ namespace WhyNotLang.Interpreter.Evaluators
                     return new ExpressionValue(CalculateStringOperation((string)left.Value, op, (string)right.Value), ExpressionValueTypes.String);
             }
             
-            throw new ArgumentException("Unsupported token type");
+            throw new WhyNotLangException("Unsupported token type");
         }
 
         private string CalculateStringOperation(string left, Token op, string right)
         {
             if (op.Type != TokenType.Plus)
             {
-                throw new ArgumentException("Only + and == operation supported for strings");
+                throw new WhyNotLangException("Only + and == operation supported for strings");
             }
 
             return left + right;
@@ -94,7 +94,7 @@ namespace WhyNotLang.Interpreter.Evaluators
                     return CastBoolToInt(CastIntToBool(left) && CastIntToBool(right));
             }
             
-            throw new ArgumentException("Unsupported token type");
+            throw new WhyNotLangException("Unsupported token type");
         }
 
         private int CastBoolToInt(bool val)

@@ -1,5 +1,6 @@
 using System;
 using System.Linq;
+using System.Threading.Tasks;
 using Microsoft.Extensions.DependencyInjection;
 using WhyNotLang.Interpreter.Builtin;
 using WhyNotLang.Interpreter.Evaluators.ExpressionValues;
@@ -21,9 +22,9 @@ namespace WhyNotLang.Web
                     }
 
 
-                    jsRuntime.InvokeAsync<string>("console.log", str.Value);
+                    await jsRuntime.InvokeAsync<string>("console.log", str.Value);
 
-                    return ExpressionValue.Empty;
+                    return await Task.FromResult(ExpressionValue.Empty);
                 });
         }
     }
