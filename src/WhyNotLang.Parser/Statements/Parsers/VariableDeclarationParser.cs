@@ -18,7 +18,7 @@ namespace WhyNotLang.Parser.Statements.Parsers
         {
             if (_tokenIterator.CurrentToken.Type != TokenType.Var && _tokenIterator.CurrentToken.Type != TokenType.Global)
             {
-                throw new WhyNotLangException("var or global expected");
+                throw new WhyNotLangException("var or global expected", _tokenIterator.CurrentToken.LineNumber);
             }
 
             var isGlobal = _tokenIterator.CurrentToken.Type == TokenType.Global;
@@ -26,12 +26,12 @@ namespace WhyNotLang.Parser.Statements.Parsers
             _tokenIterator.GetNextToken();
             if (_tokenIterator.CurrentToken.Type != TokenType.Assign)
             {
-                throw new WhyNotLangException(":= expected. Variables need to be initialised with value");
+                throw new WhyNotLangException(":= expected. Variables need to be initialised with value" , _tokenIterator.CurrentToken.LineNumber);
             }
 
             _tokenIterator.GetNextToken();
             var expression = _expressionParser.ParseNextExpression();
-            var statement = new VariableDeclarationStatement(variableName, expression, isGlobal);
+            var statement = new VariableDeclarationStatement(variableName, expression, isGlobal, variableName.LineNumber);
 
             return statement;
         }

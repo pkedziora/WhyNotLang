@@ -17,14 +17,15 @@ namespace WhyNotLang.Parser.Statements.Parsers
         
         public IStatement Parse()
         {
+            var lineNumber = _tokenIterator.CurrentToken.LineNumber;
             if (_tokenIterator.CurrentToken.Type != TokenType.Identifier && _tokenIterator.PeekToken(1).Type != TokenType.LeftParen)
             {
-                throw new WhyNotLangException("function call expected");
+                throw new WhyNotLangException("function call expected", lineNumber);
             }
             
             var functionExpression = (FunctionExpression) _expressionParser.ParseNextExpression();
 
-            return new FunctionCallStatement(functionExpression);
+            return new FunctionCallStatement(functionExpression, lineNumber);
         }
     }
 }

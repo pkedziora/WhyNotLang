@@ -11,14 +11,16 @@ namespace WhyNotLang.Parser.Statements
         public List<Token> Parameters { get; }
         
         public BlockStatement Body { get; }
+        public int LineNumber { get; }
 
         public bool IsBuiltin { get; }
 
-        public FunctionDeclarationStatement(Token name, List<Token> parameters, BlockStatement body)
+        public FunctionDeclarationStatement(Token name, List<Token> parameters, BlockStatement body, int lineNumber = 0)
         {
             Name = name;
             Parameters = parameters;
             Body = body;
+            LineNumber = lineNumber;
         }
         
         public FunctionDeclarationStatement(Token name, List<Token> parameters)

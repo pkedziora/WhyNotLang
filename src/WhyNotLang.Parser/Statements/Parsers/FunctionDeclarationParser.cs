@@ -19,14 +19,14 @@ namespace WhyNotLang.Parser.Statements.Parsers
         {
             if (_tokenIterator.CurrentToken.Type != TokenType.Function)
             {
-                throw new WhyNotLangException("function expected");
+                throw new WhyNotLangException("function expected", _tokenIterator.CurrentToken.LineNumber);
             }
             
             _tokenIterator.GetNextToken(); // Set current to function name
             
             if (_tokenIterator.CurrentToken.Type != TokenType.Identifier)
             {
-                throw new WhyNotLangException("identifier expected");
+                throw new WhyNotLangException("identifier expected", _tokenIterator.CurrentToken.LineNumber);
             }
 
             var name = _tokenIterator.CurrentToken;
@@ -36,19 +36,19 @@ namespace WhyNotLang.Parser.Statements.Parsers
             
             if (_tokenIterator.CurrentToken.Type != TokenType.Begin)
             {
-                throw new WhyNotLangException("begin expected");
+                throw new WhyNotLangException("begin expected", _tokenIterator.CurrentToken.LineNumber);
             }
             
             var body = (BlockStatement) _parser.ParseNext();
             
-            return new FunctionDeclarationStatement(name, parameters, body);
+            return new FunctionDeclarationStatement(name, parameters, body, name.LineNumber);
         }
 
         private List<Token> ParseParameters()
         {
             if (_tokenIterator.CurrentToken.Type != TokenType.LeftParen)
             {
-                throw new WhyNotLangException("( expected");
+                throw new WhyNotLangException("( expected", _tokenIterator.CurrentToken.LineNumber);
             }
 
             _tokenIterator.GetNextToken(); // Swallow (
@@ -57,7 +57,7 @@ namespace WhyNotLang.Parser.Statements.Parsers
             {
                 if (_tokenIterator.CurrentToken.Type != TokenType.Identifier)
                 {
-                    throw new WhyNotLangException("identifier expected");
+                    throw new WhyNotLangException("identifier expected", _tokenIterator.CurrentToken.LineNumber);
                 }
                 
                 parameters.Add(_tokenIterator.CurrentToken);

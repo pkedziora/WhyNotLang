@@ -17,16 +17,17 @@ namespace WhyNotLang.Parser.Statements.Parsers
         
         public IStatement Parse()
         {
+            var lineNumber = _tokenIterator.CurrentToken.LineNumber;
             if (_tokenIterator.CurrentToken.Type != TokenType.Return)
             {
-                throw new WhyNotLangException("return expected");
+                throw new WhyNotLangException("return expected", lineNumber);
             }
             
             _tokenIterator.GetNextToken(); // Swallow return
 
             IExpression returnExpression = _expressionParser.ParseNextExpression();
 
-            var statement = new ReturnStatement(returnExpression);
+            var statement = new ReturnStatement(returnExpression, lineNumber);
 
             return statement;
         }

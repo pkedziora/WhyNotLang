@@ -6,12 +6,14 @@ namespace WhyNotLang.Parser.Statements
     {
         public IExpression Condition { get; }
         public IStatement Body { get; }
+        public int LineNumber { get; }
         public StatementType Type => StatementType.WhileStatement;
 
-        public WhileStatement(IExpression condition, IStatement body)
+        public WhileStatement(IExpression condition, IStatement body, int lineNumber = 0)
         {
             Condition = condition;
             Body = body;
+            LineNumber = lineNumber;
         }
         
         public override bool Equals(object obj)

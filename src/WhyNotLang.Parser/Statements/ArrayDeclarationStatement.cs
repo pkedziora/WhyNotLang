@@ -7,13 +7,15 @@ namespace WhyNotLang.Parser.Statements
     {
         public Token ArrayName { get; }
         public IExpression IndexExpression { get; }
+        public int LineNumber { get; }
         public StatementType Type => StatementType.ArrayDeclarationStatement;
         public bool IsGlobal { get; }
         
-        public ArrayDeclarationStatement(Token arrayName, IExpression indexExpression, bool isGlobal = false)
+        public ArrayDeclarationStatement(Token arrayName, IExpression indexExpression, bool isGlobal = false, int lineNumber = 0)
         {
             ArrayName = arrayName;
             IndexExpression = indexExpression;
+            LineNumber = lineNumber;
             IsGlobal = isGlobal;
         }
 

@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using WhyNotLang.Interpreter.Evaluators.ExpressionValues;
@@ -5,6 +6,7 @@ using WhyNotLang.Interpreter.State;
 using WhyNotLang.Interpreter.StatementExecutors;
 using WhyNotLang.Parser;
 using WhyNotLang.Parser.Statements;
+using WhyNotLang.Tokenizer;
 
 namespace WhyNotLang.Interpreter
 {
@@ -38,9 +40,27 @@ namespace WhyNotLang.Interpreter
         public async Task<ExpressionValue> ExecuteNext()
         {
             var executor =  _statementExecutorFactory
-                                .CreateOrGetFromCache(CurrentContext.StatementIterator.CurrentStatement.Type, 
+                                .CreateOrGetFromCache(CurrentContext.StatementIterator.CurrentStatement, 
                                     this);
-            var value = await executor.Execute();
+            ExpressionValue value;
+            try
+            {
+                value = await executor.Execute();
+            }
+            catch (WhyNotLangException ex)
+            {
+                if (ex.LineNumber == 0)
+                {
+                    ex.LineNumber = CurrentContext.StatementIterator.CurrentStatement.LineNumber;
+                }
+
+                throw;
+            }
+            catch (Exception ex)
+            {
+                throw new WhyNotLangException(ex.Message, CurrentContext.StatementIterator.CurrentStatement.LineNumber, ex);
+            }
+
             if (!Equals(value, ExpressionValue.Empty))
             {
                 return value;

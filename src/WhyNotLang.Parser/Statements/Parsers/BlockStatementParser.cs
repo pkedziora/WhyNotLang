@@ -17,9 +17,10 @@ namespace WhyNotLang.Parser.Statements.Parsers
         
         public IStatement Parse()
         {
+            var lineNumber = _tokenIterator.CurrentToken.LineNumber;
             if (_tokenIterator.CurrentToken.Type != TokenType.Begin)
             {
-                throw new WhyNotLangException("begin expected");
+                throw new WhyNotLangException("begin expected", lineNumber);
             }
             
             _tokenIterator.GetNextToken(); // Swallow begin
@@ -32,7 +33,7 @@ namespace WhyNotLang.Parser.Statements.Parsers
 
             _tokenIterator.GetNextToken(); // Swallow end
 
-            return new BlockStatement(childStatements);
+            return new BlockStatement(childStatements, lineNumber);
         }
     }
 }

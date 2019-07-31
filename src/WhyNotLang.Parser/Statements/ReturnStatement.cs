@@ -5,11 +5,13 @@ namespace WhyNotLang.Parser.Statements
     public class ReturnStatement : IStatement
     {
         public IExpression ReturnExpression { get; }
+        public int LineNumber { get; }
         public StatementType Type => StatementType.ReturnStatement;
 
-        public ReturnStatement(IExpression returnExpression)
+        public ReturnStatement(IExpression returnExpression, int lineNumber = 0)
         {
             ReturnExpression = returnExpression;
+            LineNumber = lineNumber;
         }
         
         public override bool Equals(object obj)

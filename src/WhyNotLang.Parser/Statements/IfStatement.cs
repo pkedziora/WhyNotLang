@@ -6,13 +6,15 @@ namespace WhyNotLang.Parser.Statements
     {
         public IExpression Condition { get; }
         public IStatement Body { get; }
+        public int LineNumber { get; }
         public IStatement ElseStatement { get; }
         public StatementType Type => StatementType.IfStatement;
 
-        public IfStatement(IExpression condition, IStatement body, IStatement elseStatement = null)
+        public IfStatement(IExpression condition, IStatement body, IStatement elseStatement = null, int lineNumber = 0)
         {
             Condition = condition;
             Body = body;
+            LineNumber = lineNumber;
             ElseStatement = elseStatement ?? new EmptyStatement();
         }
         

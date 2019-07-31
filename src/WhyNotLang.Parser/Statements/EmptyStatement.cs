@@ -3,6 +3,7 @@ namespace WhyNotLang.Parser.Statements
     public class EmptyStatement : IStatement
     {
         public StatementType Type => StatementType.EmptyStatement;
+        public int LineNumber => 0;
         
         public override bool Equals(object obj)
         {

@@ -27,7 +27,7 @@ namespace WhyNotLang.Interpreter.StatementExecutors
 
             if (arrayIndexValue.Type != ExpressionValueTypes.Number)
             {
-                throw new WhyNotLangException("Index needs to be a number");
+                throw new WhyNotLangException("Index needs to be a number", arrayAssignement.ArrayName.LineNumber);
             }
             
             _mainExecutor.ProgramState.AssignArrayItem(arrayName, (int) arrayIndexValue.Value, arrayItemValue);

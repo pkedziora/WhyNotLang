@@ -7,10 +7,12 @@ namespace WhyNotLang.Parser.Statements
         public StatementType Type => StatementType.FunctionCallStatement;
         
         public FunctionExpression FunctionExpression { get; }
+        public int LineNumber { get; }
 
-        public FunctionCallStatement(FunctionExpression functionExpression)
+        public FunctionCallStatement(FunctionExpression functionExpression, int lineNumber = 0)
         {
             FunctionExpression = functionExpression;
+            LineNumber = lineNumber;
         }
         
         public override bool Equals(object obj)

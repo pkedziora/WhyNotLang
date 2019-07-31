@@ -1,3 +1,4 @@
+using System.Reflection;
 using WhyNotLang.Parser.Expressions;
 using WhyNotLang.Tokenizer;
 
@@ -9,12 +10,14 @@ namespace WhyNotLang.Parser.Statements
         public IExpression IndexExpression { get; }
         public IExpression ValExpression { get; }
         public StatementType Type => StatementType.ArrayAssignmentStatement;
-
-        public ArrayAssignmentStatement(Token arrayName, IExpression indexExpression, IExpression valExpression)
+        public int LineNumber { get; }
+        
+        public ArrayAssignmentStatement(Token arrayName, IExpression indexExpression, IExpression valExpression, int lineNumber = 0)
         {
             ArrayName = arrayName;
             IndexExpression = indexExpression;
             ValExpression = valExpression;
+            LineNumber = lineNumber;
         }
         
         public override bool Equals(object obj)

@@ -20,12 +20,12 @@ namespace WhyNotLang.Parser.Statements.Parsers
             _tokenIterator.GetNextToken();
             if (_tokenIterator.CurrentToken.Type != TokenType.Assign)
             {
-                throw new WhyNotLangException(":= expected");
+                throw new WhyNotLangException(":= expected", _tokenIterator.CurrentToken.LineNumber);
             }
 
             _tokenIterator.GetNextToken();
             var expression = _expressionParser.ParseNextExpression();
-            var statement = new VariableAssignmentStatement(variableName, expression);
+            var statement = new VariableAssignmentStatement(variableName, expression, variableName.LineNumber);
 
             return statement;
         }

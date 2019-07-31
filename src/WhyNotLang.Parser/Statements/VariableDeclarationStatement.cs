@@ -7,7 +7,7 @@ namespace WhyNotLang.Parser.Statements
     {
         public override StatementType Type => StatementType.VariableDeclarationStatement;
 
-        public VariableDeclarationStatement(Token variableName, IExpression expression, bool isGlobal = false) : base(variableName, expression, isGlobal)
+        public VariableDeclarationStatement(Token variableName, IExpression expression, bool isGlobal = false, int lineNumber = 0) : base(variableName, expression, isGlobal, lineNumber)
         {
         }
     }

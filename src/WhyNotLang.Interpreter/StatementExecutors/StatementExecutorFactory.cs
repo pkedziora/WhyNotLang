@@ -16,21 +16,21 @@ namespace WhyNotLang.Interpreter.StatementExecutors
             _executorsCache = new Dictionary<StatementType, IStatementExecutor>();
         }
 
-        public IStatementExecutor CreateOrGetFromCache(StatementType statementType, IExecutor mainExecutor)
+        public IStatementExecutor CreateOrGetFromCache(IStatement statement, IExecutor mainExecutor)
         {
-            if (!_executorsCache.TryGetValue(statementType, out var statementExecutor))
+            if (!_executorsCache.TryGetValue(statement.Type, out var statementExecutor))
             {
-                statementExecutor = CreateStatementExecutor(statementType, mainExecutor);
-                _executorsCache[statementType] = statementExecutor;
+                statementExecutor = CreateStatementExecutor(statement, mainExecutor);
+                _executorsCache[statement.Type] = statementExecutor;
             }
 
             return statementExecutor;
         }
         
-        private IStatementExecutor CreateStatementExecutor(StatementType statementType, IExecutor mainExecutor)
+        private IStatementExecutor CreateStatementExecutor(IStatement statement, IExecutor mainExecutor)
         {
             _expressionEvaluator = _expressionEvaluator ?? new ExpressionEvaluator(mainExecutor);
-            switch (statementType)
+            switch (statement.Type)
             {
                 case StatementType.VariableDeclarationStatement:
                     return new VariableDeclarationExecutor(_expressionEvaluator, mainExecutor);
@@ -56,7 +56,7 @@ namespace WhyNotLang.Interpreter.StatementExecutors
                     return new EmptyExecutor();
             }
             
-            throw new WhyNotLangException("Executor not found for current statement");
+            throw new WhyNotLangException("Executor not found for current statement", statement.LineNumber);
         }
     }
 }

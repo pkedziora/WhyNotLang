@@ -3,6 +3,7 @@ using System.IO;
 using System.Threading.Tasks;
 using Microsoft.Extensions.DependencyInjection;
 using WhyNotLang.Interpreter;
+using WhyNotLang.Tokenizer;
 
 namespace WhyNotLang.Cmd
 {
@@ -32,7 +33,14 @@ namespace WhyNotLang.Cmd
             var executor = serviceProvider.GetService<IExecutor>();
             var program = File.ReadAllText(fileName);
             executor.Initialise(program);
-            await executor.ExecuteAll();
+            try
+            {
+                await executor.ExecuteAll();
+            }
+            catch (WhyNotLangException ex)
+            {
+                Console.WriteLine($"Line {ex.LineNumber}: {ex.Message}");
+            }
 
             if (System.Diagnostics.Debugger.IsAttached)
             {

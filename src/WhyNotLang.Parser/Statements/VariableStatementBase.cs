@@ -7,15 +7,17 @@ namespace WhyNotLang.Parser.Statements
     {
         public Token VariableName { get; }
         public IExpression Expression { get; }
+        public int LineNumber { get; }
 
         public abstract StatementType Type { get; }
 
         public bool IsGlobal { get; }
         
-        public VariableStatementBase(Token variableName, IExpression expression, bool isGlobal = false)
+        public VariableStatementBase(Token variableName, IExpression expression, bool isGlobal = false, int lineNumber = 0)
         {
             VariableName = variableName;
             Expression = expression;
+            LineNumber = lineNumber;
             IsGlobal = isGlobal;
         }
         

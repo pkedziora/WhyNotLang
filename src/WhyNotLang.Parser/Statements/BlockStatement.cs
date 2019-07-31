@@ -6,11 +6,13 @@ namespace WhyNotLang.Parser.Statements
     public class BlockStatement : IStatement
     {
         public List<IStatement> ChildStatements { get; }
+        public int LineNumber { get; }
         public StatementType Type => StatementType.BlockStatement;
 
-        public BlockStatement(List<IStatement> childStatements)
+        public BlockStatement(List<IStatement> childStatements, int lineNumber = 0)
         {
             ChildStatements = childStatements;
+            LineNumber = lineNumber;
         }
         
         public override bool Equals(object obj)

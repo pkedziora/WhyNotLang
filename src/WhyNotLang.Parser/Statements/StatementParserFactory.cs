@@ -58,7 +58,7 @@ namespace WhyNotLang.Parser.Statements
                     return new ReturnStatementParser(_tokenIterator, _expressionParser);
             }
             
-            throw new WhyNotLangException($"Unexpected token: {_tokenIterator.CurrentToken.Value}");
+            throw new WhyNotLangException($"Unexpected token: {_tokenIterator.CurrentToken.Value}", _tokenIterator.CurrentToken.LineNumber);
         }
     }
 }

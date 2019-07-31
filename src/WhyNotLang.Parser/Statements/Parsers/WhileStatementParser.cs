@@ -18,21 +18,22 @@ namespace WhyNotLang.Parser.Statements.Parsers
         
         public IStatement Parse()
         {
+            var firstLineNumber = _tokenIterator.CurrentToken.LineNumber;
             if (_tokenIterator.CurrentToken.Type != TokenType.While)
             {
-                throw new WhyNotLangException("while expected");
+                throw new WhyNotLangException("while expected", firstLineNumber);
             }
             
             _tokenIterator.GetNextToken(); // Set current to (
             if (_tokenIterator.CurrentToken.Type != TokenType.LeftParen)
             {
-                throw new WhyNotLangException("( expected");
+                throw new WhyNotLangException("( expected", _tokenIterator.CurrentToken.LineNumber);
             }
             
             var condition = _expressionParser.ParseNextExpression();
             var body = _parser.ParseNext();
 
-            return new WhileStatement(condition, body);
+            return new WhileStatement(condition, body, firstLineNumber);
         }
     }
 }

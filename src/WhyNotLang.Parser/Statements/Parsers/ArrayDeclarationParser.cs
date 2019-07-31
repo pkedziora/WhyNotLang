@@ -18,7 +18,7 @@ namespace WhyNotLang.Parser.Statements.Parsers
         {
             if (_tokenIterator.CurrentToken.Type != TokenType.Var && _tokenIterator.CurrentToken.Type != TokenType.Global)
             {
-                throw new WhyNotLangException("var or global expected");
+                throw new WhyNotLangException("var or global expected", _tokenIterator.CurrentToken.LineNumber);
             }
             
             var isGlobal = _tokenIterator.CurrentToken.Type == TokenType.Global;
@@ -28,7 +28,7 @@ namespace WhyNotLang.Parser.Statements.Parsers
             _tokenIterator.GetNextToken(); // Swallow arrayName
             if (_tokenIterator.CurrentToken.Type != TokenType.LeftBracket)
             {
-                throw new WhyNotLangException("[ expected");
+                throw new WhyNotLangException("[ expected", _tokenIterator.CurrentToken.LineNumber);
             }
             
             _tokenIterator.GetNextToken(); // Swallow [
@@ -37,12 +37,12 @@ namespace WhyNotLang.Parser.Statements.Parsers
             
             if (_tokenIterator.CurrentToken.Type != TokenType.RightBracket)
             {
-                throw new WhyNotLangException("] expected");
+                throw new WhyNotLangException("] expected", _tokenIterator.CurrentToken.LineNumber);
             }
             
             _tokenIterator.GetNextToken(); // Swallow ]
 
-            var statement = new ArrayDeclarationStatement(arrayName, arraySizeExpression, isGlobal);
+            var statement = new ArrayDeclarationStatement(arrayName, arraySizeExpression, isGlobal, arrayName.LineNumber);
 
             return statement;
         }
