@@ -9,7 +9,7 @@
 <h1>Hello, world!</h1>
 
 
-<textarea id="main_text" @bind="@programCode" readonly="@isRunning" class="form-control" rows="10">
+<textarea id="main_text" @bind="@programCode" readonly="@isRunning" class="form-control" rows="15">
 </textarea>
 <p>
     <button class="btn btn-primary" @onclick="Toggle">Toggle variable</button>
@@ -19,20 +19,36 @@
 
 <textarea id="output" @bind="@output" readonly="readonly" class="form-control" rows="10">
 </textarea>
+Text input: <input id="input" @bind-value="@inputBuffer" @bind-value:event="oninput" readonly="@inputDisabled" @onkeydown="OnInputKeyDown" class="form-control" />
 
 @code {
     bool toggle = false;
     bool isRunning { get; set; } = false;
+    bool inputDisabled { get; set; } = true;
     public string output { get; set; } = "";
+    string inputBuffer { get; set; } = "";
+    string inputValue { get; set; } = "";
     public string programCode { get; set; } =
 @"var x:= 0
-while (x < 100)
+Writeln(""What is your name? "")
+var name:= Readln()
+while (x < 50)
 begin
-Writeln(""Line: "" + ToString(x) + "", Toggle value: "" + ToString(toggle))
+Writeln(ToString(x) + "", Hello "" + name)
 x := x+1
 Delay(100)
 end
 ";
+
+    void OnInputKeyDown(UIKeyboardEventArgs e)
+    {
+        if (e.Key == "Enter")
+        {
+            inputValue = inputBuffer;
+            output += inputBuffer + "\n";
+            inputBuffer = "";
+        }
+    }
 
     protected override async Task OnInitAsync()
     {
@@ -50,6 +66,26 @@ end
                 await JsRuntime.InvokeAsync<string>("WhyNotLang.scrollOutput");
                 return ExpressionValue.Empty;
             });
+
+        Executor.ProgramState.BuiltinFunctionCollection.Add("Readln",
+           async arguments =>
+           {
+               await JsRuntime.InvokeAsync<bool>("WhyNotLang.setFocus", "input");
+               inputDisabled = false;
+               this.StateHasChanged();
+               while (inputValue == string.Empty)
+               {
+
+                   await Task.Delay(100);
+               }
+
+               var value = new ExpressionValue(inputValue, ExpressionValueTypes.String);
+               inputValue = "";
+               inputBuffer = "";
+               inputDisabled = true;
+
+               return value;
+           });
     }
 
     void Stop()
