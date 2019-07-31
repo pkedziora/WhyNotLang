@@ -32,9 +32,10 @@ namespace WhyNotLang.Cmd
             
             var executor = serviceProvider.GetService<IExecutor>();
             var program = File.ReadAllText(fileName);
-            executor.Initialise(program);
+
             try
             {
+                executor.Initialise(program);
                 await executor.ExecuteAll();
             }
             catch (WhyNotLangException ex)

@@ -1,6 +1,8 @@
 ﻿@page "/"
 @using WhyNotLang.Interpreter
 @using WhyNotLang.Interpreter.Evaluators.ExpressionValues
+@using WhyNotLang.Tokenizer;
+
 @inject IExecutor Executor
 @inject IJSRuntime JsRuntime
 
@@ -66,9 +68,25 @@ end
         output = "";
         Executor.ProgramState.Clear();
         isRunning = true;
-        Executor.Initialise(programCode);
-        Executor.ProgramState.DeclareVariable("toggle", new ExpressionValue(IntToBool(toggle), ExpressionValueTypes.Number), true);
-        await Executor.ExecuteAll();
+        try
+        {
+            Executor.Initialise(programCode);
+            Executor.ProgramState.DeclareVariable("toggle", new ExpressionValue(IntToBool(toggle), ExpressionValueTypes.Number), true);
+
+            await Executor.ExecuteAll();
+        }
+        catch (WhyNotLangException ex)
+        {
+            if (ex.LineNumber > 0)
+            {
+                output += $"[ERROR] Line {ex.LineNumber}: {ex.Message}";
+            }
+            else
+            {
+                output += $"[ERROR] {ex.Message}";
+            }
+        }
+
 
         isRunning = false;
     }
