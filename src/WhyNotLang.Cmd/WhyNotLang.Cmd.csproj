@@ -10,6 +10,9 @@
     </ItemGroup>
 
     <ItemGroup>
+      <None Update="Samples\Fibonacci.wnl">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
       <None Update="Samples\Test.wnl">
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </None>

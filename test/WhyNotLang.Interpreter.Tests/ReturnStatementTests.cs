@@ -119,5 +119,79 @@ namespace WhyNotLang.Interpreter.Tests
             Assert.Equal(expected, actual);
             Assert.False(_programState.IsVariableDefined("y"));
         }
+
+        [Fact]
+        public async Task ReturnsFromIfStatement()
+        {
+            _executor.Initialise(@"
+                function foo()
+                begin
+                    if (1 < 2)
+                        return 1
+                    var y:= 100
+                    return 2
+                end
+                var x:= foo()         
+            ");
+
+            await _executor.ExecuteAll();
+
+            var actual = _programState.GetVariable("x");
+
+            var expected = new ExpressionValue(1, ExpressionValueTypes.Number);
+
+            Assert.Equal(expected, actual);
+            Assert.False(_programState.IsVariableDefined("y"));
+        }
+
+        [Fact]
+        public async Task ReturnsFromIfStatementWithBlock()
+        {
+            _executor.Initialise(@"
+                function foo()
+                begin
+                    if (1 < 2)
+                    begin
+                        return 1
+                    end
+                    var y:= 100
+                    return 2
+                end
+                var x:= foo()         
+            ");
+
+            await _executor.ExecuteAll();
+
+            var actual = _programState.GetVariable("x");
+
+            var expected = new ExpressionValue(1, ExpressionValueTypes.Number);
+
+            Assert.Equal(expected, actual);
+            Assert.False(_programState.IsVariableDefined("y"));
+        }
+
+        [Fact]
+        public async Task ReturnsFromWhileStatement()
+        {
+            _executor.Initialise(@"
+                function foo()
+                begin
+                    while (1 < 2)
+                        return 1
+                    var y:= 100
+                    return 2
+                end
+                var x:= foo()         
+            ");
+
+            await _executor.ExecuteAll();
+
+            var actual = _programState.GetVariable("x");
+
+            var expected = new ExpressionValue(1, ExpressionValueTypes.Number);
+
+            Assert.Equal(expected, actual);
+            Assert.False(_programState.IsVariableDefined("y"));
+        }
     }
 }

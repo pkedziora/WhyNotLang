@@ -34,10 +34,10 @@ namespace WhyNotLang.Interpreter.StatementExecutors
             
             
             _mainExecutor.CreateNewContext(new List<IStatement> {statementToExecute});
-            await _mainExecutor.ExecuteAll();
+            var value = await _mainExecutor.ExecuteAll();
             _mainExecutor.LeaveContext();
             
-            return ExpressionValue.Empty;
+            return value;
         }
     }
 }

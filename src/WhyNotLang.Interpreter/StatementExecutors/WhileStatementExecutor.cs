@@ -21,13 +21,19 @@ namespace WhyNotLang.Interpreter.StatementExecutors
         {
             var whileStatement = _mainExecutor.CurrentContext.StatementIterator.CurrentStatement as WhileStatement;
             _mainExecutor.CreateNewContext(new List<IStatement> { whileStatement.Body});
+            ExpressionValue returnValue = ExpressionValue.Empty;
             while (!_mainExecutor.Stopped && (int) (await _expressionEvaluator.Eval(whileStatement.Condition)).Value != 0)
             {
-                await _mainExecutor.ExecuteAll();
+                returnValue = await _mainExecutor.ExecuteAll();
+                if (returnValue != ExpressionValue.Empty)
+                {
+                    break;
+                }
+
                 _mainExecutor.CurrentContext.ResetPosition();
             }
             _mainExecutor.LeaveContext();
-            return ExpressionValue.Empty;
+            return returnValue;
         }
     }
 }
