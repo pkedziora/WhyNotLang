@@ -17,6 +17,11 @@ namespace WhyNotLang.Parser.Statements.Parsers
         public IStatement Parse()
         {
             var variableName = _tokenIterator.CurrentToken;
+            if (variableName.Type != TokenType.Identifier)
+            {
+                throw new WhyNotLangException("identifier expected", _tokenIterator.CurrentToken.LineNumber);    
+            }
+            
             _tokenIterator.GetNextToken();
             if (_tokenIterator.CurrentToken.Type != TokenType.Assign)
             {

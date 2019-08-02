@@ -23,6 +23,11 @@ namespace WhyNotLang.Parser.Statements.Parsers
 
             var isGlobal = _tokenIterator.CurrentToken.Type == TokenType.Global;
             var variableName = _tokenIterator.GetNextToken();
+            if (variableName.Type != TokenType.Identifier)
+            {
+                throw new WhyNotLangException("identifier expected", _tokenIterator.CurrentToken.LineNumber);    
+            }
+            
             _tokenIterator.GetNextToken();
             if (_tokenIterator.CurrentToken.Type != TokenType.Assign)
             {

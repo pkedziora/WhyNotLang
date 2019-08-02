@@ -17,6 +17,10 @@ namespace WhyNotLang.Parser.Statements.Parsers
         public IStatement Parse()
         {
             var arrayName = _tokenIterator.CurrentToken;
+            if (arrayName.Type != TokenType.Identifier)
+            {
+                throw new WhyNotLangException("identifier expected", _tokenIterator.CurrentToken.LineNumber);    
+            }
             
             //Parse brackets, should contain array index expression
             _tokenIterator.GetNextToken(); // Swallow arrayName

@@ -40,7 +40,14 @@ namespace WhyNotLang.Cmd
             }
             catch (WhyNotLangException ex)
             {
-                Console.WriteLine($"Line {ex.LineNumber}: {ex.Message}");
+                if (ex.LineNumber > 0)
+                {
+                    Console.WriteLine($"[ERROR] Line {ex.LineNumber}: {ex.Message}");
+                }
+                else
+                {
+                    Console.WriteLine($"[ERROR] {ex.Message}");
+                }
             }
 
             if (System.Diagnostics.Debugger.IsAttached)

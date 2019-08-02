@@ -30,7 +30,14 @@ namespace WhyNotLang.Parser
             }
 
             _currentIndex++;
-            return _tokens[_currentIndex];
+
+            var token = _tokens[_currentIndex];
+            if (token.Type == TokenType.Invalid)
+            {
+                throw new WhyNotLangException($"Invalid token: {token.Value}", token.LineNumber);
+            }
+            
+            return token;
         }
         
         public Token PeekToken(int offset)
@@ -40,8 +47,14 @@ namespace WhyNotLang.Parser
             {
                 return new Token(TokenType.Eof, "");
             }
+
+            var token = _tokens[peekIndex];
+            if (token.Type == TokenType.Invalid)
+            {
+                throw new WhyNotLangException($"Invalid token: {token.Value}", token.LineNumber);
+            }
             
-            return _tokens[peekIndex];
+            return token;
         }
     }
 }

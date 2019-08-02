@@ -1,8 +1,1 @@
-var i:= 0
-Writeln("What is your name?")
-var name := Readln()
-while (i < 10)
-begin
-    Writeln(ToString(i) + " Hello " + name)
-    i := i + 1
-end
+var $%:=10

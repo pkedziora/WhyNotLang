@@ -23,6 +23,10 @@ namespace WhyNotLang.Parser.Statements.Parsers
             
             var isGlobal = _tokenIterator.CurrentToken.Type == TokenType.Global;
             var arrayName = _tokenIterator.GetNextToken();
+            if (arrayName.Type != TokenType.Identifier)
+            {
+                throw new WhyNotLangException("identifier expected", _tokenIterator.CurrentToken.LineNumber);    
+            }
             
             //Parse brackets, should contain array size expression
             _tokenIterator.GetNextToken(); // Swallow arrayName

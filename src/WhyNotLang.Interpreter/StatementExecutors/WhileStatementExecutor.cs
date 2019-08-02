@@ -25,7 +25,7 @@ namespace WhyNotLang.Interpreter.StatementExecutors
             while (!_mainExecutor.Stopped && (int) (await _expressionEvaluator.Eval(whileStatement.Condition)).Value != 0)
             {
                 returnValue = await _mainExecutor.ExecuteAll();
-                if (returnValue != ExpressionValue.Empty)
+                if (!returnValue.Equals(ExpressionValue.Empty))
                 {
                     break;
                 }

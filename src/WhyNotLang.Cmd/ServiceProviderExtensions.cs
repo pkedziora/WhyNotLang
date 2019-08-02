@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Microsoft.Extensions.DependencyInjection;
 using WhyNotLang.Interpreter.Builtin;
 using WhyNotLang.Interpreter.Evaluators.ExpressionValues;
+using WhyNotLang.Tokenizer;
 
 namespace WhyNotLang.Cmd
 {
@@ -18,7 +19,7 @@ namespace WhyNotLang.Cmd
                     var str = arguments.Single();
                     if (str.Type != ExpressionValueTypes.String)
                     {
-                        throw new Exception("String expected");
+                        throw new WhyNotLangException("String expected");
                     }
 
                     Console.WriteLine((string)str.Value);

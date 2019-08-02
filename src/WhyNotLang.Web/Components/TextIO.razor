@@ -1,0 +1,7 @@
+﻿@inherits TextIOBase
+<h3>Text IO</h3>
+
+<textarea id="output" @bind="@Output" readonly="readonly" class="form-control" rows="10">
+</textarea>
+Text input:
+<input id="input" @bind-value="@inputBuffer" @bind-value:event="oninput" readonly="@inputDisabled" @onkeydown="OnInputKeyDown" class="form-control" />

@@ -1,0 +1,15 @@
+﻿@inherits EditorBase
+
+<h3>Editor</h3>
+
+<textarea id="main_text" @bind="@programCode" readonly="@isRunning" class="form-control" rows="15">
+</textarea>
+
+<p>
+    <button class="btn btn-primary" @onclick="Execute">Execute</button>
+    <button class="btn btn-primary" @onclick="Stop">Stop</button>
+</p>
+
+<CanvasIO></CanvasIO>
+
+<TextIO @ref="textIO"></TextIO>
