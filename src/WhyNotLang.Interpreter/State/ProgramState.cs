@@ -165,7 +165,12 @@ namespace WhyNotLang.Interpreter.State
             var result = FindScopeForIdentifier(identifier);
             return result.scope != null && result.scope.Arrays.ContainsKey(identifier);
         }
-        
+
+        public bool IsFunctionDefined(string identifier)
+        {
+            return _functions.ContainsKey(identifier) || BuiltinFunctionCollection.FunctionDescriptions.ContainsKey(identifier);
+        }
+
         public ExpressionValue[] DeclareArray(string identifier, int size, bool isGlobal = false)
         {
             var scope = isGlobal ? GlobalScope : CurrentScope;

@@ -17,14 +17,44 @@ namespace WhyNotLang.Web.Components
         protected TextIO textIO { get; set; }
         protected bool isRunning { get; set; } = false;
         public string programCode { get; set; } =
-    @"var x:= 0
-Writeln(""What is your name? "")
-var name:= Readln()
-while (x < 50)
+    @"function OnKeyUp(key)
 begin
-Writeln(ToString(x) + "", Hello "" + name)
-x := x+1
-Delay(100)
+if (key == ""d"")
+xd := 0
+else if (key == ""a"")
+xd := 0
+else if (key == ""w"")
+yd := 0
+else if (key == ""s"")
+yd:= 0
+end
+
+function OnKeyDown(key)
+begin
+if (key == ""d"")
+xd := 5
+else if (key == ""a"")
+xd := -5
+else if (key == ""w"")
+yd := -5
+else if (key == ""s"")
+yd:= 5
+end
+
+global x := 0
+global y := 0
+global xd := 0
+global yd := 0
+
+InitGraphics()
+while(1)
+begin
+ClearScreen(""black"")
+x := x + xd
+y := y + yd
+DrawRectangle(x, y,50,70,""red"")
+DrawText(""Hello World"", x, y + 100, ""cyan"", ""normal 30px Calibri"")
+Delay(1)
 end
 ";
 
@@ -47,14 +77,18 @@ end
             }
             catch (WhyNotLangException ex)
             {
+                string msg;
                 if (ex.LineNumber > 0)
                 {
-                     textIO.WriteLine($"[ERROR] Line {ex.LineNumber}: {ex.Message}");
+                    msg = $"[ERROR] Line {ex.LineNumber}: {ex.Message}";
                 }
                 else
                 {
-                    textIO.WriteLine($"[ERROR] {ex.Message}");
+                    msg = $"[ERROR] {ex.Message}";
                 }
+
+                textIO.WriteLine(msg);
+                Console.WriteLine(msg);
             }
 
             isRunning = false;

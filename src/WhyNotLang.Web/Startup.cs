@@ -17,6 +17,7 @@ namespace WhyNotLang.Web
             var jsRuntime = app.Services.GetRequiredService<IJSRuntime>();
             app.Services.AddWebInputOutput(jsRuntime);
             app.AddComponent<App>("app");
+            Interop.ServiceProvider = app.Services;
         }
     }
 }

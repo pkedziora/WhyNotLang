@@ -33,14 +33,14 @@ namespace WhyNotLang.Web.Components
 
                     Output += str.Value + Environment.NewLine;
                     this.StateHasChanged();
-                    await JsRuntime.InvokeAsync<string>("WhyNotLang.scrollOutput");
+                    await JsRuntime.InvokeAsync<string>("WhyNotLang.Text.scrollOutput");
                     return ExpressionValue.Empty;
                 });
 
             Executor.ProgramState.BuiltinFunctionCollection.Add("Readln",
                async arguments =>
                {
-                   await JsRuntime.InvokeAsync<bool>("WhyNotLang.setFocus", "input");
+                   await JsRuntime.InvokeAsync<bool>("WhyNotLang.Text.setFocus", "input");
                    inputDisabled = false;
                    this.StateHasChanged();
                    while (!Executor.Stopped && inputValue == string.Empty)
@@ -62,11 +62,13 @@ namespace WhyNotLang.Web.Components
         public void WriteLine(string line)
         {
             Output += line + "\n";
+            this.StateHasChanged();
         }
 
         public void Clear()
         {
             Output = "";
+            this.StateHasChanged();
         }
 
         public void OnInputKeyDown(UIKeyboardEventArgs e)

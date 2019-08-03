@@ -1,4 +1,6 @@
-﻿var WhyNotLang = (function () {
+﻿var WhyNotLang = WhyNotLang || {}
+
+WhyNotLang.Text = WhyNotLang.Text || (function () {
     function scrollOutput() {
         document.getElementById("output").scrollTop = document.getElementById("output").scrollHeight;
     }

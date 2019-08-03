@@ -1,15 +1,26 @@
 ﻿@inherits EditorBase
 
-<h3>Editor</h3>
 
-<textarea id="main_text" @bind="@programCode" readonly="@isRunning" class="form-control" rows="15">
-</textarea>
+<div style="height:450px">
+    <div style="float:left; width: 50%; padding: 10px">
+        <h5>Editor</h5>
+        <textarea id="main_text" @bind="@programCode" readonly="@isRunning" class="form-control" rows="13"></textarea>
+        <p>
+            <button class="btn btn-primary" @onclick="Execute">Execute</button>
+            <button class="btn btn-primary" @onclick="Stop">Stop</button>
+        </p>
+    </div>
 
-<p>
-    <button class="btn btn-primary" @onclick="Execute">Execute</button>
-    <button class="btn btn-primary" @onclick="Stop">Stop</button>
-</p>
+    <div style="float:right; width: 50%; padding: 10px">
+        <CanvasIO></CanvasIO>
+    </div>
+</div>
 
-<CanvasIO></CanvasIO>
 
-<TextIO @ref="textIO"></TextIO>
+<div>
+    <TextIO @ref="textIO"></TextIO>
+</div>
+
+
+
+
