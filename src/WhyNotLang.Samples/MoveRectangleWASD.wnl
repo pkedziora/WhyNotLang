@@ -1,0 +1,39 @@
+﻿function OnKeyUp(key)
+begin
+	if (key == "d")
+		xd := 0
+	else if (key == "a")
+		xd := 0
+	else if (key == "w")
+		yd := 0
+	else if (key == "s")
+		yd:= 0
+end
+
+function OnKeyDown(key)
+begin
+	if (key == "d")
+		xd := 5
+	else if (key == "a")
+		xd := -5
+	else if (key == "w")
+		yd := -5
+	else if (key == "s")
+		yd:= 5
+end
+
+global x := 0
+global y := 0
+global xd := 0
+global yd := 0
+
+InitGraphics()
+while(1)
+begin
+	ClearScreen("black")
+	x := x + xd
+	y := y + yd
+	DrawRectangle(x, y,50,70,"red")
+	DrawText("Hello World", x, y + 100, "cyan", "normal 30px Calibri")
+	Delay(1)
+end

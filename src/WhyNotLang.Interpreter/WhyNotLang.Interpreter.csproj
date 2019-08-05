@@ -6,6 +6,7 @@
 
     <ItemGroup>
       <ProjectReference Include="..\WhyNotLang.Parser\WhyNotLang.Parser.csproj" />
+      <ProjectReference Include="..\WhyNotLang.Samples\WhyNotLang.Samples.csproj" />
     </ItemGroup>
 
     <ItemGroup>

@@ -3,18 +3,29 @@ using System.IO;
 using System.Threading.Tasks;
 using Microsoft.Extensions.DependencyInjection;
 using WhyNotLang.Interpreter;
+using WhyNotLang.Samples.Reader;
 using WhyNotLang.Tokenizer;
 
 namespace WhyNotLang.Cmd
 {
     class Program
     {
+        static IExecutor Executor;
+        static ISampleReader SampleReader;
+
+        static Program()
+        {
+            Initialise();
+        }
+
         static async Task Main(string[] args)
         {
             string fileName;
+            string program;
             if(System.Diagnostics.Debugger.IsAttached)
             {
-                fileName = "Samples/Test.wnl";
+                fileName = "Fibonacci.wnl";
+                program = SampleReader.Read(fileName);
             }
             else
             {
@@ -25,18 +36,13 @@ namespace WhyNotLang.Cmd
                 }
                 
                 fileName = args[0];
+                program = File.ReadAllText(fileName);
             }
             
-            var serviceProvider = IoC.BuildServiceProvider();
-            serviceProvider.AddConsoleInputOutput();
-            
-            var executor = serviceProvider.GetService<IExecutor>();
-            var program = File.ReadAllText(fileName);
-
             try
             {
-                executor.Initialise(program);
-                await executor.ExecuteAll();
+                Executor.Initialise(program);
+                await Executor.ExecuteAll();
             }
             catch (WhyNotLangException ex)
             {
@@ -54,6 +60,14 @@ namespace WhyNotLang.Cmd
             {
                 Console.ReadLine();
             }
+        }
+
+        static void Initialise()
+        {
+            var serviceProvider = IoC.BuildServiceProvider();
+            serviceProvider.AddConsoleInputOutput();
+            Executor = serviceProvider.GetService<IExecutor>();
+            SampleReader = serviceProvider.GetService<ISampleReader>();
         }
     }
 }

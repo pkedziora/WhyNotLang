@@ -1,0 +1,151 @@
+﻿function OnKeyUp(key)
+begin
+	if (key == "w")
+		leftDelta := 0
+	else if (key == "s")
+		leftDelta:= 0
+	else if (key == "o")
+		rightDelta:= 0
+	else if (key == "l")
+		rightDelta:= 0
+end
+
+function OnKeyDown(key)
+begin
+	if (key == "w")
+		leftDelta := -paddleSpeed
+	else if (key == "s")
+		leftDelta:= paddleSpeed
+	else if (key == "o")
+		rightDelta:= -paddleSpeed
+	else if (key == "l")
+		rightDelta:= paddleSpeed
+end
+
+function LeftPaddleInBounds()
+begin
+	return (leftDelta < 0 and leftPaddlePos >= paddleSpeed) or (leftDelta > 0 and leftPaddlePos <= screenHeight - paddleSpeed - paddleHeight)
+end
+
+function RightPaddleInBounds()
+begin
+	return (rightDelta < 0 and rightPaddlePos >= paddleSpeed) or (rightDelta > 0 and rightPaddlePos <= screenHeight - paddleSpeed - paddleHeight)
+end
+
+function IsLeftPaddleBallCollision()
+begin
+	return ballXPos <= paddleWidth and 
+		ballYPos + ballSize > leftPaddlePos and
+		ballYPos < leftPaddlePos + paddleHeight
+end
+
+function IsRightPaddleBallCollision()
+begin
+	return ballXPos >= screenWidth - paddleWidth - ballSize and 
+		ballYPos + ballSize > rightPaddlePos and
+		ballYPos < rightPaddlePos + paddleHeight
+end
+
+function IsBallTopWallCollision()
+begin
+	return ballYPos <= 0
+end
+
+function IsBallBottomWallCollision()
+begin
+	return ballYPos >= screenHeight - ballSize
+end
+
+function IsBallLeftWallCollision()
+begin
+	return ballXPos <= 0
+end
+
+function IsBallRightWallCollision()
+begin
+	return ballXPos >= screenWidth - ballSize
+end
+
+function UpdateState()
+begin
+	if (IsBallLeftWallCollision())
+		return 2
+	if (IsBallRightWallCollision())
+		return 1
+	if (LeftPaddleInBounds())
+		leftPaddlePos := leftPaddlePos + leftDelta
+	if (RightPaddleInBounds())
+		rightPaddlePos := rightPaddlePos + rightDelta
+	if (IsRightPaddleBallCollision() or IsLeftPaddleBallCollision())
+		ballXDir := -ballXDir
+	if (IsBallTopWallCollision() or IsBallBottomWallCollision())
+		ballYDir := -ballYDir
+
+	ballXPos := ballXPos + ballXDir
+	ballYPos := ballYPos + ballYDir
+
+	return 0
+end
+
+function DrawScene()
+begin
+	ClearScreen("black")
+	DrawRectangle(0, leftPaddlePos,paddleWidth,paddleHeight,"red")
+	DrawRectangle(screenWidth - paddleWidth, rightPaddlePos,paddleWidth,paddleHeight,"red")
+
+	DrawRectangle(ballXPos, ballYPos, ballSize, ballSize, "white")
+
+	DrawText("Player 1: " + ToString(player1Score), 50, 30, "blue", "normal 20px Calibri")
+	DrawText("Player 2: " + ToString(player2Score), 250, 30, "blue", "normal 20px Calibri")
+end
+
+function ResetPosition()
+begin
+	leftPaddlePos := 0
+	leftDelta := 0
+	rightPaddlePos := 0
+	rightDelta := 0
+	ballXPos := screenWidth / 2 - ballSize / 2
+	ballYPos := screenHeight / 2  - ballSize / 2
+	ballXDir := 2 * ballSpeed
+	ballYDir := 1 * ballSpeed
+end
+
+global player1Score := 0
+global player2Score := 0
+
+global screenHeight := 400
+global screenWidth := 400
+global paddleHeight := 50
+global paddleWidth := 20
+global paddleSpeed := 5
+global ballSize := 20
+global ballSpeed := 1
+
+global leftPaddlePos := 0
+global leftDelta := 0
+global rightPaddlePos := 0
+global rightDelta := 0
+global ballXPos := screenWidth / 2 - ballSize / 2
+global ballYPos := screenHeight / 2  - ballSize / 2
+global ballXDir := 2 * ballSpeed
+global ballYDir := 1 * ballSpeed
+
+InitGraphics()
+while(1)
+begin
+	var result := UpdateState()
+	if (result == 1)
+	begin
+		player1Score := player1Score + 1
+		ResetPosition()
+	end
+	else if (result == 2)
+	begin
+		player2Score := player2Score + 1
+		ResetPosition()
+	end
+
+	DrawScene()
+	Delay(1)
+end

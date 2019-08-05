@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Components.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.JSInterop;
 using WhyNotLang.Interpreter;
+using WhyNotLang.Samples.Reader;
 
 namespace WhyNotLang.Web
 {
@@ -10,6 +11,7 @@ namespace WhyNotLang.Web
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddWhyNotLang();
+            services.AddSampleReader();
         }
 
         public void Configure(IComponentsApplicationBuilder app)

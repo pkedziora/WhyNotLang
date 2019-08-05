@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using WhyNotLang.Interpreter.Evaluators;
 using WhyNotLang.Parser.Statements;

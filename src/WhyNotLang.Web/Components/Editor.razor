@@ -4,6 +4,12 @@
 <div style="height:450px">
     <div style="float:left; width: 50%; padding: 10px">
         <h5>Editor</h5>
+        <select @onchange="OnSampleSelected">
+            @foreach (var sample in CodeSamples)
+            {
+                <option value=@sample>@sample</option>
+            }
+        </select>
         <textarea id="main_text" @bind="@programCode" readonly="@isRunning" class="form-control" rows="13"></textarea>
         <p>
             <button class="btn btn-primary" @onclick="Execute">Execute</button>

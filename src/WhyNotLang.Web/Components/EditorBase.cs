@@ -2,11 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Blazor;
 using Microsoft.AspNetCore.Components;
-using Microsoft.JSInterop;
 using WhyNotLang.Interpreter;
-using WhyNotLang.Interpreter.Evaluators.ExpressionValues;
+using WhyNotLang.Samples.Reader;
 using WhyNotLang.Tokenizer;
 
 namespace WhyNotLang.Web.Components
@@ -14,49 +12,29 @@ namespace WhyNotLang.Web.Components
     public class EditorBase : ComponentBase
     {
         [Inject] IExecutor Executor { get; set; }
+        [Inject] ISampleReader SampleReader { get; set; }
+
         protected TextIO textIO { get; set; }
         protected bool isRunning { get; set; } = false;
-        public string programCode { get; set; } =
-    @"function OnKeyUp(key)
-begin
-if (key == ""d"")
-xd := 0
-else if (key == ""a"")
-xd := 0
-else if (key == ""w"")
-yd := 0
-else if (key == ""s"")
-yd:= 0
-end
+        protected List<string> CodeSamples { get; set; } = new List<string>();
+        public string programCode { get; set; }
 
-function OnKeyDown(key)
-begin
-if (key == ""d"")
-xd := 5
-else if (key == ""a"")
-xd := -5
-else if (key == ""w"")
-yd := -5
-else if (key == ""s"")
-yd:= 5
-end
+        protected override void OnInit()
+        {
+            CodeSamples = SampleReader.GetSampleList().ToList();
+            var sampleName = CodeSamples.FirstOrDefault();
+            if (!string.IsNullOrWhiteSpace(sampleName))
+            {
+                programCode = SampleReader.Read(sampleName);
+            }
+        }
 
-global x := 0
-global y := 0
-global xd := 0
-global yd := 0
-
-InitGraphics()
-while(1)
-begin
-ClearScreen(""black"")
-x := x + xd
-y := y + yd
-DrawRectangle(x, y,50,70,""red"")
-DrawText(""Hello World"", x, y + 100, ""cyan"", ""normal 30px Calibri"")
-Delay(1)
-end
-";
+        protected void OnSampleSelected(UIChangeEventArgs e)
+        {
+            var sampleName = e.Value.ToString();
+            var sampleCode = SampleReader.Read(sampleName);
+            programCode = sampleCode;
+        }
 
         protected void Stop()
         {
