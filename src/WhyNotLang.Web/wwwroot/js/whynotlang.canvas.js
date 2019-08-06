@@ -9,9 +9,8 @@ WhyNotLang.Canvas = WhyNotLang.Canvas || (function () {
         ctx = canvas.getContext("2d");
     }
 
-    function clearScreen(color) {
-        ctx.fillStyle = color;
-        ctx.fillRect(0, 0, canvas.width, canvas.height);
+    function clearScreen() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
     }
 
     function drawRectangle(x, y, width, height, color) {

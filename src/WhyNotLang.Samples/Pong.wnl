@@ -76,8 +76,18 @@ begin
 		leftPaddlePos := leftPaddlePos + leftDelta
 	if (RightPaddleInBounds())
 		rightPaddlePos := rightPaddlePos + rightDelta
-	if (IsRightPaddleBallCollision() or IsLeftPaddleBallCollision())
+	if (IsRightPaddleBallCollision())
+	begin
+		ballXPos := screenWidth - paddleWidth - ballSize
 		ballXDir := -ballXDir
+		ballYDir := rightDelta + Random(-5, 5)
+	end
+	else if (IsLeftPaddleBallCollision())
+	begin
+		ballXPos := paddleWidth
+		ballXDir := -ballXDir
+		ballYDir := leftDelta + Random(-5, 5)
+	end
 	if (IsBallTopWallCollision() or IsBallBottomWallCollision())
 		ballYDir := -ballYDir
 
@@ -89,7 +99,7 @@ end
 
 function DrawScene()
 begin
-	ClearScreen("black")
+	ClearScreen()
 	DrawRectangle(0, leftPaddlePos,paddleWidth,paddleHeight,"red")
 	DrawRectangle(screenWidth - paddleWidth, rightPaddlePos,paddleWidth,paddleHeight,"red")
 
@@ -107,8 +117,10 @@ begin
 	rightDelta := 0
 	ballXPos := screenWidth / 2 - ballSize / 2
 	ballYPos := screenHeight / 2  - ballSize / 2
-	ballXDir := 2 * ballSpeed
-	ballYDir := 1 * ballSpeed
+	ballXDir := Random(-3,3) * ballSpeed
+	if (ballXDir == 0)
+		ballXDir := ballSpeed
+	ballYDir := Random(-3,3) * ballSpeed
 end
 
 global player1Score := 0
@@ -116,21 +128,22 @@ global player2Score := 0
 
 global screenHeight := 400
 global screenWidth := 400
-global paddleHeight := 50
+global paddleHeight := 60
 global paddleWidth := 20
-global paddleSpeed := 5
+global paddleSpeed := 10
 global ballSize := 20
-global ballSpeed := 1
+global ballSpeed := 3
 
 global leftPaddlePos := 0
 global leftDelta := 0
 global rightPaddlePos := 0
 global rightDelta := 0
-global ballXPos := screenWidth / 2 - ballSize / 2
-global ballYPos := screenHeight / 2  - ballSize / 2
-global ballXDir := 2 * ballSpeed
-global ballYDir := 1 * ballSpeed
+global ballXPos := 0
+global ballYPos := 0
+global ballXDir := 0
+global ballYDir := 0
 
+ResetPosition()
 InitGraphics()
 while(1)
 begin
@@ -147,5 +160,5 @@ begin
 	end
 
 	DrawScene()
-	Delay(1)
+	Delay(20)
 end

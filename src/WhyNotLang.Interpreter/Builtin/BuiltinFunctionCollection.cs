@@ -12,6 +12,7 @@ namespace WhyNotLang.Interpreter.Builtin
     public class BuiltinFunctionCollection : IBuiltinFunctionCollection
     {
         public Dictionary<string, BuiltinFunctionDescription> FunctionDescriptions { get; }
+        public static Random Rand { get; } = new Random();
 
         public void Add(BuiltinFunctionDescription description)
         {
@@ -73,6 +74,18 @@ namespace WhyNotLang.Interpreter.Builtin
                     await Task.Delay((int)number.Value);
 
                     return ExpressionValue.Empty;
+                });
+            Add("Random",
+                async arguments =>
+                {
+                    var min = arguments[0];
+                    var max = arguments[1];
+                    if (min.Type != ExpressionValueTypes.Number || max.Type != ExpressionValueTypes.Number)
+                    {
+                        throw new Exception("Number expected");
+                    }
+
+                    return await Task.FromResult(new ExpressionValue(Rand.Next((int)min.Value, (int)max.Value), ExpressionValueTypes.Number));
                 });
         }
     }

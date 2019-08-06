@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.JSInterop;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using WhyNotLang.Interpreter;
@@ -30,13 +31,7 @@ namespace WhyNotLang.Web.Components
             Executor.ProgramState.BuiltinFunctionCollection.Add("ClearScreen",
                 async arguments =>
                 {
-                    var color = arguments[0];
-                    if (color.Type != ExpressionValueTypes.String)
-                    {
-                        throw new WhyNotLangException("String expected");
-                    }
-
-                    await JsRuntime.InvokeAsync<string>("WhyNotLang.Canvas.clearScreen", color.Value);
+                    await JsRuntime.InvokeAsync<string>("WhyNotLang.Canvas.clearScreen");
                     return ExpressionValue.Empty;
                 });
 
@@ -59,7 +54,6 @@ namespace WhyNotLang.Web.Components
                         throw new WhyNotLangException("String expected");
                     }
 
-                    //this.StateHasChanged();
                     await JsRuntime.InvokeAsync<string>("WhyNotLang.Canvas.drawRectangle", 
                         x.Value, y.Value, width.Value, height.Value, color.Value);
                     return ExpressionValue.Empty;
