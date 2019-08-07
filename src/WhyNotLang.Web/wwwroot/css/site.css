@@ -96,13 +96,13 @@ app {
     color: red;
 }
 
-@media (max-width: 99999px) {
+@media (max-width: 1200px) {
     .main .top-row {
         display: none;
     }
 }
 
-@media (min-width: 99999px) {
+@media (min-width: 1200px) {
     app {
         flex-direction: row;
     }
@@ -132,4 +132,53 @@ app {
         /* Never collapse the sidebar for wide screens */
         display: block;
     }
+}
+
+#container {
+    display: flex;
+    width:100%;
+}
+
+.column {
+    padding-left: 10px;
+    padding-right: 10px;
+    margin-bottom: 70px;
+}
+
+.column.left {
+    flex: 1
+}
+
+.column.right {
+    width: 500px;
+    flex: 0 0 500px;
+}
+
+.buttonContainer {
+    float:right;
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+
+.dropdownContainer {
+    padding-top: 10px;
+    float: left;
+}
+
+#output {
+    height: 250px;
+}
+
+#txtProgramCode {
+    height: 670px;
+}
+
+#myCanvas {
+    background-color: black;
+}
+
+.textContainer {
+    width: 480px;
+    margin-bottom: 20px;
+    margin-top: 48px;
 }

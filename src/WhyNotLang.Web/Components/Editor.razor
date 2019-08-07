@@ -1,30 +1,31 @@
 ﻿@inherits EditorBase
 
-
-<div style="height:450px">
-    <div style="float:left; width: 50%; padding: 10px">
-        <h5>Editor</h5>
+<div id="container">
+    <div class="column left">
+    <div class="dropdownContainer">
         <select @onchange="OnSampleSelected">
             @foreach (var sample in CodeSamples)
             {
                 <option value=@sample>@sample</option>
             }
         </select>
-        <textarea id="main_text" @bind="@programCode" readonly="@isRunning" class="form-control" rows="13"></textarea>
-        <p>
-            <button class="btn btn-primary" @onclick="Execute">Execute</button>
-            <button class="btn btn-primary" @onclick="Stop">Stop</button>
-        </p>
+    </div>
+    <div class="buttonContainer">
+        <button class="btn btn-primary" @onclick="Execute">Execute</button>
+        <button class="btn btn-primary" @onclick="Stop">Stop</button>
     </div>
 
-    <div style="float:right; width: 50%; padding: 10px">
-        <CanvasIO></CanvasIO>
+        <textarea id="txtProgramCode" @bind="@programCode" readonly="@isRunning" class="form-control" rows="13"></textarea>
+
     </div>
-</div>
-
-
-<div>
-    <TextIO @ref="textIO"></TextIO>
+    <div class="column right">
+        <div class="textContainer">
+            <TextIO @ref="textIO"></TextIO>
+        </div>
+        <div class="graphicsContainer">
+            <CanvasIO></CanvasIO>
+        </div>
+    </div>
 </div>
 
 

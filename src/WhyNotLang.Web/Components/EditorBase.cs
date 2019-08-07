@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Components;
+using Microsoft.JSInterop;
 using WhyNotLang.Interpreter;
 using WhyNotLang.Samples.Reader;
 using WhyNotLang.Tokenizer;
@@ -13,6 +14,7 @@ namespace WhyNotLang.Web.Components
     {
         [Inject] IExecutor Executor { get; set; }
         [Inject] ISampleReader SampleReader { get; set; }
+        [Inject] IJSRuntime JsRuntime { get; set; }
 
         protected TextIO textIO { get; set; }
         protected bool isRunning { get; set; } = false;
@@ -27,6 +29,11 @@ namespace WhyNotLang.Web.Components
             {
                 programCode = SampleReader.Read(sampleName);
             }
+        }
+
+        protected override async Task OnAfterRenderAsync()
+        {
+            await JsRuntime.InvokeAsync<string>("WhyNotLang.Text.allowTextAreaTabs", "txtProgramCode");
         }
 
         protected void OnSampleSelected(UIChangeEventArgs e)

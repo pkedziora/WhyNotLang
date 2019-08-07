@@ -33,7 +33,6 @@ begin
 	ClearScreen("black")
 	x := x + xd
 	y := y + yd
-	DrawRectangle(x, y,50,70,"red")
-	DrawText("Hello World", x, y + 100, "cyan", "normal 30px Calibri")
+	DrawRectangle(x, y,50,50,"red")
 	Delay(1)
 end

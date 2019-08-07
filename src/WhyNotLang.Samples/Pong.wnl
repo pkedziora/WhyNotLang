@@ -105,8 +105,8 @@ begin
 
 	DrawRectangle(ballXPos, ballYPos, ballSize, ballSize, "white")
 
-	DrawText("Player 1: " + ToString(player1Score), 50, 30, "blue", "normal 20px Calibri")
-	DrawText("Player 2: " + ToString(player2Score), 250, 30, "blue", "normal 20px Calibri")
+	DrawText("Player 1: " + ToString(player1Score), 100, 30, "white", "normal 20px Calibri")
+	DrawText("Player 2: " + ToString(player2Score), 300, 30, "white", "normal 20px Calibri")
 end
 
 function ResetPosition()
@@ -126,10 +126,11 @@ end
 global player1Score := 0
 global player2Score := 0
 
-global screenHeight := 400
-global screenWidth := 400
-global paddleHeight := 60
+global screenWidth := 480
+global screenHeight := 360
 global paddleWidth := 20
+global paddleHeight := 60
+
 global paddleSpeed := 10
 global ballSize := 20
 global ballSpeed := 3
