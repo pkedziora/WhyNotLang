@@ -2,11 +2,7 @@
 
 Programming language and interpreter created for fun
 
----
-
 ## Online Playground
-
----
 
 ## Features
 * Dynamic typing
@@ -32,11 +28,9 @@ Programming language and interpreter created for fun
     * ClearScreen()
     * DrawRectangle(x, y, width, height,color)
     * DrawText(text, x, y, color, font)
----
 
 ## Examples
 
----
 ## Implementation
 * Core (C#, .NET Standard 2.0)
     * Tokenizer
@@ -44,8 +38,6 @@ Programming language and interpreter created for fun
     * Interpreter
 * Command line executable (C#, .NET Standard 2.0)
 * Web test area (JavaScript, C# (Blazor.NET))
----
 ## Syntax
 
----
 
