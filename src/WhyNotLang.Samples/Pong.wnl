@@ -145,7 +145,6 @@ global ballXDir := 0
 global ballYDir := 0
 
 ResetPosition()
-InitGraphics()
 while(1)
 begin
 	var result := UpdateState()

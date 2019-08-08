@@ -27,10 +27,9 @@ global y := 0
 global xd := 0
 global yd := 0
 
-InitGraphics()
 while(1)
 begin
-	ClearScreen("black")
+	ClearScreen()
 	x := x + xd
 	y := y + yd
 	DrawRectangle(x, y,50,50,"red")

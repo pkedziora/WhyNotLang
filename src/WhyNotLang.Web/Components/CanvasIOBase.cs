@@ -17,16 +17,10 @@ namespace WhyNotLang.Web.Components
         [Inject] IExecutor Executor { get; set; }
         [Inject] IJSRuntime JsRuntime { get; set; }
 
-        protected override void OnAfterRender()
+        protected override async Task OnAfterRenderAsync()
         {
-            Executor.ProgramState.BuiltinFunctionCollection.Add("InitGraphics",
-                async arguments =>
-                {
-                    var canvasId = "myCanvas";
-
-                    await JsRuntime.InvokeAsync<string>("WhyNotLang.Canvas.initGraphics", canvasId);
-                    return ExpressionValue.Empty;
-                });
+            var canvasId = "myCanvas";
+            await JsRuntime.InvokeAsync<string>("WhyNotLang.Canvas.initGraphics", canvasId);
 
             Executor.ProgramState.BuiltinFunctionCollection.Add("ClearScreen",
                 async arguments =>
