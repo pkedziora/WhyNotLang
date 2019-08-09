@@ -1,4 +1,4 @@
-# WhyNotLang
+# WhyNotLang [![Build Status](https://travis-ci.org/pkedziora/WhyNotLang.svg?branch=master)](https://travis-ci.org/pkedziora/WhyNotLang)
 
 Programming language and interpreter created for fun
 
