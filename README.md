@@ -3,6 +3,7 @@
 Programming language and interpreter created for fun
 
 ## Online Playground
+[http://whynotlang.s3-website-eu-west-1.amazonaws.com/](http://whynotlang.s3-website-eu-west-1.amazonaws.com/)
 
 ## Features
 * Dynamic typing
