@@ -4,6 +4,16 @@ language: csharp
 mono: none
 dotnet: 2.2.401
 script:
-  - ./scripts/install-dotnet-preview.sh
-  - ./scripts/run-tests.sh
-  - ./scripts/build-web-package.sh
+- "./scripts/install-dotnet-preview.sh"
+- "./scripts/run-tests.sh"
+- "./scripts/build-web-package.sh"
+deploy:
+  provider: s3
+  access_key_id: AKIA6D57VD5BGUOBU6GC
+  secret_access_key:
+    secure: QjH24Qyo0En1zPwAOkS5cH3PAFRNnJv5pBeYlOrTN1f0/pZQZCtTBgUn4kQSoFSlD6IiVh1WeGif6nWXClAXsoBdFVPpIYo7N3dmlK0lfpjEDi32P8hcVcPfH8FbPyyIJa6CuRgh0i0Dx21X8wPGYM/bNgxp2UVfvig11cPYkvtksB0nxKGiQPABBS4ySGf+Niu+j97AtRqlCK5T9MfTV9FZ5JnFAIncaXKAial6nI5Az5wgqFZb356eHJrRlhMHNpo5jgQX7uxEDZAxxKhnW2lTlPyGZlFsBsHwLPXyuwIpicYmyHKjKuB5EhJq07h4QUJA2UdyYx5H0cZ13Lcht0yM50LRp+Wcth2IuxNPueaCUFOaHTdE6cmHGNKIHb/L76s/LXrahkW0amumaZJMCqYiFHo0USA+tBTSyF25DYUY+761v1dHcjIFcH5Xg6ksOaITjqp1sby2VugGxYwwtXp2NIxpHkES1Iu/++COB9ccUBrzJ+qRFOwUhsMjO4rmjdmGzcsEHdIHLDW8AV0YLjsQj96LWJ2JvLs64lafxDKHz6MKgMpkj6J3+wklWsDfI8pfut8aVjvElUYvND+9EGM+sFJCWTYMgMJwwyJbqD537aJa8lLM5XHs3wkOrBqbo/5YD1HhNUaOsTtQYV2HKedUA3xGPlXAt2kp9rcQKXg=
+  bucket: whynotlang
+  local-dir: artifacts
+  acl: public_read
+  on:
+    repo: pkedziora/WhyNotLang
