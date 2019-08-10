@@ -18,9 +18,6 @@ Programming language and interpreter created for fun
     * ToString(num)
     * Delay(ms)
     * Random(min, max)
-* Events (Built in)
-    * OnKeyDown(key)
-    * OnKeyUp(key)
 * Text IO
     * Writeln(str)
     * Readln()
@@ -28,6 +25,9 @@ Programming language and interpreter created for fun
     * ClearScreen()
     * DrawRectangle(x, y, width, height,color)
     * DrawText(text, x, y, color, font)
+    * Events (Built in)
+        * OnKeyDown(key)
+        * OnKeyUp(key)
 
 ## Examples
 
