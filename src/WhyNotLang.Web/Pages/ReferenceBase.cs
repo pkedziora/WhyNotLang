@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Components;
+﻿using Markdig;
+using Microsoft.AspNetCore.Components;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,10 +12,13 @@ namespace WhyNotLang.Web.Pages
     {
         [Inject] ISampleReader SampleReader { get; set; }
 
+        public MarkupString Content { get; set; }
+
         protected override void OnInit()
         {
-            Console.WriteLine(SampleReader.ReadReference());
-            base.OnInit();
+            var reference = SampleReader.ReadReference();
+            var html = Markdig.Markdown.ToHtml(reference, new MarkdownPipelineBuilder().UseAdvancedExtensions().Build());
+            Content = new MarkupString(html);
         }
     }
 }
