@@ -25,7 +25,7 @@ namespace WhyNotLang.Cmd
             if(System.Diagnostics.Debugger.IsAttached)
             {
                 programName = "QuickSort";
-                program = SampleReader.Read(programName);
+                program = SampleReader.ReadSample(programName);
             }
             else
             {

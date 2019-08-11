@@ -29,7 +29,7 @@ namespace WhyNotLang.Web.Components
             CodeSamples = SampleReader.GetSampleList().ToList();
             SelectedSample = SampleReader.FindProgramNameCaseInsensitive(SelectedSample);
             SelectedSample = string.IsNullOrWhiteSpace(SelectedSample) ? "Pong" : SelectedSample;
-            programCode = SampleReader.Read(SelectedSample);
+            programCode = SampleReader.ReadSample(SelectedSample);
         }
 
         protected override async Task OnAfterRenderAsync()
@@ -40,7 +40,7 @@ namespace WhyNotLang.Web.Components
         protected void OnSampleSelected(UIChangeEventArgs e)
         {
             var sampleName = e.Value.ToString();
-            var sampleCode = SampleReader.Read(sampleName);
+            var sampleCode = SampleReader.ReadSample(sampleName);
             programCode = sampleCode;
             UriHelper.NavigateTo($"/sample/{sampleName.ToLower()}");
         }

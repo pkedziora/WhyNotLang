@@ -7,16 +7,26 @@ namespace WhyNotLang.Samples.Reader
 {
     public class SampleReader : ISampleReader
     {
-        public string Read(string programName)
+        public string ReadSample(string sampleName)
         {
-            if (string.IsNullOrWhiteSpace(programName))
+            return ReadResource($"WhyNotLang.Samples.{sampleName}.wnl");
+        }
+
+        public string ReadReference()
+        {
+            return ReadResource($"WhyNotLang.Samples.REFERENCE.md");
+        }
+
+        private string ReadResource(string resourceName)
+        {
+            if (string.IsNullOrWhiteSpace(resourceName))
             {
                 return string.Empty;
             }
 
             var assembly = typeof(SampleReader).GetTypeInfo().Assembly;
             string contents;
-            using (var stream = assembly.GetManifestResourceStream($"WhyNotLang.Samples.{programName}.wnl"))
+            using (var stream = assembly.GetManifestResourceStream(resourceName))
             {
                 using (var reader = new StreamReader(stream))
                 {

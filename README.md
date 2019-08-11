@@ -6,7 +6,7 @@ Programming language and interpreter created for fun
 [https://whynotlang.kedziora.dev/](https://whynotlang.kedziora.dev/)
 
 ## Syntax Reference
-[Reference](REFERENCE.md)
+[Reference](src/WhyNotLang.Samples/REFERENCE.md)
 
 ## Implementation
 * Core (C#, .NET Standard 2.0)
