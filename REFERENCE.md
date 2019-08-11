@@ -233,3 +233,22 @@ e.g.
 * while
 * func
 * return
+
+## Built-in functions
+* ToNumber(str)
+* ToString(num)
+* Delay(ms)
+* Random(min, max)
+
+### Text IO
+* Writeln(str)
+* Readln()
+
+### Graphics IO
+Color and font properties support HTML5 canvas values
+* ClearScreen()
+* DrawRectangle(x, y, width, height,color)
+* DrawText(text, x, y, color, font)
+* Events (Built in)
+* OnKeyDown(key)
+* OnKeyUp(key)
