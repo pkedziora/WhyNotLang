@@ -146,7 +146,8 @@ app {
 }
 
 .column.left {
-    flex: 1
+    flex: 1;
+    border-right: solid 1px grey;
 }
 
 .column.right {
@@ -180,5 +181,10 @@ app {
 .textContainer {
     width: 480px;
     margin-bottom: 20px;
-    margin-top: 48px;
+    margin-top: 19px;
+}
+
+.outputHead {
+    text-align: center;
+    margin-top: 5px;
 }

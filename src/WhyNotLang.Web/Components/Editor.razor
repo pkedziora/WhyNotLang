@@ -3,7 +3,8 @@
 <div id="container">
     <div class="column left">
     <div class="dropdownContainer">
-        <select @onchange="OnSampleSelected">
+        <label for="selectProgram">Program: </label>
+        <select id="selectProgram" disabled="@isRunning" @onchange="OnSampleSelected">
             @foreach (var sample in CodeSamples)
             {
                 <option value=@sample>@sample</option>
@@ -11,14 +12,15 @@
         </select>
     </div>
     <div class="buttonContainer">
-        <button class="btn btn-primary" @onclick="Execute">Execute</button>
-        <button class="btn btn-secondary" @onclick="Stop">Stop</button>
+        <button class="btn btn-success" disabled="@isRunning" @onclick="Execute">Execute</button>
+        <button class="btn btn-danger" disabled="@(!isRunning)" @onclick="Stop">Stop</button>
     </div>
 
         <textarea id="txtProgramCode" @bind="@programCode" readonly="@isRunning" class="form-control" rows="13"></textarea>
 
     </div>
     <div class="column right">
+        <h5 class="outputHead">Output</h5>
         <div class="textContainer">
             <TextIO @ref="textIO"></TextIO>
         </div>
