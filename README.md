@@ -5,6 +5,14 @@ Programming language and interpreter created for fun
 ## Online Playground
 [https://whynotlang.kedziora.dev/](https://whynotlang.kedziora.dev/)
 
+## Implementation
+* Core (C#, .NET Standard 2.0)
+    * Tokenizer
+    * Parser
+    * Interpreter
+* Web test area (JavaScript, C#, [Blazor](https://dotnet.microsoft.com/apps/aspnet/web-apps/blazor), [.NET Core 3.0 preview7](https://github.com/dotnet/core/blob/master/release-notes/3.0/preview/3.0.0-preview7.md))
+* Command line executable (C#, .NET Core 2.2)
+
 ## Example
 ```
 func QuickSort(array, first, last)
@@ -29,7 +37,7 @@ begin
             pivotIndex := pivotIndex + 1
             Swap(array, pivotIndex, i)
         end
-        
+
         i := i + 1
     end
 
@@ -63,15 +71,5 @@ end
     * Events (Built in)
         * OnKeyDown(key)
         * OnKeyUp(key)
-
-## Implementation
-* Core (C#, .NET Standard 2.0)
-    * Tokenizer
-    * Parser
-    * Interpreter
-* Command line executable (C#, .NET Standard 2.0)
-* Web test area (JavaScript, C# (Blazor.NET))
-
-## Syntax
 
 
