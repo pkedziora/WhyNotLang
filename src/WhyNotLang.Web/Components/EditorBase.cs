@@ -15,6 +15,7 @@ namespace WhyNotLang.Web.Components
         [Inject] IExecutor Executor { get; set; }
         [Inject] ISampleReader SampleReader { get; set; }
         [Inject] IJSRuntime JsRuntime { get; set; }
+        [Inject] IUriHelper UriHelper { get; set; }
 
         protected TextIO textIO { get; set; }
         protected bool isRunning { get; set; } = false;
@@ -41,6 +42,7 @@ namespace WhyNotLang.Web.Components
             var sampleName = e.Value.ToString();
             var sampleCode = SampleReader.Read(sampleName);
             programCode = sampleCode;
+            UriHelper.NavigateTo($"/sample/{sampleName.ToLower()}");
         }
 
         protected void Stop()

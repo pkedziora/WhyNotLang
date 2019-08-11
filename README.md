@@ -47,6 +47,11 @@ begin
 end
 ```
 
+## Interactive Samples
+* [Pong game](https://whynotlang.kedziora.dev/sample/pong)
+* [QuickSort](https://whynotlang.kedziora.dev/sample/quicksort)
+* [Fibonacci](https://whynotlang.kedziora.dev/sample/fibonacci)
+
 ## Features
 * Dynamic typing
 * Block scope support (variables, arrays)
