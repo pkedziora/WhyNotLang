@@ -57,7 +57,7 @@ end
 * Block scope support (variables, arrays)
 * Global scope support (functions, variables, arrays)
 * Boolean expressions (evaluating to 0 or 1)
-* Arithmetic expressions: +,-,*,/, ( )
+* Integer arithmetic expressions: +,-,*,/, ( )
 * While loop
 * If statement
 * Functions (User defined)

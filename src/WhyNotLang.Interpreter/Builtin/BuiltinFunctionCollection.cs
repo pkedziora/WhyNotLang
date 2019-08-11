@@ -85,7 +85,7 @@ namespace WhyNotLang.Interpreter.Builtin
                         throw new Exception("Number expected");
                     }
 
-                    return await Task.FromResult(new ExpressionValue(Rand.Next((int)min.Value, (int)max.Value), ExpressionValueTypes.Number));
+                    return await Task.FromResult(new ExpressionValue(Rand.Next((int)min.Value, (int)max.Value + 1), ExpressionValueTypes.Number));
                 });
         }
     }

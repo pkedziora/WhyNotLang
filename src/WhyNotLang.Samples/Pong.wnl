@@ -1,126 +1,155 @@
 ﻿func OnKeyUp(key)
 begin
-	if (key == "w")
-		leftDelta := 0
-	else if (key == "s")
-		leftDelta:= 0
-	else if (key == "o")
-		rightDelta:= 0
-	else if (key == "l")
-		rightDelta:= 0
+    if (key == "w")
+        leftDelta := 0
+    else if (key == "s")
+        leftDelta:= 0
+    else if (key == "o")
+        rightDelta:= 0
+    else if (key == "l")
+        rightDelta:= 0
 end
 
 func OnKeyDown(key)
 begin
-	if (key == "w")
-		leftDelta := -paddleSpeed
-	else if (key == "s")
-		leftDelta:= paddleSpeed
-	else if (key == "o")
-		rightDelta:= -paddleSpeed
-	else if (key == "l")
-		rightDelta:= paddleSpeed
+    if (key == "w")
+        leftDelta := -paddleSpeed
+    else if (key == "s")
+        leftDelta:= paddleSpeed
+    else if (key == "o")
+        rightDelta:= -paddleSpeed
+    else if (key == "l")
+        rightDelta:= paddleSpeed
 end
 
 func LeftPaddleInBounds()
 begin
-	return (leftDelta < 0 and leftPaddlePos >= paddleSpeed) or (leftDelta > 0 and leftPaddlePos <= screenHeight - paddleSpeed - paddleHeight)
+    return (leftDelta < 0 and leftPaddlePos >= paddleSpeed) or (leftDelta > 0 and leftPaddlePos <= screenHeight - paddleSpeed - paddleHeight)
 end
 
 func RightPaddleInBounds()
 begin
-	return (rightDelta < 0 and rightPaddlePos >= paddleSpeed) or (rightDelta > 0 and rightPaddlePos <= screenHeight - paddleSpeed - paddleHeight)
+    return (rightDelta < 0 and rightPaddlePos >= paddleSpeed) or (rightDelta > 0 and rightPaddlePos <= screenHeight - paddleSpeed - paddleHeight)
 end
 
 func IsLeftPaddleBallCollision()
 begin
-	return ballXPos <= paddleWidth and 
-		ballYPos + ballSize > leftPaddlePos and
-		ballYPos < leftPaddlePos + paddleHeight
+    return ballXPos <= paddleWidth and 
+        ballYPos + ballSize > leftPaddlePos and
+        ballYPos < leftPaddlePos + paddleHeight
 end
 
 func IsRightPaddleBallCollision()
 begin
-	return ballXPos >= screenWidth - paddleWidth - ballSize and 
-		ballYPos + ballSize > rightPaddlePos and
-		ballYPos < rightPaddlePos + paddleHeight
+    return ballXPos >= screenWidth - paddleWidth - ballSize and 
+        ballYPos + ballSize > rightPaddlePos and
+        ballYPos < rightPaddlePos + paddleHeight
 end
 
 func IsBallTopWallCollision()
 begin
-	return ballYPos <= 0
+    return ballYPos <= 0
 end
 
 func IsBallBottomWallCollision()
 begin
-	return ballYPos >= screenHeight - ballSize
+    return ballYPos >= screenHeight - ballSize
 end
 
 func IsBallLeftWallCollision()
 begin
-	return ballXPos <= 0
+    return ballXPos <= 0
 end
 
 func IsBallRightWallCollision()
 begin
-	return ballXPos >= screenWidth - ballSize
+    return ballXPos >= screenWidth - ballSize
+end
+
+func AdjustBallOnCollision(paddleDelta)
+begin
+    ballXDir := -ballXDir
+    if (((ballYDir > 0 and paddleDelta > 0) or (ballYDir < 0 and paddleDelta < 0)) and (ballYDir / ballSpeed == 1 or ballYDir / ballSpeed == -1))
+    begin
+        ballYDir := ballYDir * 2
+        ballXDir := ballXDir / 2
+    end
+    else if (((ballYDir > 0 and paddleDelta < 0) or (ballYDir < 0 and paddleDelta > 0)) and (ballXDir / ballSpeed == 1  or ballXDir / ballSpeed == -1))
+    begin
+        ballXDir := ballXDir * 2
+        ballYDir := ballYDir / 2
+    end
 end
 
 func UpdateState()
 begin
-	if (IsBallLeftWallCollision())
-		return 2
-	if (IsBallRightWallCollision())
-		return 1
-	if (LeftPaddleInBounds())
-		leftPaddlePos := leftPaddlePos + leftDelta
-	if (RightPaddleInBounds())
-		rightPaddlePos := rightPaddlePos + rightDelta
-	if (IsRightPaddleBallCollision())
-	begin
-		ballXPos := screenWidth - paddleWidth - ballSize
-		ballXDir := -ballXDir
-		ballYDir := rightDelta + Random(-5, 5)
-	end
-	else if (IsLeftPaddleBallCollision())
-	begin
-		ballXPos := paddleWidth
-		ballXDir := -ballXDir
-		ballYDir := leftDelta + Random(-5, 5)
-	end
-	if (IsBallTopWallCollision() or IsBallBottomWallCollision())
-		ballYDir := -ballYDir
+    if (IsBallLeftWallCollision())
+        return 2
+    if (IsBallRightWallCollision())
+        return 1
+    if (LeftPaddleInBounds())
+        leftPaddlePos := leftPaddlePos + leftDelta
+    if (RightPaddleInBounds())
+        rightPaddlePos := rightPaddlePos + rightDelta
+    if (IsRightPaddleBallCollision())
+    begin
+        ballXPos := screenWidth - paddleWidth - ballSize
+        AdjustBallOnCollision(rightDelta)
+    end
+    else if (IsLeftPaddleBallCollision())
+    begin
+        ballXPos := paddleWidth
+        AdjustBallOnCollision(leftDelta)
+    end
+    if (IsBallTopWallCollision() or IsBallBottomWallCollision())
+        ballYDir := -ballYDir
 
-	ballXPos := ballXPos + ballXDir
-	ballYPos := ballYPos + ballYDir
+    ballXPos := ballXPos + ballXDir
+    ballYPos := ballYPos + ballYDir
 
-	return 0
+    return 0
 end
 
 func DrawScene()
 begin
-	ClearScreen()
-	DrawRectangle(0, leftPaddlePos,paddleWidth,paddleHeight,"red")
-	DrawRectangle(screenWidth - paddleWidth, rightPaddlePos,paddleWidth,paddleHeight,"red")
+    ClearScreen()
+    DrawRectangle(0, leftPaddlePos,paddleWidth,paddleHeight,"red")
+    DrawRectangle(screenWidth - paddleWidth, rightPaddlePos,paddleWidth,paddleHeight,"red")
 
-	DrawRectangle(ballXPos, ballYPos, ballSize, ballSize, "white")
+    DrawRectangle(ballXPos, ballYPos, ballSize, ballSize, "white")
 
-	DrawText("Player 1: " + ToString(player1Score), 100, 30, "white", "normal 20px Calibri")
-	DrawText("Player 2: " + ToString(player2Score), 300, 30, "white", "normal 20px Calibri")
+    DrawText("Player 1: " + ToString(player1Score), 100, 30, "white", "normal 20px Calibri")
+    DrawText("Player 2: " + ToString(player2Score), 300, 30, "white", "normal 20px Calibri")
+end
+
+func GetRandomDir(min, max)
+begin
+    var dir := Random(min, max)
+    return dir * GetRandomSign()
+end
+
+func GetRandomSign()
+begin
+    var neg := Random(0,1)
+    if (neg)
+        return -1
+    return 1
 end
 
 func ResetPosition()
 begin
-	leftPaddlePos := screenHeight / 2 - paddleHeight / 2
-	leftDelta := 0
-	rightPaddlePos := leftPaddlePos
-	rightDelta := 0
-	ballXPos := screenWidth / 2 - ballSize / 2
-	ballYPos := screenHeight / 2  - ballSize / 2
-	ballXDir := Random(-3,3) * ballSpeed
-	if (ballXDir == 0)
-		ballXDir := ballSpeed
-	ballYDir := Random(-3,3) * ballSpeed
+    leftPaddlePos := screenHeight / 2 - paddleHeight / 2
+    leftDelta := 0
+    rightPaddlePos := leftPaddlePos
+    rightDelta := 0
+    ballXPos := screenWidth / 2 - ballSize / 2
+    ballYPos := screenHeight / 2  - ballSize / 2
+    ballXDir := GetRandomDir(1,2)
+        if (ballXDir == 1 or ballXDir == -1)
+            ballYDir := 2 * GetRandomSign() * ballSpeed
+        else
+            ballYDir := GetRandomSign() * ballSpeed
+        ballXDir := ballXDir * ballSpeed
 end
 
 global player1Score := 0
@@ -128,12 +157,12 @@ global player2Score := 0
 
 global screenWidth := 480
 global screenHeight := 360
-global paddleWidth := 20
+global paddleWidth := 15
 global paddleHeight := 60
 
 global paddleSpeed := 10
-global ballSize := 20
-global ballSpeed := 3
+global ballSize := 10
+global ballSpeed := 4
 
 global leftPaddlePos := 0
 global leftDelta := 0
@@ -147,18 +176,18 @@ global ballYDir := 0
 ResetPosition()
 while(1)
 begin
-	var result := UpdateState()
-	if (result == 1)
-	begin
-		player1Score := player1Score + 1
-		ResetPosition()
-	end
-	else if (result == 2)
-	begin
-		player2Score := player2Score + 1
-		ResetPosition()
-	end
+    var result := UpdateState()
+    if (result == 1)
+    begin
+        player1Score := player1Score + 1
+        ResetPosition()
+    end
+    else if (result == 2)
+    begin
+        player2Score := player2Score + 1
+        ResetPosition()
+    end
 
-	DrawScene()
-	Delay(20)
+    DrawScene()
+    Delay(20)
 end
