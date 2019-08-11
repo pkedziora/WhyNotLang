@@ -7,7 +7,7 @@
         <select id="selectProgram" disabled="@isRunning" @onchange="OnSampleSelected">
             @foreach (var sample in CodeSamples)
             {
-                <option value=@sample>@sample</option>
+                <option selected="@(sample == SelectedSample)" value=@sample>@sample</option>
             }
         </select>
     </div>

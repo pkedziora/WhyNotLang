@@ -29,6 +29,7 @@ begin
             pivotIndex := pivotIndex + 1
             Swap(array, pivotIndex, i)
         end
+        
         i := i + 1
     end
 
