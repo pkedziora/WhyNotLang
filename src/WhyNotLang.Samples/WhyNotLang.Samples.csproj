@@ -8,6 +8,7 @@
     <None Remove="Fibonacci.wnl" />
     <None Remove="MoveRectangleWASD.wnl" />
     <None Remove="Pong.wnl" />
+    <None Remove="QuickSort.wnl" />
   </ItemGroup>
 
   <ItemGroup>
@@ -16,6 +17,7 @@
     </EmbeddedResource>
     <EmbeddedResource Include="MoveRectangleWASD.wnl" />
     <EmbeddedResource Include="Pong.wnl" />
+    <EmbeddedResource Include="QuickSort.wnl" />
   </ItemGroup>
 
   <ItemGroup>

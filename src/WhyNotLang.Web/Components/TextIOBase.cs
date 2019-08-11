@@ -36,6 +36,21 @@ namespace WhyNotLang.Web.Components
                     return ExpressionValue.Empty;
                 });
 
+            Executor.ProgramState.BuiltinFunctionCollection.Add("Write",
+                async arguments =>
+                {
+                    var str = arguments.Single();
+                    if (str.Type != ExpressionValueTypes.String)
+                    {
+                        throw new WhyNotLangException("String expected");
+                    }
+
+                    Output += str.Value;
+                    this.StateHasChanged();
+                    await JsRuntime.InvokeAsync<string>("WhyNotLang.Text.scrollOutput");
+                    return ExpressionValue.Empty;
+                });
+
             Executor.ProgramState.BuiltinFunctionCollection.Add("Readln",
                async arguments =>
                {

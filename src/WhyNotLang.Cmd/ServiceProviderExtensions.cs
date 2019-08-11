@@ -26,6 +26,19 @@ namespace WhyNotLang.Cmd
                     return await Task.FromResult(ExpressionValue.Empty);
                 });
 
+            functionCollection.Add("Write",
+                async arguments =>
+                {
+                    var str = arguments.Single();
+                    if (str.Type != ExpressionValueTypes.String)
+                    {
+                        throw new WhyNotLangException("String expected");
+                    }
+
+                    Console.Write((string)str.Value);
+                    return await Task.FromResult(ExpressionValue.Empty);
+                });
+
             functionCollection.Add("Readln",
                 async arguments =>
                 {

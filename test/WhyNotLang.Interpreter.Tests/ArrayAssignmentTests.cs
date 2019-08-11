@@ -51,22 +51,6 @@ namespace WhyNotLang.Interpreter.Tests
             Assert.Equal(1, actual0);
             Assert.Equal(11, actual1);
         }
-
-        [Fact]
-        public async Task ExecutesVariableDeclarationWithComplexExpression()
-        {
-            _executor.Initialise(@"
-                var abc:=100
-                abc := (10 * (4/4) + (2 - 1))");
-            
-            await _executor.ExecuteAll();
-            
-            var actual = _programState.GetVariable("abc");
-
-            var expected = new ExpressionValue(11, ExpressionValueTypes.Number);
-            
-            Assert.Equal(expected, actual);
-        }
         
         [Fact]
         public async Task ThrowsDuringArrayAssignementWhenUndeclared()

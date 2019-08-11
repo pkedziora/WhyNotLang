@@ -1,0 +1,59 @@
+﻿function QuickSort(array, first, last)
+begin
+    if (last <= first)
+        return 0
+
+    var pivotIndex := Partition(array, first, last)
+    QuickSort(array, first, pivotIndex - 1)
+    QuickSort(array, pivotIndex + 1, last)
+end
+
+function Partition(array, first, last)
+begin
+    var pivotIndex := first
+    var pivot := array[first]
+	var i:= first
+	while (i <= last)
+	begin
+		if (array[i] < pivot)
+        begin
+            pivotIndex := pivotIndex + 1
+            Swap(array, pivotIndex, i)
+        end
+		i := i + 1
+	end
+
+    Swap(array, pivotIndex, first)
+
+    return pivotIndex
+end
+
+function Swap(array, i, j)
+begin
+    var tmp := array[i]
+    array[i] := array[j]
+    array[j] := tmp
+end
+
+Writeln("How many numbers would you like to sort: ")
+var count := ToNumber(Readln())
+
+var numbers[count]
+var i := 0
+while (i < count)
+begin
+    Writeln("Enter number [" + ToString(i + 1)  + "]: ")
+    numbers[i] := ToNumber(Readln())
+    i := i + 1
+end
+
+
+QuickSort(numbers, 0, count - 1)
+Writeln("")
+Writeln("Sorted numbers: ")
+i := 0
+while (i < count)
+begin
+	Write(ToString(numbers[i]) + " ")
+	i := i + 1
+end

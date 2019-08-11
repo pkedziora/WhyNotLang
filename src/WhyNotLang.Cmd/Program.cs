@@ -24,7 +24,7 @@ namespace WhyNotLang.Cmd
             string program;
             if(System.Diagnostics.Debugger.IsAttached)
             {
-                fileName = "Fibonacci.wnl";
+                fileName = "QuickSort.wnl";
                 program = SampleReader.Read(fileName);
             }
             else
