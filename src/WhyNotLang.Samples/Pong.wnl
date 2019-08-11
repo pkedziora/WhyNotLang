@@ -111,9 +111,9 @@ end
 
 func ResetPosition()
 begin
-	leftPaddlePos := 0
+	leftPaddlePos := screenHeight / 2 - paddleHeight / 2
 	leftDelta := 0
-	rightPaddlePos := 0
+	rightPaddlePos := leftPaddlePos
 	rightDelta := 0
 	ballXPos := screenWidth / 2 - ballSize / 2
 	ballYPos := screenHeight / 2  - ballSize / 2
