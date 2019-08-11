@@ -20,12 +20,12 @@ namespace WhyNotLang.Cmd
 
         static async Task Main(string[] args)
         {
-            string fileName;
+            string programName;
             string program;
             if(System.Diagnostics.Debugger.IsAttached)
             {
-                fileName = "QuickSort.wnl";
-                program = SampleReader.Read(fileName);
+                programName = "QuickSort";
+                program = SampleReader.Read(programName);
             }
             else
             {
@@ -35,8 +35,8 @@ namespace WhyNotLang.Cmd
                     return;
                 }
                 
-                fileName = args[0];
-                program = File.ReadAllText(fileName);
+                programName = args[0];
+                program = File.ReadAllText(programName);
             }
             
             try

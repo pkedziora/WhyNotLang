@@ -7,11 +7,16 @@ namespace WhyNotLang.Samples.Reader
 {
     public class SampleReader : ISampleReader
     {
-        public string Read(string fileName)
+        public string Read(string programName)
         {
+            if (string.IsNullOrWhiteSpace(programName))
+            {
+                return string.Empty;
+            }
+
             var assembly = typeof(SampleReader).GetTypeInfo().Assembly;
             string contents;
-            using (var stream = assembly.GetManifestResourceStream($"WhyNotLang.Samples.{fileName}"))
+            using (var stream = assembly.GetManifestResourceStream($"WhyNotLang.Samples.{programName}.wnl"))
             {
                 using (var reader = new StreamReader(stream))
                 {
@@ -22,6 +27,18 @@ namespace WhyNotLang.Samples.Reader
             return contents;
         }
 
+        public string FindProgramNameCaseInsensitive(string programName)
+        {
+            if (string.IsNullOrWhiteSpace(programName))
+            {
+                return string.Empty;
+            }
+
+            var sampleList = GetSampleList();
+            programName = programName.ToLower();
+            return sampleList.FirstOrDefault(sample => sample.ToLower() == programName);
+        }
+
         public IList<string> GetSampleList()
         {
             var assembly = typeof(SampleReader).GetTypeInfo().Assembly;
@@ -29,7 +46,7 @@ namespace WhyNotLang.Samples.Reader
                 return assembly
                     .GetManifestResourceNames()
                     .Where(r => r.EndsWith(".wnl"))
-                    .Select(r => r.Replace($"{assemblyName}.", ""))
+                    .Select(r => r.Replace($"{assemblyName}.", "").Replace(".wnl", ""))
                     .ToList();
         }
     }

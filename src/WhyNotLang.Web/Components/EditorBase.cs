@@ -20,16 +20,15 @@ namespace WhyNotLang.Web.Components
         protected bool isRunning { get; set; } = false;
         protected List<string> CodeSamples { get; set; } = new List<string>();
         public string programCode { get; set; }
-        public string SelectedSample { get; set; }
+
+        [Parameter]
+        public string SelectedSample { get; set; } = "";
         protected override void OnInit()
         {
             CodeSamples = SampleReader.GetSampleList().ToList();
-            var sampleName = CodeSamples.Contains("Pong.wnl") ? "Pong.wnl" : CodeSamples.FirstOrDefault();
-            if (!string.IsNullOrWhiteSpace(sampleName))
-            {
-                programCode = SampleReader.Read(sampleName);
-                SelectedSample = sampleName;
-            }
+            SelectedSample = SampleReader.FindProgramNameCaseInsensitive(SelectedSample);
+            SelectedSample = string.IsNullOrWhiteSpace(SelectedSample) ? "Pong" : SelectedSample;
+            programCode = SampleReader.Read(SelectedSample);
         }
 
         protected override async Task OnAfterRenderAsync()
