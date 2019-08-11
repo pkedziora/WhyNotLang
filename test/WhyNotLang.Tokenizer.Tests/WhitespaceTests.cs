@@ -22,8 +22,8 @@ namespace WhyNotLang.Tokenizer.Tests
         public static IEnumerable<object[]> RemovesLeadingAndTrailingWhitespaceData()
         {
             yield return new object[] {" *( ", new[] {new Token(TokenType.Multiply, "*"), new Token(TokenType.LeftParen, "(")}};
-            yield return new object[] {" function ", new[] {new Token(TokenType.Function, "function")}};
-            yield return new object[] {"    functions    ", new[] {new Token(TokenType.Identifier, "functions")}};
+            yield return new object[] {" func ", new[] {new Token(TokenType.Function, "func")}};
+            yield return new object[] {"    funcs    ", new[] {new Token(TokenType.Identifier, "funcs")}};
             yield return new object[] {"    *(    ", new[] {new Token(TokenType.Multiply, "*"), new Token(TokenType.LeftParen, "(")}};
             yield return new object[] {"    \"a b    c\"    ", new[] {new Token(TokenType.String, "a b    c")}};
         }
@@ -39,8 +39,8 @@ namespace WhyNotLang.Tokenizer.Tests
         public static IEnumerable<object[]> RemovesMiddleWhitespaceData()
         {
             yield return new object[] {"* (", new[] {new Token(TokenType.Multiply, "*"), new Token(TokenType.LeftParen, "(")}};
-            yield return new object[] {"function    *", new[] {new Token(TokenType.Function, "function"), new Token(TokenType.Multiply, "*")}};
-            yield return new object[] {"*   functions", new[] {new Token(TokenType.Multiply, "*"), new Token(TokenType.Identifier, "functions")}};
+            yield return new object[] {"func    *", new[] {new Token(TokenType.Function, "func"), new Token(TokenType.Multiply, "*")}};
+            yield return new object[] {"*   funcs", new[] {new Token(TokenType.Multiply, "*"), new Token(TokenType.Identifier, "funcs")}};
             yield return new object[] {"    *    ( +", new[] {new Token(TokenType.Multiply, "*"), new Token(TokenType.LeftParen, "("), new Token(TokenType.Plus, "+")}};
             yield return new object[] {"+    \"a b    c\"    ", new[] {new Token(TokenType.Plus, "+"), new Token(TokenType.String, "a b    c")}};
         }

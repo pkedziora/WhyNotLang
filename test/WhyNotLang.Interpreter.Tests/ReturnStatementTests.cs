@@ -22,7 +22,7 @@ namespace WhyNotLang.Interpreter.Tests
         public async Task ExecutesFunctionWithoutParamsWithSimpleReturn()
         {
             _executor.Initialise(@"
-                function foo()
+                func foo()
                 begin
                     return 1 
                 end
@@ -42,7 +42,7 @@ namespace WhyNotLang.Interpreter.Tests
         public async Task ExecutesFunctionWithParamsAndReturnStatementWithExpression()
         {
             _executor.Initialise(@"
-                function foo(y)
+                func foo(y)
                 begin
                     var x:= y + 1
                     return x + 1
@@ -63,7 +63,7 @@ namespace WhyNotLang.Interpreter.Tests
         public async Task ExecutesFunctionWith2ParamsAndReturnStatementWithExpression()
         {
             _executor.Initialise(@"
-                function foo(x,y)
+                func foo(x,y)
                 begin
                     return x * y
                 end
@@ -83,7 +83,7 @@ namespace WhyNotLang.Interpreter.Tests
         public async Task ReturnStatementStopsExecutionInFunction()
         {
             _executor.Initialise(@"
-                function foo()
+                func foo()
                 begin
                     return 1
                     var y:= 100
@@ -124,7 +124,7 @@ namespace WhyNotLang.Interpreter.Tests
         public async Task ReturnsFromIfStatement()
         {
             _executor.Initialise(@"
-                function foo()
+                func foo()
                 begin
                     if (1 < 2)
                         return 1
@@ -148,7 +148,7 @@ namespace WhyNotLang.Interpreter.Tests
         public async Task ReturnsFromIfStatementWithBlock()
         {
             _executor.Initialise(@"
-                function foo()
+                func foo()
                 begin
                     if (1 < 2)
                     begin
@@ -174,7 +174,7 @@ namespace WhyNotLang.Interpreter.Tests
         public async Task ReturnsFromWhileStatement()
         {
             _executor.Initialise(@"
-                function foo()
+                func foo()
                 begin
                     while (1 < 2)
                         return 1

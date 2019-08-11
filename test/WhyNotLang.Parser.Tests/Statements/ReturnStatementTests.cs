@@ -74,7 +74,7 @@ namespace WhyNotLang.Parser.Tests.Statements
         public void ParsesReturnStatementAtEndOfFunction()
         {
             _parser.Initialise(@"
-                function foo()
+                func foo()
                 begin
                     return 1
                 end                
@@ -96,7 +96,7 @@ namespace WhyNotLang.Parser.Tests.Statements
         public void ParsesReturnStatementInMiddleOfFunction()
         {
             _parser.Initialise(@"
-                function foo()
+                func foo()
                 begin
                     x := 1
                     return 1 + 2

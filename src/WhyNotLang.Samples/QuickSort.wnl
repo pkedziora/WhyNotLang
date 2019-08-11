@@ -1,4 +1,4 @@
-﻿function QuickSort(array, first, last)
+﻿func QuickSort(array, first, last)
 begin
     if (last <= first)
         return 0
@@ -8,7 +8,7 @@ begin
     QuickSort(array, pivotIndex + 1, last)
 end
 
-function Partition(array, first, last)
+func Partition(array, first, last)
 begin
     var pivotIndex := first
     var pivot := array[first]
@@ -28,7 +28,7 @@ begin
     return pivotIndex
 end
 
-function Swap(array, i, j)
+func Swap(array, i, j)
 begin
     var tmp := array[i]
     array[i] := array[j]
@@ -47,13 +47,14 @@ begin
     i := i + 1
 end
 
-
 QuickSort(numbers, 0, count - 1)
 Writeln("")
 Writeln("Sorted numbers: ")
 i := 0
 while (i < count)
 begin
-	Write(ToString(numbers[i]) + " ")
+	Write(ToString(numbers[i]))
 	i := i + 1
+    if (i < count)
+        Write(", ")
 end

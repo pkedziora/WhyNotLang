@@ -113,7 +113,7 @@ namespace WhyNotLang.Interpreter.Tests
         public async Task ArrayCanBePassedByReferenceToFunctionAndModified()
         {
             _executor.Initialise(@"
-                function foo(array)
+                func foo(array)
                 begin
                     array[0] := 100
                 end
@@ -136,7 +136,7 @@ namespace WhyNotLang.Interpreter.Tests
             _executor.Initialise(@"
                 global x[10]
 
-                function foo()
+                func foo()
                 begin
                     x[1] := 2
                 end
@@ -160,7 +160,7 @@ namespace WhyNotLang.Interpreter.Tests
             _executor.Initialise(@"
                 global x[10]
 
-                function foo()
+                func foo()
                 begin
                     var x[20]
                     x[1] := 2

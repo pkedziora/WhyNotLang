@@ -30,7 +30,38 @@ Programming language and interpreter created for fun
         * OnKeyDown(key)
         * OnKeyUp(key)
 
-## Examples
+## Example
+```
+func QuickSort(array, first, last)
+begin
+    if (last <= first)
+        return 0
+
+    var pivotIndex := Partition(array, first, last)
+    QuickSort(array, first, pivotIndex - 1)
+    QuickSort(array, pivotIndex + 1, last)
+end
+
+func Partition(array, first, last)
+begin
+    var pivotIndex := first
+    var pivot := array[first]
+	var i:= first
+	while (i <= last)
+	begin
+		if (array[i] < pivot)
+        begin
+            pivotIndex := pivotIndex + 1
+            Swap(array, pivotIndex, i)
+        end
+		i := i + 1
+	end
+
+    Swap(array, pivotIndex, first)
+
+    return pivotIndex
+end
+```
 
 ## Implementation
 * Core (C#, .NET Standard 2.0)
@@ -39,6 +70,7 @@ Programming language and interpreter created for fun
     * Interpreter
 * Command line executable (C#, .NET Standard 2.0)
 * Web test area (JavaScript, C# (Blazor.NET))
+
 ## Syntax
 
 

@@ -1,4 +1,4 @@
-function Fib(number)
+func Fib(number)
 begin
 	if (number == 1 or number == 2)
 		return 1

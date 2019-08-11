@@ -56,7 +56,7 @@ namespace WhyNotLang.Tokenizer.Tests
 
         public static IEnumerable<object[]> DoesNotSplitKeywordsFromIdentifiersAndNumbersData()
         {
-            yield return new object[] {"function123", new[] {new Token(TokenType.Identifier, "function123")}};
+            yield return new object[] {"func123", new[] {new Token(TokenType.Identifier, "func123")}};
             yield return new object[] {"functions", new[] {new Token(TokenType.Identifier, "functions")}};
             yield return new object[] {"abegin", new[] {new Token(TokenType.Identifier, "abegin")}};
         }
@@ -71,7 +71,7 @@ namespace WhyNotLang.Tokenizer.Tests
 
         public static IEnumerable<object[]> SplitsKeywordsFromStringsAndOperatorsData()
         {
-            yield return new object[] {"*function+", new[] {new Token(TokenType.Multiply, "*"), new Token(TokenType.Function, "function"), new Token(TokenType.Plus, "+")}};
+            yield return new object[] {"*func+", new[] {new Token(TokenType.Multiply, "*"), new Token(TokenType.Function, "func"), new Token(TokenType.Plus, "+")}};
         }
         
         [Theory]
@@ -85,8 +85,8 @@ namespace WhyNotLang.Tokenizer.Tests
         public static IEnumerable<object[]> DetectsInvalidTokensData()
         {
             yield return new object[] {"*@/", new[] {new Token(TokenType.Multiply, "*"), new Token(TokenType.Invalid, "@"), new Token(TokenType.Divide, "/")}};
-            yield return new object[] {"$function@", new[] {new Token(TokenType.Invalid, "$"), new Token(TokenType.Function, "function"), new Token(TokenType.Invalid, "@")}};
-            yield return new object[] {"$functions@", new[] {new Token(TokenType.Invalid, "$"), new Token(TokenType.Identifier, "functions"), new Token(TokenType.Invalid, "@")}};
+            yield return new object[] {"$func@", new[] {new Token(TokenType.Invalid, "$"), new Token(TokenType.Function, "func"), new Token(TokenType.Invalid, "@")}};
+            yield return new object[] {"$function@", new[] {new Token(TokenType.Invalid, "$"), new Token(TokenType.Identifier, "function"), new Token(TokenType.Invalid, "@")}};
             yield return new object[] {"$\"functions\"@", new[] {new Token(TokenType.Invalid, "$"), new Token(TokenType.String, "functions"), new Token(TokenType.Invalid, "@")}};
         }
     }

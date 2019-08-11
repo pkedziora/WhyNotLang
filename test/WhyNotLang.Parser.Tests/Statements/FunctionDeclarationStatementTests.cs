@@ -22,7 +22,7 @@ namespace WhyNotLang.Parser.Tests.Statements
         public void ParsesFunctionWithoutParamsAndEmptyBody()
         {
             _parser.Initialise(@"
-                function foo()
+                func foo()
                 begin
                 end                
             ");
@@ -38,7 +38,7 @@ namespace WhyNotLang.Parser.Tests.Statements
         public void ParsesFunctionWith1ParameterAndEmptyBody()
         {
             _parser.Initialise(@"
-                function foo(abc)
+                func foo(abc)
                 begin
                 end                
             ");
@@ -56,7 +56,7 @@ namespace WhyNotLang.Parser.Tests.Statements
         public void ParsesFunctionWith2ParameterAndEmptyBody()
         {
             _parser.Initialise(@"
-                function foo(abc,d)
+                func foo(abc,d)
                 begin
                 end                
             ");
@@ -74,7 +74,7 @@ namespace WhyNotLang.Parser.Tests.Statements
         public void ParsesFunctionWith3ParameterAndBodySet()
         {
             _parser.Initialise(@"
-                function foo(abc,d,e)
+                func foo(abc,d,e)
                 begin
                     x := 1
                     var y := 2

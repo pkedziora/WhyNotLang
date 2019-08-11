@@ -1,4 +1,4 @@
-﻿function OnKeyUp(key)
+﻿func OnKeyUp(key)
 begin
 	if (key == "d")
 		xd := 0
@@ -10,7 +10,7 @@ begin
 		yd:= 0
 end
 
-function OnKeyDown(key)
+func OnKeyDown(key)
 begin
 	if (key == "d")
 		xd := 5

@@ -51,7 +51,7 @@ namespace WhyNotLang.Tokenizer
                 {"if", TokenType.If},
                 {"else", TokenType.Else},
                 {"while", TokenType.While},
-                {"function", TokenType.Function},
+                {"func", TokenType.Function},
                 {"return", TokenType.Return},
                 {",", TokenType.Comma},
                 {"(", TokenType.LeftParen},

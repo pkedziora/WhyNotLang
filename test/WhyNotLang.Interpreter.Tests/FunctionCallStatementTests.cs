@@ -22,7 +22,7 @@ namespace WhyNotLang.Interpreter.Tests
         public async Task ExecutesFunctionWithoutParams()
         {
             _executor.Initialise(@"
-                function foo()
+                func foo()
                 begin
                     var x:= 100
                     return x
@@ -43,7 +43,7 @@ namespace WhyNotLang.Interpreter.Tests
         public async Task ExecutesFunctionWithParams()
         {
             _executor.Initialise(@"
-                function foo(y)
+                func foo(y)
                 begin
                     var x:= y + 1
                     return x
@@ -64,7 +64,7 @@ namespace WhyNotLang.Interpreter.Tests
         public async Task ExecutesFunctionWith2Params()
         {
             _executor.Initialise(@"
-                function foo(x,y)
+                func foo(x,y)
                 begin
                     var z:= x * y
                     return z
@@ -85,7 +85,7 @@ namespace WhyNotLang.Interpreter.Tests
         public async Task FunctionCanBeUsedWithinExpression()
         {
             _executor.Initialise(@"
-                function square(a)
+                func square(a)
                 begin
                     return a * a
                 end

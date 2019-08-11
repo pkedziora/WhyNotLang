@@ -1,4 +1,4 @@
-﻿function OnKeyUp(key)
+﻿func OnKeyUp(key)
 begin
 	if (key == "w")
 		leftDelta := 0
@@ -10,7 +10,7 @@ begin
 		rightDelta:= 0
 end
 
-function OnKeyDown(key)
+func OnKeyDown(key)
 begin
 	if (key == "w")
 		leftDelta := -paddleSpeed
@@ -22,51 +22,51 @@ begin
 		rightDelta:= paddleSpeed
 end
 
-function LeftPaddleInBounds()
+func LeftPaddleInBounds()
 begin
 	return (leftDelta < 0 and leftPaddlePos >= paddleSpeed) or (leftDelta > 0 and leftPaddlePos <= screenHeight - paddleSpeed - paddleHeight)
 end
 
-function RightPaddleInBounds()
+func RightPaddleInBounds()
 begin
 	return (rightDelta < 0 and rightPaddlePos >= paddleSpeed) or (rightDelta > 0 and rightPaddlePos <= screenHeight - paddleSpeed - paddleHeight)
 end
 
-function IsLeftPaddleBallCollision()
+func IsLeftPaddleBallCollision()
 begin
 	return ballXPos <= paddleWidth and 
 		ballYPos + ballSize > leftPaddlePos and
 		ballYPos < leftPaddlePos + paddleHeight
 end
 
-function IsRightPaddleBallCollision()
+func IsRightPaddleBallCollision()
 begin
 	return ballXPos >= screenWidth - paddleWidth - ballSize and 
 		ballYPos + ballSize > rightPaddlePos and
 		ballYPos < rightPaddlePos + paddleHeight
 end
 
-function IsBallTopWallCollision()
+func IsBallTopWallCollision()
 begin
 	return ballYPos <= 0
 end
 
-function IsBallBottomWallCollision()
+func IsBallBottomWallCollision()
 begin
 	return ballYPos >= screenHeight - ballSize
 end
 
-function IsBallLeftWallCollision()
+func IsBallLeftWallCollision()
 begin
 	return ballXPos <= 0
 end
 
-function IsBallRightWallCollision()
+func IsBallRightWallCollision()
 begin
 	return ballXPos >= screenWidth - ballSize
 end
 
-function UpdateState()
+func UpdateState()
 begin
 	if (IsBallLeftWallCollision())
 		return 2
@@ -97,7 +97,7 @@ begin
 	return 0
 end
 
-function DrawScene()
+func DrawScene()
 begin
 	ClearScreen()
 	DrawRectangle(0, leftPaddlePos,paddleWidth,paddleHeight,"red")
@@ -109,7 +109,7 @@ begin
 	DrawText("Player 2: " + ToString(player2Score), 300, 30, "white", "normal 20px Calibri")
 end
 
-function ResetPosition()
+func ResetPosition()
 begin
 	leftPaddlePos := 0
 	leftDelta := 0

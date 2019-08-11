@@ -25,7 +25,7 @@ namespace WhyNotLang.Interpreter.Tests
         public async Task ExecutesFunctionDeclarationWithoutParamsAndEmptyBody()
         {
             _executor.Initialise(@"
-                function foo()
+                func foo()
                 begin
                 end                
             ");
@@ -44,7 +44,7 @@ namespace WhyNotLang.Interpreter.Tests
         public async Task ExecutesFunctionDeclarationWith3ParameterAndBodySet()
         {
             _executor.Initialise(@"
-                function foo(abc,d,e)
+                func foo(abc,d,e)
                 begin
                     x := 1
                     var y := 2

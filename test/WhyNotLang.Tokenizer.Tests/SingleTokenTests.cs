@@ -18,7 +18,7 @@ namespace WhyNotLang.Tokenizer.Tests
         [InlineData("if", TokenType.If)]
         [InlineData("else", TokenType.Else)]
         [InlineData("while", TokenType.While)]
-        [InlineData("function", TokenType.Function)]
+        [InlineData("func", TokenType.Function)]
         [InlineData("return", TokenType.Return)]
         [InlineData(",", TokenType.Comma)]
         [InlineData("(", TokenType.LeftParen)]
