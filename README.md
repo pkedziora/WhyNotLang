@@ -5,6 +5,9 @@ Programming language and interpreter created for fun
 ## Online Playground
 [https://whynotlang.kedziora.dev/](https://whynotlang.kedziora.dev/)
 
+## Syntax Reference
+[Reference](REFERENCE.md)
+
 ## Implementation
 * Core (C#, .NET Standard 2.0)
     * Tokenizer
