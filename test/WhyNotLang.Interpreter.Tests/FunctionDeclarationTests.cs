@@ -59,7 +59,7 @@ namespace WhyNotLang.Interpreter.Tests
                 new List<Token>() { new Token(TokenType.Identifier, "abc"), new Token(TokenType.Identifier, "d"), new Token(TokenType.Identifier, "e") },
                 new BlockStatement(new List<IStatement>
                 {
-                    TestHelpers.GetVariableAssignementStatement("x", TestHelpers.GetValueExpression(1)),
+                    TestHelpers.GetVariableAssignmentStatement("x", TestHelpers.GetValueExpression(1)),
                     TestHelpers.GetVariableDeclarationStatement("y", TestHelpers.GetValueExpression(2)),
                     TestHelpers.GetVariableDeclarationStatement("abc", TestHelpers.GetBinaryExpression(
                         TestHelpers.GetBinaryExpression(2, "+", 2), "*", 3))

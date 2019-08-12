@@ -16,12 +16,12 @@ namespace WhyNotLang.Interpreter.Evaluators
 
         public async Task<ExpressionValue> Eval(IExpression expression)
         {
-            if (expression.Type != ExpressionType.Unary)
+            var unaryExpression = expression as UnaryExpression;
+            if (unaryExpression == null || expression.Type != ExpressionType.Unary)
             {
                 throw new WhyNotLangException("UnaryExpression expected");
             }
 
-            var unaryExpression = expression as UnaryExpression;
             var innerExpressionValue = await _mainEvaluator.Eval(unaryExpression.Inner);
             var result =
                 CalculateValue(unaryExpression.Operator, innerExpressionValue);

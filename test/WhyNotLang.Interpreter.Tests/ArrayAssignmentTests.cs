@@ -20,7 +20,7 @@ namespace WhyNotLang.Interpreter.Tests
         }
 
         [Fact]
-        public async Task ExecutesArrayAssignementWithNumberExpression()
+        public async Task ExecutesArrayAssignmentWithNumberExpression()
         {
             _executor.Initialise(@"
                 var x[10]
@@ -35,7 +35,7 @@ namespace WhyNotLang.Interpreter.Tests
         }
 
         [Fact]
-        public async Task Executes2ArrayAssignementsWithComplexExpressions()
+        public async Task Executes2ArrayAssignmentsWithComplexExpressions()
         {
             _executor.Initialise(@"
                 var x[10]
@@ -53,7 +53,7 @@ namespace WhyNotLang.Interpreter.Tests
         }
 
         [Fact]
-        public async Task ThrowsDuringArrayAssignementWhenUndeclared()
+        public async Task ThrowsDuringArrayAssignmentWhenUndeclared()
         {
             _executor.Initialise(@"
                 x[0] := 2
@@ -63,7 +63,7 @@ namespace WhyNotLang.Interpreter.Tests
         }
 
         [Fact]
-        public async Task ThrowsDuringArrayAssignementWhenOutOfRange()
+        public async Task ThrowsDuringArrayAssignmentWhenOutOfRange()
         {
             _executor.Initialise(@"
                 var x[10]

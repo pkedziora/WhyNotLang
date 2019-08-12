@@ -20,10 +20,10 @@ namespace WhyNotLang.Web.Components
         [Inject] LocalStorage LocalStorage { get; set; }
         [Parameter] public string SelectedSample { get; set; } = "";
 
-        public string programCode { get; set; }
-        protected string lastSavedKey = "LastSaved";
-        protected TextIO textIO { get; set; }
-        protected bool isRunning { get; set; } = false;
+        public string ProgramCode { get; set; }
+        protected string LastSavedKey = "LastSaved";
+        protected TextIO TextIO { get; set; }
+        protected bool IsRunning { get; set; } = false;
         protected List<string> CodeSamples { get; set; } = new List<string>();
         private readonly string _localStorageKey = "customProgram";
 
@@ -33,22 +33,15 @@ namespace WhyNotLang.Web.Components
             var fromStorage = await LocalStorage.GetItem<string>(_localStorageKey);
             if (string.IsNullOrWhiteSpace(SelectedSample))
             {
-                if (!string.IsNullOrEmpty(fromStorage))
-                {
-                    SelectedSample = lastSavedKey;
-                }
-                else
-                {
-                    SelectedSample = "Pong";
-                }
+                SelectedSample = string.IsNullOrEmpty(fromStorage) ? "Pong" : LastSavedKey;
             }
 
-            programCode = await ReadSample(SelectedSample);
+            ProgramCode = await ReadSample(SelectedSample);
         }
 
         protected async Task Save()
         {
-            await LocalStorage.SetItem(_localStorageKey, programCode);
+            await LocalStorage.SetItem(_localStorageKey, ProgramCode);
         }
 
         protected override async Task OnAfterRenderAsync()
@@ -59,52 +52,44 @@ namespace WhyNotLang.Web.Components
         protected async Task OnSampleSelected(UIChangeEventArgs e)
         {
             var sampleName = e.Value.ToString();
-            programCode = await ReadSample(sampleName);
+            ProgramCode = await ReadSample(sampleName);
             UriHelper.NavigateTo($"/sample/{sampleName.ToLower()}");
         }
 
         protected void Stop()
         {
             Executor.Stop();
-            isRunning = false;
+            IsRunning = false;
         }
 
         protected async Task Execute()
         {
-            textIO.Clear();
+            TextIO.Clear();
             Executor.ProgramState.Clear();
-            isRunning = true;
+            IsRunning = true;
             try
             {
-                Executor.Initialise(programCode);
+                Executor.Initialise(ProgramCode);
 
                 await Executor.ExecuteAll();
             }
             catch (WhyNotLangException ex)
             {
-                string msg;
-                if (ex.LineNumber > 0)
-                {
-                    msg = $"[ERROR] Line {ex.LineNumber}: {ex.Message}";
-                }
-                else
-                {
-                    msg = $"[ERROR] {ex.Message}";
-                }
+                var msg = ex.LineNumber > 0 ? $"[ERROR] Line {ex.LineNumber}: {ex.Message}" : $"[ERROR] {ex.Message}";
 
-                textIO.WriteLine(msg);
+                TextIO.WriteLine(msg);
                 Console.WriteLine(msg);
             }
 
-            isRunning = false;
+            IsRunning = false;
         }
 
         private async Task<string> ReadSample(string sampleName)
         {
             var fromStorage = await LocalStorage.GetItem<string>(_localStorageKey);
-            if (sampleName.Equals(lastSavedKey, StringComparison.OrdinalIgnoreCase))
+            if (sampleName.Equals(LastSavedKey, StringComparison.OrdinalIgnoreCase))
             {
-                SelectedSample = lastSavedKey;
+                SelectedSample = LastSavedKey;
                 return fromStorage ?? "";
             }
 

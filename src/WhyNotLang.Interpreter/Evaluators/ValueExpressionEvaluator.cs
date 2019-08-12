@@ -17,12 +17,12 @@ namespace WhyNotLang.Interpreter.Evaluators
 
         public async Task<ExpressionValue> Eval(IExpression expression)
         {
-            if (expression.Type != ExpressionType.Value)
+            var valueExpression = expression as ValueExpression;
+            if (valueExpression == null || expression.Type != ExpressionType.Value)
             {
                 throw new WhyNotLangException("ValueExpression expected");
             }
 
-            var valueExpression = expression as ValueExpression;
             var token = valueExpression.Token;
             switch (valueExpression.Token.Type)
             {

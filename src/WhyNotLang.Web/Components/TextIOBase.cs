@@ -15,9 +15,9 @@ namespace WhyNotLang.Web.Components
         [Inject] IJSRuntime JsRuntime { get; set; }
 
         protected string Output { get; set; } = "";
-        protected string inputBuffer { get; set; } = "";
-        protected string inputValue { get; set; } = "";
-        protected bool inputDisabled { get; set; } = true;
+        protected string InputBuffer { get; set; } = "";
+        protected string InputValue { get; set; } = "";
+        protected bool InputDisabled { get; set; } = true;
 
         protected override void OnAfterRender()
         {
@@ -55,18 +55,18 @@ namespace WhyNotLang.Web.Components
                async arguments =>
                {
                    await JsRuntime.InvokeAsync<bool>("WhyNotLang.Text.setFocus", "input");
-                   inputDisabled = false;
+                   InputDisabled = false;
                    this.StateHasChanged();
-                   while (!Executor.Stopped && inputValue == string.Empty)
+                   while (!Executor.Stopped && InputValue == string.Empty)
                    {
 
                        await Task.Delay(100);
                    }
 
-                   var value = new ExpressionValue(inputValue, ExpressionValueTypes.String);
-                   inputValue = "";
-                   inputBuffer = "";
-                   inputDisabled = true;
+                   var value = new ExpressionValue(InputValue, ExpressionValueTypes.String);
+                   InputValue = "";
+                   InputBuffer = "";
+                   InputDisabled = true;
 
                    this.StateHasChanged();
                    return value;
@@ -89,9 +89,9 @@ namespace WhyNotLang.Web.Components
         {
             if (e.Key == "Enter")
             {
-                inputValue = inputBuffer;
-                Output += inputBuffer + "\n";
-                inputBuffer = "";
+                InputValue = InputBuffer;
+                Output += InputBuffer + "\n";
+                InputBuffer = "";
             }
         }
     }

@@ -10,9 +10,9 @@ namespace WhyNotLang.Parser
         private int _currentIndex;
         private readonly ITokenizer _tokenizer;
 
-        public TokenIterator(ITokenizer tokenzer)
+        public TokenIterator(ITokenizer tokenizer)
         {
-            _tokenizer = tokenzer;
+            _tokenizer = tokenizer;
         }
 
         public void InitTokens(string str)

@@ -31,7 +31,7 @@ namespace WhyNotLang.Cmd
             {
                 if (args.Length != 1)
                 {
-                    Console.WriteLine("Plese provide path to the program to execute");
+                    Console.WriteLine("Please provide path to the program to execute");
                     return;
                 }
 
@@ -46,14 +46,9 @@ namespace WhyNotLang.Cmd
             }
             catch (WhyNotLangException ex)
             {
-                if (ex.LineNumber > 0)
-                {
-                    Console.WriteLine($"[ERROR] Line {ex.LineNumber}: {ex.Message}");
-                }
-                else
-                {
-                    Console.WriteLine($"[ERROR] {ex.Message}");
-                }
+                Console.WriteLine(ex.LineNumber > 0
+                    ? $"[ERROR] Line {ex.LineNumber}: {ex.Message}"
+                    : $"[ERROR] {ex.Message}");
             }
 
             if (System.Diagnostics.Debugger.IsAttached)

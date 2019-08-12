@@ -20,7 +20,7 @@ namespace WhyNotLang.Interpreter.Tests
         }
 
         [Fact]
-        public async Task ExecutesVariableAssignementWithNumberExpression()
+        public async Task ExecutesVariableAssignmentWithNumberExpression()
         {
             _executor.Initialise(@"
                 var x := 1
@@ -53,7 +53,7 @@ namespace WhyNotLang.Interpreter.Tests
         }
 
         [Fact]
-        public async Task ThrowsDuringVariableAssignementWhenUndeclared()
+        public async Task ThrowsDuringVariableAssignmentWhenUndeclared()
         {
             _executor.Initialise(@"
                 x := 2
@@ -63,7 +63,7 @@ namespace WhyNotLang.Interpreter.Tests
         }
 
         [Fact]
-        public async Task ExecutesGlobalVariableAssignementWithNumberExpression()
+        public async Task ExecutesGlobalVariableAssignmentWithNumberExpression()
         {
             _executor.Initialise(@"
                 global x := 1
@@ -80,7 +80,7 @@ namespace WhyNotLang.Interpreter.Tests
         }
 
         [Fact]
-        public async Task LocalVariableAssignementHidesGlobal()
+        public async Task LocalVariableAssignmentHidesGlobal()
         {
             _executor.Initialise(@"
                 global x := 1

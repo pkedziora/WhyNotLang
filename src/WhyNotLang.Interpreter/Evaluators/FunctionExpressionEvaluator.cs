@@ -20,12 +20,12 @@ namespace WhyNotLang.Interpreter.Evaluators
 
         public async Task<ExpressionValue> Eval(IExpression expression)
         {
-            if (expression.Type != ExpressionType.Function)
+            var functionExpression = expression as FunctionExpression;
+            if (functionExpression == null || expression.Type != ExpressionType.Function)
             {
                 throw new WhyNotLangException("FunctionExpression expected");
             }
 
-            var functionExpression = expression as FunctionExpression;
             var functionDeclaration = _mainExecutor.ProgramState.GetFunction(functionExpression.Name.Value);
             var argumentsValues = await EvaluateArguments(functionExpression.Parameters.Where(p => p.Type != ExpressionType.Empty).ToList());
 
@@ -61,7 +61,7 @@ namespace WhyNotLang.Interpreter.Evaluators
             foreach (var parameter in arguments)
             {
                 var valueExpression = parameter as ValueExpression;
-                var isArray = parameter.Type == ExpressionType.Value &&
+                var isArray =  valueExpression != null && parameter.Type == ExpressionType.Value &&
                               valueExpression.Token.Type == TokenType.Identifier &&
                               _mainExecutor.ProgramState.IsArrayDefined(valueExpression.Token.Value);
                 result.Add(isArray

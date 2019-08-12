@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using WhyNotLang.Interpreter.Evaluators;
 using WhyNotLang.Interpreter.Evaluators.ExpressionValues;
 using WhyNotLang.Parser.Statements;
+using WhyNotLang.Tokenizer;
 
 namespace WhyNotLang.Interpreter.StatementExecutors
 {
@@ -20,18 +21,13 @@ namespace WhyNotLang.Interpreter.StatementExecutors
         public async Task<ExpressionValue> Execute()
         {
             var ifStatement = _mainExecutor.CurrentContext.StatementIterator.CurrentStatement as IfStatement;
+            if (ifStatement == null)
+            {
+                throw new WhyNotLangException("If statement expected");
+            }
+
             var conditionValue = await _expressionEvaluator.Eval(ifStatement.Condition);
-
-            IStatement statementToExecute;
-            if ((int)conditionValue.Value != 0)
-            {
-                statementToExecute = ifStatement.Body;
-            }
-            else
-            {
-                statementToExecute = ifStatement.ElseStatement;
-            }
-
+            var statementToExecute = (int)conditionValue.Value != 0 ? ifStatement.Body : ifStatement.ElseStatement;
 
             _mainExecutor.CreateNewContext(new List<IStatement> { statementToExecute });
             var value = await _mainExecutor.ExecuteAll();

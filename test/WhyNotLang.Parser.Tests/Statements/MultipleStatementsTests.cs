@@ -70,7 +70,7 @@ namespace WhyNotLang.Parser.Tests.Statements
             {
                 TestHelpers.GetVariableDeclarationStatement("x",
                     TestHelpers.GetBinaryExpression(1, "+", 2)),
-                TestHelpers.GetVariableAssignementStatement( "y",
+                TestHelpers.GetVariableAssignmentStatement( "y",
                     TestHelpers.GetBinaryExpression(1, "*", 2))
             };
 
@@ -87,9 +87,9 @@ namespace WhyNotLang.Parser.Tests.Statements
                             y := (1 * (2 + 3))");
             var expected = new List<IStatement>
             {
-                TestHelpers.GetVariableAssignementStatement("x",
+                TestHelpers.GetVariableAssignmentStatement("x",
                     TestHelpers.GetBinaryExpression(TestHelpers.GetBinaryExpression(1, "+", 2), "*", 3)),
-                TestHelpers.GetVariableAssignementStatement( "y",
+                TestHelpers.GetVariableAssignmentStatement( "y",
                     TestHelpers.GetBinaryExpression(1, "*", TestHelpers.GetBinaryExpression(2, "+", 3)))
             };
 
@@ -106,7 +106,7 @@ namespace WhyNotLang.Parser.Tests.Statements
                             var y := (1 * (2 + 3))");
             var expected = new List<IStatement>
             {
-                TestHelpers.GetVariableAssignementStatement("x",
+                TestHelpers.GetVariableAssignmentStatement("x",
                     TestHelpers.GetBinaryExpression(TestHelpers.GetBinaryExpression(1, "+", 2), "*", 3)),
                 TestHelpers.GetVariableDeclarationStatement("y",
                     TestHelpers.GetBinaryExpression(1, "*", TestHelpers.GetBinaryExpression(2, "+", 3)))
@@ -136,8 +136,8 @@ namespace WhyNotLang.Parser.Tests.Statements
 
             //If
             var expectedIfCondition = TestHelpers.GetBinaryExpressionWithIdentifiers("x", "<", "y");
-            var expectedIfBody = TestHelpers.GetVariableAssignementStatement("x", TestHelpers.GetValueExpression(1));
-            var expectedElse = TestHelpers.GetVariableAssignementStatement("y", TestHelpers.GetValueExpression(2));
+            var expectedIfBody = TestHelpers.GetVariableAssignmentStatement("x", TestHelpers.GetValueExpression(1));
+            var expectedElse = TestHelpers.GetVariableAssignmentStatement("y", TestHelpers.GetValueExpression(2));
             var expectedIfStatement = new IfStatement(
                 expectedIfCondition,
                 expectedIfBody,
@@ -147,8 +147,8 @@ namespace WhyNotLang.Parser.Tests.Statements
             var expectedCondition = TestHelpers.GetBinaryExpressionWithIdentifiers("x", "<", "y");
             var expectedBody = new BlockStatement(new List<IStatement>()
             {
-                TestHelpers.GetVariableAssignementStatement("x", TestHelpers.GetBinaryExpressionWithIdentifiers("x", "+", 1)),
-                TestHelpers.GetVariableAssignementStatement("y", TestHelpers.GetBinaryExpressionWithIdentifiers("y", "-", 2))
+                TestHelpers.GetVariableAssignmentStatement("x", TestHelpers.GetBinaryExpressionWithIdentifiers("x", "+", 1)),
+                TestHelpers.GetVariableAssignmentStatement("y", TestHelpers.GetBinaryExpressionWithIdentifiers("y", "-", 2))
             });
             var expectedWhileStatement = new WhileStatement(
                 expectedCondition,
@@ -165,7 +165,7 @@ namespace WhyNotLang.Parser.Tests.Statements
 
             var expected = new List<IStatement>
             {
-                TestHelpers.GetVariableAssignementStatement("x",
+                TestHelpers.GetVariableAssignmentStatement("x",
                     TestHelpers.GetBinaryExpression(TestHelpers.GetBinaryExpression(1, "+", 2), "*", 3)),
                 expectedIfStatement,
                 expectedWhileStatement,

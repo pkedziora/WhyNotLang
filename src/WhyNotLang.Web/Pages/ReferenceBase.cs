@@ -13,7 +13,7 @@ namespace WhyNotLang.Web.Pages
         protected override void OnInit()
         {
             var reference = SampleReader.ReadReference();
-            var html = Markdig.Markdown.ToHtml(reference, new MarkdownPipelineBuilder().UseAdvancedExtensions().Build());
+            var html = Markdown.ToHtml(reference, new MarkdownPipelineBuilder().UseAdvancedExtensions().Build());
             Content = new MarkupString(html);
         }
     }

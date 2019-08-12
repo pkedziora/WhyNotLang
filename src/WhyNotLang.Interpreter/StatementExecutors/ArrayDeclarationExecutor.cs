@@ -2,6 +2,7 @@ using System.Threading.Tasks;
 using WhyNotLang.Interpreter.Evaluators;
 using WhyNotLang.Interpreter.Evaluators.ExpressionValues;
 using WhyNotLang.Parser.Statements;
+using WhyNotLang.Tokenizer;
 
 namespace WhyNotLang.Interpreter.StatementExecutors
 {
@@ -19,6 +20,11 @@ namespace WhyNotLang.Interpreter.StatementExecutors
         public async Task<ExpressionValue> Execute()
         {
             var arrayDeclaration = _mainExecutor.CurrentContext.StatementIterator.CurrentStatement as ArrayDeclarationStatement;
+            if (arrayDeclaration == null)
+            {
+                throw new WhyNotLangException("Array declaration expected");
+            }
+
             var arrayName = arrayDeclaration.ArrayName.Value;
             var arraySize = await _expressionEvaluator.Eval(arrayDeclaration.IndexExpression);
 

@@ -40,7 +40,7 @@ namespace WhyNotLang.Parser.Statements
 
             return Name.Equals(statement.Name) &&
                    Parameters.SequenceEqual(statement.Parameters) &&
-                   (Body?.Equals(statement?.Body) ?? true) &&
+                   (Body?.Equals(statement.Body) ?? true) &&
                    IsBuiltin.Equals(statement.IsBuiltin) &&
                    Type == statement.Type;
         }

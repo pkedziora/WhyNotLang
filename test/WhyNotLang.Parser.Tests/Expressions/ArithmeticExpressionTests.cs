@@ -7,10 +7,10 @@ using Xunit;
 
 namespace WhyNotLang.Parser.Tests.Expressions
 {
-    public class ArithmeticsExpressionTests
+    public class ArithmeticExpressionTests
     {
         private readonly IExpressionParser _expressionParser;
-        public ArithmeticsExpressionTests()
+        public ArithmeticExpressionTests()
         {
             var serviceProvider = IoC.BuildServiceProvider();
             _expressionParser = serviceProvider.GetService<IExpressionParser>();

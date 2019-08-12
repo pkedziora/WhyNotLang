@@ -4,29 +4,29 @@
     <div class="column left">
         <div class="dropdownContainer">
             <label for="selectProgram">Program: </label>
-            <select id="selectProgram" disabled="@isRunning" @onchange="OnSampleSelected">
-                <option selected="@(lastSavedKey == SelectedSample)" value="@lastSavedKey">@lastSavedKey</option>
+            <select id="selectProgram" disabled="@IsRunning" @onchange="OnSampleSelected">
+                <option selected="@(LastSavedKey == SelectedSample)" value="@LastSavedKey">@LastSavedKey</option>
                 @foreach (var sample in CodeSamples)
                 {
                     <option selected="@(sample == SelectedSample)" value=@sample>@sample</option>
                 }
             </select>
         </div>
-        <button class="btn btn-secondary btnSave" disabled="@isRunning" @onclick="@Save">Save</button>
+        <button class="btn btn-secondary btnSave" disabled="@IsRunning" @onclick="@Save">Save</button>
         <div class="buttonContainer">
-            <button class="btn btn-success" disabled="@isRunning" @onclick="Execute">Execute</button>
-            <button class="btn btn-danger" disabled="@(!isRunning)" @onclick="Stop">Stop</button>
+            <button class="btn btn-success" disabled="@IsRunning" @onclick="Execute">Execute</button>
+            <button class="btn btn-danger" disabled="@(!IsRunning)" @onclick="Stop">Stop</button>
         </div>
 
-        <textarea id="txtProgramCode" @bind="@programCode" readonly="@isRunning" class="form-control" rows="13"></textarea>
+        <textarea id="txtProgramCode" @bind="@ProgramCode" readonly="@IsRunning" class="form-control" rows="13"></textarea>
 
     </div>
     <div class="column right">
         <h5 class="outputHead">Output</h5>
         <div class="textContainer">
-            <TextIO @ref="textIO"></TextIO>
+            <TextIO @ref="TextIO"></TextIO>
         </div>
-        <div class="graphicsContainer">
+        <div>
             <CanvasIO></CanvasIO>
         </div>
     </div>

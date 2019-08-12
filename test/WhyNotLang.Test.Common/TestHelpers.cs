@@ -45,21 +45,9 @@ namespace WhyNotLang.Test.Common
             return new BinaryExpression(left, GetToken(op), right);
         }
 
-        public static BinaryExpression GetBinaryExpressionWithIdentifiers(IExpression left, string op, string b)
-        {
-            var right = new ValueExpression(new Token(TokenType.Identifier, b));
-            return new BinaryExpression(left, GetToken(op), right);
-        }
-
         public static BinaryExpression GetBinaryExpression(int a, string op, IExpression right)
         {
             var left = new ValueExpression(new Token(TokenType.Number, a.ToString()));
-            return new BinaryExpression(left, GetToken(op), right);
-        }
-
-        public static BinaryExpression GetBinaryExpressionWithIdentifiers(string a, string op, IExpression right)
-        {
-            var left = new ValueExpression(new Token(TokenType.Identifier, a));
             return new BinaryExpression(left, GetToken(op), right);
         }
 
@@ -78,11 +66,6 @@ namespace WhyNotLang.Test.Common
             return new UnaryExpression(GetValueExpression(identifier), GetToken(op));
         }
 
-        public static UnaryExpression GetUnaryExpressionWithIdentifier(string op, string identifier)
-        {
-            return new UnaryExpression(new ValueExpression(GetToken(identifier)), GetToken(op));
-        }
-
         public static ValueExpression GetValueExpression(int number)
         {
             return new ValueExpression(GetToken(number.ToString()));
@@ -93,17 +76,12 @@ namespace WhyNotLang.Test.Common
             return new ValueExpression(GetToken(identifier));
         }
 
-        public static ValueExpression GetValueExpressionAsString(string str)
-        {
-            return new ValueExpression(new Token(TokenType.String, str));
-        }
-
         public static UnaryExpression GetUnaryExpression(string op, IExpression inner)
         {
             return new UnaryExpression(inner, GetToken(op));
         }
 
-        public static VariableAssignmentStatement GetVariableAssignementStatement(string identifier, IExpression expression)
+        public static VariableAssignmentStatement GetVariableAssignmentStatement(string identifier, IExpression expression)
         {
             return new VariableAssignmentStatement(GetToken(identifier),
                 expression);

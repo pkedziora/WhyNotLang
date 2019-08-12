@@ -2,6 +2,7 @@ using System.Threading.Tasks;
 using WhyNotLang.Interpreter.Evaluators;
 using WhyNotLang.Interpreter.Evaluators.ExpressionValues;
 using WhyNotLang.Parser.Statements;
+using WhyNotLang.Tokenizer;
 
 namespace WhyNotLang.Interpreter.StatementExecutors
 {
@@ -19,6 +20,11 @@ namespace WhyNotLang.Interpreter.StatementExecutors
         public async Task<ExpressionValue> Execute()
         {
             var callStatement = _mainExecutor.CurrentContext.StatementIterator.CurrentStatement as FunctionCallStatement;
+            if (callStatement == null)
+            {
+                throw new WhyNotLangException("Function call expected");
+            }
+
             await _expressionEvaluator.Eval(callStatement.FunctionExpression);
 
             return ExpressionValue.Empty;

@@ -25,7 +25,7 @@ namespace WhyNotLang.Parser.Tests.Statements
                     x := x + 1");
 
             var expectedCondition = TestHelpers.GetBinaryExpressionWithIdentifiers("x", "<", "y");
-            var expectedBody = TestHelpers.GetVariableAssignementStatement("x", TestHelpers.GetBinaryExpressionWithIdentifiers("x", "+", 1));
+            var expectedBody = TestHelpers.GetVariableAssignmentStatement("x", TestHelpers.GetBinaryExpressionWithIdentifiers("x", "+", 1));
 
             var expected = new WhileStatement(
                expectedCondition,
@@ -49,8 +49,8 @@ namespace WhyNotLang.Parser.Tests.Statements
             var expectedCondition = TestHelpers.GetBinaryExpressionWithIdentifiers("x", "<", "y");
             var expectedBody = new BlockStatement(new List<IStatement>()
             {
-                TestHelpers.GetVariableAssignementStatement("x", TestHelpers.GetBinaryExpressionWithIdentifiers("x", "+", 1)),
-                TestHelpers.GetVariableAssignementStatement("y", TestHelpers.GetBinaryExpressionWithIdentifiers("y", "-", 2))
+                TestHelpers.GetVariableAssignmentStatement("x", TestHelpers.GetBinaryExpressionWithIdentifiers("x", "+", 1)),
+                TestHelpers.GetVariableAssignmentStatement("y", TestHelpers.GetBinaryExpressionWithIdentifiers("y", "-", 2))
             });
 
             var expected = new WhileStatement(
@@ -73,7 +73,7 @@ namespace WhyNotLang.Parser.Tests.Statements
             var right = TestHelpers.GetUnaryExpression("!", TestHelpers.GetBinaryExpression(4, ">", 3));
             var expectedCondition = TestHelpers.GetBinaryExpression(left, "and", right);
 
-            var expectedBody = TestHelpers.GetVariableAssignementStatement("x", TestHelpers.GetValueExpression(1));
+            var expectedBody = TestHelpers.GetVariableAssignmentStatement("x", TestHelpers.GetValueExpression(1));
 
             var expected = new WhileStatement(
                 expectedCondition,

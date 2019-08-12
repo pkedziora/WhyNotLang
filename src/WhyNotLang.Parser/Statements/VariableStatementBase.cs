@@ -13,7 +13,7 @@ namespace WhyNotLang.Parser.Statements
 
         public bool IsGlobal { get; }
 
-        public VariableStatementBase(Token variableName, IExpression expression, bool isGlobal = false, int lineNumber = 0)
+        protected VariableStatementBase(Token variableName, IExpression expression, bool isGlobal = false, int lineNumber = 0)
         {
             VariableName = variableName;
             Expression = expression;

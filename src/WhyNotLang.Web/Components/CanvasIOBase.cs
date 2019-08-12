@@ -101,7 +101,7 @@ namespace WhyNotLang.Web.Components
             if (executor.ProgramState.IsFunctionDefined(functionName))
             {
                 var functionStatement = new FunctionCallStatement(
-                    new Parser.Expressions.FunctionExpression(new Token(TokenType.Identifier, functionName),
+                    new FunctionExpression(new Token(TokenType.Identifier, functionName),
                     new List<IExpression>()
                     {
                         new ValueExpression(new Token(TokenType.String, key))

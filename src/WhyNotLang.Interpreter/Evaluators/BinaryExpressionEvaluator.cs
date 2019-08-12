@@ -16,12 +16,12 @@ namespace WhyNotLang.Interpreter.Evaluators
 
         public async Task<ExpressionValue> Eval(IExpression expression)
         {
-            if (expression.Type != ExpressionType.Binary)
+            var binaryExpression = expression as BinaryExpression;
+            if (binaryExpression == null || expression.Type != ExpressionType.Binary)
             {
                 throw new WhyNotLangException("BinaryExpression expected");
             }
 
-            var binaryExpression = expression as BinaryExpression;
             var leftExpressionValue = await _mainEvaluator.Eval(binaryExpression.Left);
             var rightExpressionValue = await _mainEvaluator.Eval(binaryExpression.Right);
             var result =

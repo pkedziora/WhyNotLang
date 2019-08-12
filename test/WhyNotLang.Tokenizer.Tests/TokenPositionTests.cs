@@ -5,8 +5,8 @@ namespace WhyNotLang.Tokenizer.Tests
 {
     public class TokenPositionTests
     {
-        private readonly Tokenizer _tokenizer;
-        private readonly ITokenFactory _tokenFactory;
+        private Tokenizer _tokenizer;
+        private ITokenFactory _tokenFactory;
 
         public TokenPositionTests()
         {
@@ -64,7 +64,7 @@ end";
     {
         public bool Equals(Token x, Token y)
         {
-            return x.Equals(y) && x.LineNumber == y.LineNumber;
+            return y != null && x != null && x.Equals(y) && x.LineNumber == y.LineNumber;
         }
 
         public int GetHashCode(Token obj)

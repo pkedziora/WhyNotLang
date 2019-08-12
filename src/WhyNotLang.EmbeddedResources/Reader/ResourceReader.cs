@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -14,7 +15,7 @@ namespace WhyNotLang.EmbeddedResources.Reader
 
         public string ReadReference()
         {
-            return ReadResource($"WhyNotLang.EmbeddedResources.REFERENCE.md");
+            return ReadResource("WhyNotLang.EmbeddedResources.REFERENCE.md");
         }
 
         private string ReadResource(string resourceName)
@@ -28,7 +29,7 @@ namespace WhyNotLang.EmbeddedResources.Reader
             string contents;
             using (var stream = assembly.GetManifestResourceStream(resourceName))
             {
-                using (var reader = new StreamReader(stream))
+                using (var reader = new StreamReader(stream ?? throw new InvalidOperationException()))
                 {
                     contents = reader.ReadToEnd();
                 }

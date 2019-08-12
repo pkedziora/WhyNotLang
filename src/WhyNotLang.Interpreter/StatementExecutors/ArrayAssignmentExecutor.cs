@@ -19,14 +19,19 @@ namespace WhyNotLang.Interpreter.StatementExecutors
 
         public async Task<ExpressionValue> Execute()
         {
-            var arrayAssignement = _mainExecutor.CurrentContext.StatementIterator.CurrentStatement as ArrayAssignmentStatement;
-            var arrayName = arrayAssignement.ArrayName.Value;
-            var arrayIndexValue = await _expressionEvaluator.Eval(arrayAssignement.IndexExpression);
-            var arrayItemValue = await _expressionEvaluator.Eval(arrayAssignement.ValExpression);
+            var arrayAssignment = _mainExecutor.CurrentContext.StatementIterator.CurrentStatement as ArrayAssignmentStatement;
+            if (arrayAssignment == null)
+            {
+                throw new WhyNotLangException("Array assignment expected");
+            }
+
+            var arrayName = arrayAssignment.ArrayName.Value;
+            var arrayIndexValue = await _expressionEvaluator.Eval(arrayAssignment.IndexExpression);
+            var arrayItemValue = await _expressionEvaluator.Eval(arrayAssignment.ValExpression);
 
             if (arrayIndexValue.Type != ExpressionValueTypes.Number)
             {
-                throw new WhyNotLangException("Index needs to be a number", arrayAssignement.ArrayName.LineNumber);
+                throw new WhyNotLangException("Index needs to be a number", arrayAssignment.ArrayName.LineNumber);
             }
 
             _mainExecutor.ProgramState.AssignArrayItem(arrayName, (int)arrayIndexValue.Value, arrayItemValue);

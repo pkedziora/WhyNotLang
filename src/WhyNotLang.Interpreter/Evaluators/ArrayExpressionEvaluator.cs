@@ -19,12 +19,11 @@ namespace WhyNotLang.Interpreter.Evaluators
 
         public async Task<ExpressionValue> Eval(IExpression expression)
         {
-            if (expression.Type != ExpressionType.Array)
+            var arrayExpression = expression as ArrayExpression;
+            if (arrayExpression == null || expression.Type != ExpressionType.Array)
             {
                 throw new WhyNotLangException("ArrayExpression expected");
             }
-
-            var arrayExpression = expression as ArrayExpression;
 
             var indexExpression = await _mainEvaluator.Eval(arrayExpression.IndexExpression);
 

@@ -30,7 +30,7 @@ namespace WhyNotLang.Parser.Statements.Parsers
             _tokenIterator.GetNextToken();
             if (_tokenIterator.CurrentToken.Type != TokenType.Assign)
             {
-                throw new WhyNotLangException(":= expected. Variables need to be initialised with value", _tokenIterator.CurrentToken.LineNumber);
+                throw new WhyNotLangException(":= expected. Variables need to be initialized with value", _tokenIterator.CurrentToken.LineNumber);
             }
 
             _tokenIterator.GetNextToken();

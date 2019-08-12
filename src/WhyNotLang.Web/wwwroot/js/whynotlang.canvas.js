@@ -28,24 +28,24 @@ WhyNotLang.Canvas = WhyNotLang.Canvas || (function () {
         ctx.fillStyle = oldFillStyle;
     }
 
-    function HandleKeyDown(event) {
+    function handleKeyDown(event) {
         DotNet.invokeMethodAsync('WhyNotLang.Web', 'OnKeyDown', event.key)
             .then(message => {
             });
     }
 
-    function HandleKeyUp(event) {
+    function handleKeyUp(event) {
         DotNet.invokeMethodAsync('WhyNotLang.Web', 'OnKeyUp', event.key)
             .then(message => {
             });
     }
 
     window.onkeydown = function (args) {
-        HandleKeyDown(args);
+        handleKeyDown(args);
     }
 
     window.onkeyup = function (args) {
-        HandleKeyUp(args);
+        handleKeyUp(args);
     }
 
     return {

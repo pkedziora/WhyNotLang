@@ -26,7 +26,7 @@ namespace WhyNotLang.Parser.Tests.Statements
                     x := 1");
 
             var expectedCondition = TestHelpers.GetBinaryExpressionWithIdentifiers("x", "<", "y");
-            var expectedBody = TestHelpers.GetVariableAssignementStatement("x", TestHelpers.GetValueExpression(1));
+            var expectedBody = TestHelpers.GetVariableAssignmentStatement("x", TestHelpers.GetValueExpression(1));
 
             var expected = new IfStatement(
                expectedCondition,
@@ -48,7 +48,7 @@ namespace WhyNotLang.Parser.Tests.Statements
             var right = TestHelpers.GetUnaryExpression("!", TestHelpers.GetBinaryExpression(4, ">", 3));
             var expectedCondition = TestHelpers.GetBinaryExpression(left, "and", right);
 
-            var expectedBody = TestHelpers.GetVariableAssignementStatement("x", TestHelpers.GetValueExpression(1));
+            var expectedBody = TestHelpers.GetVariableAssignmentStatement("x", TestHelpers.GetValueExpression(1));
 
             var expected = new IfStatement(
                 expectedCondition,
@@ -95,8 +95,8 @@ namespace WhyNotLang.Parser.Tests.Statements
                     y := 2");
 
             var expectedCondition = TestHelpers.GetBinaryExpressionWithIdentifiers("x", "<", "y");
-            var expectedBody = TestHelpers.GetVariableAssignementStatement("x", TestHelpers.GetValueExpression(1));
-            var expectedElse = TestHelpers.GetVariableAssignementStatement("y", TestHelpers.GetValueExpression(2));
+            var expectedBody = TestHelpers.GetVariableAssignmentStatement("x", TestHelpers.GetValueExpression(1));
+            var expectedElse = TestHelpers.GetVariableAssignmentStatement("y", TestHelpers.GetValueExpression(2));
 
             var expected = new IfStatement(
                 expectedCondition,
@@ -120,12 +120,12 @@ namespace WhyNotLang.Parser.Tests.Statements
                     z := (4)");
 
             var firstExpectedCondition = TestHelpers.GetBinaryExpressionWithIdentifiers("x", "<", "y");
-            var firstExpectedBody = TestHelpers.GetVariableAssignementStatement("x", TestHelpers.GetValueExpression(1));
+            var firstExpectedBody = TestHelpers.GetVariableAssignmentStatement("x", TestHelpers.GetValueExpression(1));
 
             var secondExpectedCondition = TestHelpers.GetBinaryExpressionWithIdentifiers("y", "==", "z");
-            var secondExpectedBody = TestHelpers.GetVariableAssignementStatement("y", TestHelpers.GetBinaryExpression(2, "*", 3));
+            var secondExpectedBody = TestHelpers.GetVariableAssignmentStatement("y", TestHelpers.GetBinaryExpression(2, "*", 3));
 
-            var thirdExpectedBody = TestHelpers.GetVariableAssignementStatement("z", TestHelpers.GetValueExpression(4));
+            var thirdExpectedBody = TestHelpers.GetVariableAssignmentStatement("z", TestHelpers.GetValueExpression(4));
 
             var expected = new IfStatement(
                 firstExpectedCondition,
@@ -152,17 +152,17 @@ namespace WhyNotLang.Parser.Tests.Statements
                     z := (4)");
 
             var firstExpectedCondition = TestHelpers.GetBinaryExpressionWithIdentifiers("x", "<", "y");
-            var firstExpectedBody = TestHelpers.GetVariableAssignementStatement("x", TestHelpers.GetValueExpression(1));
+            var firstExpectedBody = TestHelpers.GetVariableAssignmentStatement("x", TestHelpers.GetValueExpression(1));
 
             var secondExpectedCondition = TestHelpers.GetBinaryExpressionWithIdentifiers("y", "==", "z");
             var secondExpectedBody =
                 new BlockStatement(new List<IStatement>()
                 {
-                    TestHelpers.GetVariableAssignementStatement("y", TestHelpers.GetBinaryExpression(2, "*", 3)),
-                    TestHelpers.GetVariableAssignementStatement("ab", TestHelpers.GetBinaryExpressionWithIdentifiers("a", "*", "b"))
+                    TestHelpers.GetVariableAssignmentStatement("y", TestHelpers.GetBinaryExpression(2, "*", 3)),
+                    TestHelpers.GetVariableAssignmentStatement("ab", TestHelpers.GetBinaryExpressionWithIdentifiers("a", "*", "b"))
                 });
 
-            var thirdExpectedBody = TestHelpers.GetVariableAssignementStatement("z", TestHelpers.GetValueExpression(4));
+            var thirdExpectedBody = TestHelpers.GetVariableAssignmentStatement("z", TestHelpers.GetValueExpression(4));
 
             var expected = new IfStatement(
                 firstExpectedCondition,
@@ -187,8 +187,8 @@ namespace WhyNotLang.Parser.Tests.Statements
             var expectedCondition = TestHelpers.GetBinaryExpressionWithIdentifiers("x", "<", "y");
             var expectedBody = new BlockStatement(new List<IStatement>()
             {
-                TestHelpers.GetVariableAssignementStatement("x", TestHelpers.GetValueExpression(1)),
-                TestHelpers.GetVariableAssignementStatement("z", TestHelpers.GetValueExpression(2))
+                TestHelpers.GetVariableAssignmentStatement("x", TestHelpers.GetValueExpression(1)),
+                TestHelpers.GetVariableAssignmentStatement("z", TestHelpers.GetValueExpression(2))
             });
 
             var expected = new IfStatement(

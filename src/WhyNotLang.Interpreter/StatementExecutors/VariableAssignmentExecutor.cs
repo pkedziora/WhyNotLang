@@ -2,6 +2,7 @@ using System.Threading.Tasks;
 using WhyNotLang.Interpreter.Evaluators;
 using WhyNotLang.Interpreter.Evaluators.ExpressionValues;
 using WhyNotLang.Parser.Statements;
+using WhyNotLang.Tokenizer;
 
 namespace WhyNotLang.Interpreter.StatementExecutors
 {
@@ -19,6 +20,11 @@ namespace WhyNotLang.Interpreter.StatementExecutors
         public async Task<ExpressionValue> Execute()
         {
             var variableAssignment = _mainExecutor.CurrentContext.StatementIterator.CurrentStatement as VariableAssignmentStatement;
+            if (variableAssignment == null)
+            {
+                throw new WhyNotLangException("Variable assignment expected");
+            }
+
             var variableName = variableAssignment.VariableName.Value;
             var variableValue = await _expressionEvaluator.Eval(variableAssignment.Expression);
             _mainExecutor.ProgramState.AssignVariable(variableName, variableValue);

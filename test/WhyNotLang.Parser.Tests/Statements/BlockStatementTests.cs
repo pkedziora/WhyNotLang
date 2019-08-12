@@ -41,7 +41,7 @@ namespace WhyNotLang.Parser.Tests.Statements
 
             var expected = new BlockStatement(new List<IStatement>
             {
-                TestHelpers.GetVariableAssignementStatement("x", TestHelpers.GetValueExpression(1))
+                TestHelpers.GetVariableAssignmentStatement("x", TestHelpers.GetValueExpression(1))
             });
 
             var actual = _parser.ParseNext();
@@ -60,7 +60,7 @@ namespace WhyNotLang.Parser.Tests.Statements
 
             var expected = new BlockStatement(new List<IStatement>
             {
-                TestHelpers.GetVariableAssignementStatement("x", TestHelpers.GetValueExpression(1)),
+                TestHelpers.GetVariableAssignmentStatement("x", TestHelpers.GetValueExpression(1)),
                 TestHelpers.GetVariableDeclarationStatement("y", TestHelpers.GetValueExpression(2))
             });
 
@@ -81,7 +81,7 @@ namespace WhyNotLang.Parser.Tests.Statements
 
             var expected = new BlockStatement(new List<IStatement>
             {
-                TestHelpers.GetVariableAssignementStatement("x", TestHelpers.GetValueExpression(1)),
+                TestHelpers.GetVariableAssignmentStatement("x", TestHelpers.GetValueExpression(1)),
                 TestHelpers.GetVariableDeclarationStatement("y", TestHelpers.GetValueExpression(2)),
                 TestHelpers.GetVariableDeclarationStatement("abc", TestHelpers.GetBinaryExpression(
                     TestHelpers.GetBinaryExpression(2, "+", 2), "*", 3))
@@ -108,11 +108,11 @@ namespace WhyNotLang.Parser.Tests.Statements
 
             var expected = new BlockStatement(new List<IStatement>
             {
-                TestHelpers.GetVariableAssignementStatement("x", TestHelpers.GetValueExpression(1)),
+                TestHelpers.GetVariableAssignmentStatement("x", TestHelpers.GetValueExpression(1)),
                 TestHelpers.GetVariableDeclarationStatement("y", TestHelpers.GetValueExpression(2)),
                 new BlockStatement(new List<IStatement>()
                 {
-                    TestHelpers.GetVariableAssignementStatement("inner1", TestHelpers.GetValueExpression(100)),
+                    TestHelpers.GetVariableAssignmentStatement("inner1", TestHelpers.GetValueExpression(100)),
                     TestHelpers.GetVariableDeclarationStatement("inner2", TestHelpers.GetBinaryExpression(
                         TestHelpers.GetBinaryExpression(200, "+", 200), "*", 300))
                 }),

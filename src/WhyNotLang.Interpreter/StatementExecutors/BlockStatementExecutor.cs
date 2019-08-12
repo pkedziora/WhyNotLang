@@ -1,6 +1,7 @@
 using System.Threading.Tasks;
 using WhyNotLang.Interpreter.Evaluators.ExpressionValues;
 using WhyNotLang.Parser.Statements;
+using WhyNotLang.Tokenizer;
 
 namespace WhyNotLang.Interpreter.StatementExecutors
 {
@@ -16,6 +17,10 @@ namespace WhyNotLang.Interpreter.StatementExecutors
         public async Task<ExpressionValue> Execute()
         {
             var blockStatement = _mainExecutor.CurrentContext.StatementIterator.CurrentStatement as BlockStatement;
+            if (blockStatement == null)
+            {
+                throw new WhyNotLangException("Block expected");
+            }
 
             _mainExecutor.ProgramState.AddScope("Block");
             _mainExecutor.CreateNewContext(blockStatement.ChildStatements);
