@@ -23,7 +23,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WhyNotLang.Cmd", "src\WhyNo
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WhyNotLang.Web", "src\WhyNotLang.Web\WhyNotLang.Web.csproj", "{34FDFAAB-D8EF-4E4F-92F9-17E02779EC45}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WhyNotLang.Samples", "src\WhyNotLang.Samples\WhyNotLang.Samples.csproj", "{86CD535C-FBE6-43E2-9EB5-82A154921CD1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WhyNotLang.EmbeddedResources", "src\WhyNotLang.EmbeddedResources\WhyNotLang.EmbeddedResources.csproj", "{86CD535C-FBE6-43E2-9EB5-82A154921CD1}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

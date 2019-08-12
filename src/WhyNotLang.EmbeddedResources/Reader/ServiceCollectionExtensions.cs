@@ -1,12 +1,12 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 
-namespace WhyNotLang.Samples.Reader
+namespace WhyNotLang.EmbeddedResources.Reader
 {
     public static class ServiceCollectionExtensions
     {
         public static IServiceCollection AddSampleReader(this IServiceCollection serviceCollection)
         {
-            serviceCollection.AddSingleton<ISampleReader, SampleReader>();
+            serviceCollection.AddSingleton<IResourceReader, ResourceReader>();
             return serviceCollection;
         }
     }

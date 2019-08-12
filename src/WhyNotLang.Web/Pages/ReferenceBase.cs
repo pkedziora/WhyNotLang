@@ -4,13 +4,13 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using WhyNotLang.Samples.Reader;
+using WhyNotLang.EmbeddedResources.Reader;
 
 namespace WhyNotLang.Web.Pages
 {
     public class ReferenceBase : ComponentBase
     {
-        [Inject] ISampleReader SampleReader { get; set; }
+        [Inject] IResourceReader SampleReader { get; set; }
 
         public MarkupString Content { get; set; }
 

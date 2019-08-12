@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
 using WhyNotLang.Interpreter;
-using WhyNotLang.Samples.Reader;
+using WhyNotLang.EmbeddedResources.Reader;
 using WhyNotLang.Tokenizer;
 
 namespace WhyNotLang.Web.Components
@@ -13,7 +13,7 @@ namespace WhyNotLang.Web.Components
     public class EditorBase : ComponentBase
     {
         [Inject] IExecutor Executor { get; set; }
-        [Inject] ISampleReader SampleReader { get; set; }
+        [Inject] IResourceReader SampleReader { get; set; }
         [Inject] IJSRuntime JsRuntime { get; set; }
         [Inject] IUriHelper UriHelper { get; set; }
 

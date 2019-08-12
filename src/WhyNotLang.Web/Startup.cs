@@ -2,7 +2,7 @@ using Microsoft.AspNetCore.Components.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.JSInterop;
 using WhyNotLang.Interpreter;
-using WhyNotLang.Samples.Reader;
+using WhyNotLang.EmbeddedResources.Reader;
 
 namespace WhyNotLang.Web
 {

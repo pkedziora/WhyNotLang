@@ -3,18 +3,18 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 
-namespace WhyNotLang.Samples.Reader
+namespace WhyNotLang.EmbeddedResources.Reader
 {
-    public class SampleReader : ISampleReader
+    public class ResourceReader : IResourceReader
     {
         public string ReadSample(string sampleName)
         {
-            return ReadResource($"WhyNotLang.Samples.{sampleName}.wnl");
+            return ReadResource($"WhyNotLang.EmbeddedResources.{sampleName}.wnl");
         }
 
         public string ReadReference()
         {
-            return ReadResource($"WhyNotLang.Samples.REFERENCE.md");
+            return ReadResource($"WhyNotLang.EmbeddedResources.REFERENCE.md");
         }
 
         private string ReadResource(string resourceName)
@@ -24,7 +24,7 @@ namespace WhyNotLang.Samples.Reader
                 return string.Empty;
             }
 
-            var assembly = typeof(SampleReader).GetTypeInfo().Assembly;
+            var assembly = typeof(ResourceReader).GetTypeInfo().Assembly;
             string contents;
             using (var stream = assembly.GetManifestResourceStream(resourceName))
             {
@@ -51,7 +51,7 @@ namespace WhyNotLang.Samples.Reader
 
         public IList<string> GetSampleList()
         {
-            var assembly = typeof(SampleReader).GetTypeInfo().Assembly;
+            var assembly = typeof(ResourceReader).GetTypeInfo().Assembly;
             var assemblyName = assembly.GetName().Name;
                 return assembly
                     .GetManifestResourceNames()

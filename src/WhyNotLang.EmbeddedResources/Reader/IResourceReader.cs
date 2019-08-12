@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 
-namespace WhyNotLang.Samples.Reader
+namespace WhyNotLang.EmbeddedResources.Reader
 {
-    public interface ISampleReader
+    public interface IResourceReader
     {
         string ReadSample(string fileName);
         string ReadReference();

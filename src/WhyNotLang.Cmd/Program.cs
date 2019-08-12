@@ -3,7 +3,7 @@ using System.IO;
 using System.Threading.Tasks;
 using Microsoft.Extensions.DependencyInjection;
 using WhyNotLang.Interpreter;
-using WhyNotLang.Samples.Reader;
+using WhyNotLang.EmbeddedResources.Reader;
 using WhyNotLang.Tokenizer;
 
 namespace WhyNotLang.Cmd
@@ -11,7 +11,7 @@ namespace WhyNotLang.Cmd
     class Program
     {
         static IExecutor Executor;
-        static ISampleReader SampleReader;
+        static IResourceReader SampleReader;
 
         static Program()
         {
@@ -67,7 +67,7 @@ namespace WhyNotLang.Cmd
             var serviceProvider = IoC.BuildServiceProvider();
             serviceProvider.AddConsoleInputOutput();
             Executor = serviceProvider.GetService<IExecutor>();
-            SampleReader = serviceProvider.GetService<ISampleReader>();
+            SampleReader = serviceProvider.GetService<IResourceReader>();
         }
     }
 }

@@ -5,8 +5,8 @@
     </PropertyGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\WhyNotLang.EmbeddedResources\WhyNotLang.EmbeddedResources.csproj" />
       <ProjectReference Include="..\WhyNotLang.Parser\WhyNotLang.Parser.csproj" />
-      <ProjectReference Include="..\WhyNotLang.Samples\WhyNotLang.Samples.csproj" />
     </ItemGroup>
 
     <ItemGroup>

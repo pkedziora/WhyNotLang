@@ -6,7 +6,7 @@ using WhyNotLang.Interpreter.State;
 using WhyNotLang.Interpreter.StatementExecutors;
 using WhyNotLang.Parser;
 using WhyNotLang.Parser.Statements;
-using WhyNotLang.Samples.Reader;
+using WhyNotLang.EmbeddedResources.Reader;
 using WhyNotLang.Tokenizer;
 
 namespace WhyNotLang.Interpreter
