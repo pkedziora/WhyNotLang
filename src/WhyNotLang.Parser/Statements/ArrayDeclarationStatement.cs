@@ -10,7 +10,7 @@ namespace WhyNotLang.Parser.Statements
         public int LineNumber { get; }
         public StatementType Type => StatementType.ArrayDeclarationStatement;
         public bool IsGlobal { get; }
-        
+
         public ArrayDeclarationStatement(Token arrayName, IExpression indexExpression, bool isGlobal = false, int lineNumber = 0)
         {
             ArrayName = arrayName;
@@ -42,7 +42,7 @@ namespace WhyNotLang.Parser.Statements
                 hash = hash * 23 + IndexExpression.GetHashCode();
                 hash = hash * 23 + IsGlobal.GetHashCode();
                 hash = hash * 23 + Type.GetHashCode();
-                
+
                 return hash;
             }
         }

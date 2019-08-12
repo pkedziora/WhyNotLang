@@ -13,16 +13,16 @@ namespace WhyNotLang.Parser.Statements.Parsers
             _tokenIterator = tokenIterator;
             _parser = parser;
         }
-        
+
         public IStatement Parse()
         {
             if (_tokenIterator.CurrentToken.Type != TokenType.Function)
             {
                 throw new WhyNotLangException("function expected", _tokenIterator.CurrentToken.LineNumber);
             }
-            
+
             _tokenIterator.GetNextToken(); // Set current to function name
-            
+
             if (_tokenIterator.CurrentToken.Type != TokenType.Identifier)
             {
                 throw new WhyNotLangException("identifier expected", _tokenIterator.CurrentToken.LineNumber);
@@ -32,14 +32,14 @@ namespace WhyNotLang.Parser.Statements.Parsers
 
             _tokenIterator.GetNextToken(); // Set current to (
             var parameters = ParseParameters();
-            
+
             if (_tokenIterator.CurrentToken.Type != TokenType.Begin)
             {
                 throw new WhyNotLangException("begin expected", _tokenIterator.CurrentToken.LineNumber);
             }
-            
-            var body = (BlockStatement) _parser.ParseNext();
-            
+
+            var body = (BlockStatement)_parser.ParseNext();
+
             return new FunctionDeclarationStatement(name, parameters, body, name.LineNumber);
         }
 
@@ -58,7 +58,7 @@ namespace WhyNotLang.Parser.Statements.Parsers
                 {
                     throw new WhyNotLangException("identifier expected", _tokenIterator.CurrentToken.LineNumber);
                 }
-                
+
                 parameters.Add(_tokenIterator.CurrentToken);
                 _tokenIterator.GetNextToken();
                 if (_tokenIterator.CurrentToken.Type == TokenType.Comma)
@@ -66,7 +66,7 @@ namespace WhyNotLang.Parser.Statements.Parsers
                     _tokenIterator.GetNextToken(); // Swallow ,
                 }
             }
-            
+
             _tokenIterator.GetNextToken(); // Swallow )
 
             return parameters;

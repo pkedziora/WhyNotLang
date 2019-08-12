@@ -4,7 +4,7 @@ namespace WhyNotLang.Parser.Statements
     {
         public StatementType Type => StatementType.EmptyStatement;
         public int LineNumber => 0;
-        
+
         public override bool Equals(object obj)
         {
             var statement = obj as EmptyStatement;
@@ -22,7 +22,7 @@ namespace WhyNotLang.Parser.Statements
             {
                 int hash = 17;
                 hash = hash * 23 + Type.GetHashCode();
-                
+
                 return hash;
             }
         }

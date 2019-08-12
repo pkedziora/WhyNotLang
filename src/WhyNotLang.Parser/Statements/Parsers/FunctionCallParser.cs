@@ -13,7 +13,7 @@ namespace WhyNotLang.Parser.Statements.Parsers
             _tokenIterator = tokenIterator;
             _expressionParser = expressionParser;
         }
-        
+
         public IStatement Parse()
         {
             var lineNumber = _tokenIterator.CurrentToken.LineNumber;
@@ -21,8 +21,8 @@ namespace WhyNotLang.Parser.Statements.Parsers
             {
                 throw new WhyNotLangException("function call expected", lineNumber);
             }
-            
-            var functionExpression = (FunctionExpression) _expressionParser.ParseNextExpression();
+
+            var functionExpression = (FunctionExpression)_expressionParser.ParseNextExpression();
 
             return new FunctionCallStatement(functionExpression, lineNumber);
         }

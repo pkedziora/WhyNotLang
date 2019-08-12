@@ -36,11 +36,11 @@ namespace WhyNotLang.Interpreter
             var statements = _parser.ParseAll();
             CurrentContext.StatementIterator.InitStatements(statements);
         }
-        
+
         public async Task<ExpressionValue> ExecuteNext()
         {
-            var executor =  _statementExecutorFactory
-                                .CreateOrGetFromCache(CurrentContext.StatementIterator.CurrentStatement, 
+            var executor = _statementExecutorFactory
+                                .CreateOrGetFromCache(CurrentContext.StatementIterator.CurrentStatement,
                                     this);
             ExpressionValue value;
             try
@@ -65,9 +65,9 @@ namespace WhyNotLang.Interpreter
             {
                 return value;
             }
-            
+
             CurrentContext.StatementIterator.GetNextStatement();
-            
+
             return await Task.FromResult(ExpressionValue.Empty);
         }
 
@@ -81,14 +81,14 @@ namespace WhyNotLang.Interpreter
                     return value;
                 }
             }
-            
+
             return await Task.FromResult(ExpressionValue.Empty);
         }
-        
+
         public void CreateNewContext(List<IStatement> statements)
         {
             var iterator = new StatementIterator(statements);
-            
+
             _executorContexts.Push(new ExecutorContext(iterator));
         }
 

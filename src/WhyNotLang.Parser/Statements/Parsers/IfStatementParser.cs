@@ -14,7 +14,7 @@ namespace WhyNotLang.Parser.Statements.Parsers
             _expressionParser = expressionParser;
             _parser = parser;
         }
-        
+
         public IStatement Parse()
         {
             var firstLineNumber = _tokenIterator.CurrentToken.LineNumber;
@@ -22,13 +22,13 @@ namespace WhyNotLang.Parser.Statements.Parsers
             {
                 throw new WhyNotLangException("if expected", firstLineNumber);
             }
-            
+
             _tokenIterator.GetNextToken(); // Set current to (
             if (_tokenIterator.CurrentToken.Type != TokenType.LeftParen)
             {
                 throw new WhyNotLangException("( expected", _tokenIterator.CurrentToken.LineNumber);
             }
-            
+
             var condition = _expressionParser.ParseNextExpression();
             var body = _parser.ParseNext();
             IStatement elseStatement = null;
@@ -37,7 +37,7 @@ namespace WhyNotLang.Parser.Statements.Parsers
                 _tokenIterator.GetNextToken(); // Swallow else
                 elseStatement = _parser.ParseNext();
             }
-            
+
             return new IfStatement(condition, body, elseStatement, firstLineNumber);
         }
     }

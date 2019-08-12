@@ -7,9 +7,9 @@ namespace WhyNotLang.Interpreter.StatementExecutors
 {
     public class StatementExecutorFactory : IStatementExecutorFactory
     {
-        private Dictionary<StatementType, IStatementExecutor> _executorsCache;
+        private readonly Dictionary<StatementType, IStatementExecutor> _executorsCache;
         private IExpressionEvaluator _expressionEvaluator;
-        
+
         public StatementExecutorFactory()
         {
             _executorsCache = new Dictionary<StatementType, IStatementExecutor>();
@@ -25,7 +25,7 @@ namespace WhyNotLang.Interpreter.StatementExecutors
 
             return statementExecutor;
         }
-        
+
         private IStatementExecutor CreateStatementExecutor(IStatement statement, IExecutor mainExecutor)
         {
             _expressionEvaluator = _expressionEvaluator ?? new ExpressionEvaluator(mainExecutor);
@@ -54,7 +54,7 @@ namespace WhyNotLang.Interpreter.StatementExecutors
                 case StatementType.EmptyStatement:
                     return new EmptyExecutor();
             }
-            
+
             throw new WhyNotLangException("Executor not found for current statement", statement.LineNumber);
         }
     }

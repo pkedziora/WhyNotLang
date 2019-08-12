@@ -13,7 +13,7 @@ namespace WhyNotLang.Parser.Statements.Parsers
             _tokenIterator = tokenIterator;
             _parser = parser;
         }
-        
+
         public IStatement Parse()
         {
             var lineNumber = _tokenIterator.CurrentToken.LineNumber;
@@ -21,7 +21,7 @@ namespace WhyNotLang.Parser.Statements.Parsers
             {
                 throw new WhyNotLangException("begin expected", lineNumber);
             }
-            
+
             _tokenIterator.GetNextToken(); // Swallow begin
             var childStatements = new List<IStatement>();
             while (_tokenIterator.CurrentToken.Type != TokenType.End)

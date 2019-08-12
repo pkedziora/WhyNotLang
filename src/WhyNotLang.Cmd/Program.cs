@@ -1,17 +1,17 @@
-﻿using System;
+﻿using Microsoft.Extensions.DependencyInjection;
+using System;
 using System.IO;
 using System.Threading.Tasks;
-using Microsoft.Extensions.DependencyInjection;
-using WhyNotLang.Interpreter;
 using WhyNotLang.EmbeddedResources.Reader;
+using WhyNotLang.Interpreter;
 using WhyNotLang.Tokenizer;
 
 namespace WhyNotLang.Cmd
 {
     class Program
     {
-        static IExecutor Executor;
-        static IResourceReader SampleReader;
+        static IExecutor _executor;
+        static IResourceReader _sampleReader;
 
         static Program()
         {
@@ -22,10 +22,10 @@ namespace WhyNotLang.Cmd
         {
             string programName;
             string program;
-            if(System.Diagnostics.Debugger.IsAttached)
+            if (System.Diagnostics.Debugger.IsAttached)
             {
                 programName = "QuickSort";
-                program = SampleReader.ReadSample(programName);
+                program = _sampleReader.ReadSample(programName);
             }
             else
             {
@@ -34,15 +34,15 @@ namespace WhyNotLang.Cmd
                     Console.WriteLine("Plese provide path to the program to execute");
                     return;
                 }
-                
+
                 programName = args[0];
                 program = File.ReadAllText(programName);
             }
-            
+
             try
             {
-                Executor.Initialise(program);
-                await Executor.ExecuteAll();
+                _executor.Initialise(program);
+                await _executor.ExecuteAll();
             }
             catch (WhyNotLangException ex)
             {
@@ -66,8 +66,8 @@ namespace WhyNotLang.Cmd
         {
             var serviceProvider = IoC.BuildServiceProvider();
             serviceProvider.AddConsoleInputOutput();
-            Executor = serviceProvider.GetService<IExecutor>();
-            SampleReader = serviceProvider.GetService<IResourceReader>();
+            _executor = serviceProvider.GetService<IExecutor>();
+            _sampleReader = serviceProvider.GetService<IResourceReader>();
         }
     }
 }

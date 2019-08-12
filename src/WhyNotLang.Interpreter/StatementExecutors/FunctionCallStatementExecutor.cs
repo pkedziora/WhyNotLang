@@ -15,12 +15,12 @@ namespace WhyNotLang.Interpreter.StatementExecutors
             _expressionEvaluator = expressionEvaluator;
             _mainExecutor = mainExecutor;
         }
-        
+
         public async Task<ExpressionValue> Execute()
         {
             var callStatement = _mainExecutor.CurrentContext.StatementIterator.CurrentStatement as FunctionCallStatement;
             await _expressionEvaluator.Eval(callStatement.FunctionExpression);
-            
+
             return ExpressionValue.Empty;
         }
     }

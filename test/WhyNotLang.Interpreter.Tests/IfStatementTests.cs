@@ -8,8 +8,8 @@ namespace WhyNotLang.Interpreter.Tests
 {
     public class IfStatementTests
     {
-        private IProgramState _programState;
-        private IExecutor _executor;
+        private readonly IProgramState _programState;
+        private readonly IExecutor _executor;
 
         public IfStatementTests()
         {
@@ -25,16 +25,16 @@ namespace WhyNotLang.Interpreter.Tests
                 if (1 == 1)
                     var x := 2
             ");
-            
+
             await _executor.ExecuteAll();
-            
+
             var actual = _programState.GetVariable("x");
 
             var expected = new ExpressionValue(2, ExpressionValueTypes.Number);
-            
+
             Assert.Equal(expected, actual);
         }
-        
+
         [Fact]
         public async Task ExecutesTrueIfStatementWithBlock()
         {
@@ -47,17 +47,17 @@ namespace WhyNotLang.Interpreter.Tests
                     z:=x
                 end
             ");
-            
+
             await _executor.ExecuteAll();
-            
+
             var actual = _programState.GetVariable("z");
 
             var expected = new ExpressionValue(4, ExpressionValueTypes.Number);
-            
+
             Assert.Equal(expected, actual);
             Assert.False(_programState.IsVariableDefined("x"));
         }
-        
+
         [Fact]
         public async Task ExecutesSimpleFalseIfStatement()
         {
@@ -65,12 +65,12 @@ namespace WhyNotLang.Interpreter.Tests
                 if (1 != 1)
                     var x := 2
             ");
-            
+
             await _executor.ExecuteAll();
 
             Assert.False(_programState.IsVariableDefined("x"));
         }
-        
+
         [Fact]
         public async Task ExecutesIfElseStatement()
         {
@@ -80,16 +80,16 @@ namespace WhyNotLang.Interpreter.Tests
                 else
                     var x:= 3
             ");
-            
+
             await _executor.ExecuteAll();
-            
+
             var actual = _programState.GetVariable("x");
 
             var expected = new ExpressionValue(3, ExpressionValueTypes.Number);
-            
+
             Assert.Equal(expected, actual);
         }
-        
+
         [Fact]
         public async Task ExecutesIfElseIfStatementMiddleTrue()
         {
@@ -101,16 +101,16 @@ namespace WhyNotLang.Interpreter.Tests
                 else
                     var x:= 4
             ");
-            
+
             await _executor.ExecuteAll();
-            
+
             var actual = _programState.GetVariable("x");
 
             var expected = new ExpressionValue(3, ExpressionValueTypes.Number);
-            
+
             Assert.Equal(expected, actual);
         }
-        
+
         [Fact]
         public async Task ExecutesIfElseIfStatementLastTrue()
         {
@@ -122,13 +122,13 @@ namespace WhyNotLang.Interpreter.Tests
                 else
                     var x:= 4
             ");
-            
+
             await _executor.ExecuteAll();
-            
+
             var actual = _programState.GetVariable("x");
 
             var expected = new ExpressionValue(4, ExpressionValueTypes.Number);
-            
+
             Assert.Equal(expected, actual);
         }
     }

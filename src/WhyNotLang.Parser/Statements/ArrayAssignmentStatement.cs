@@ -10,7 +10,7 @@ namespace WhyNotLang.Parser.Statements
         public IExpression ValExpression { get; }
         public StatementType Type => StatementType.ArrayAssignmentStatement;
         public int LineNumber { get; }
-        
+
         public ArrayAssignmentStatement(Token arrayName, IExpression indexExpression, IExpression valExpression, int lineNumber = 0)
         {
             ArrayName = arrayName;
@@ -18,7 +18,7 @@ namespace WhyNotLang.Parser.Statements
             ValExpression = valExpression;
             LineNumber = lineNumber;
         }
-        
+
         public override bool Equals(object obj)
         {
             var statement = obj as ArrayAssignmentStatement;
@@ -42,7 +42,7 @@ namespace WhyNotLang.Parser.Statements
                 hash = hash * 23 + IndexExpression.GetHashCode();
                 hash = hash * 23 + ValExpression.GetHashCode();
                 hash = hash * 23 + Type.GetHashCode();
-                
+
                 return hash;
             }
         }

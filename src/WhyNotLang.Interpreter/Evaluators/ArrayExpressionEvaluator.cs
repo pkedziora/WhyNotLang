@@ -16,14 +16,14 @@ namespace WhyNotLang.Interpreter.Evaluators
             _mainEvaluator = mainEvaluator;
             _programState = programState;
         }
-        
+
         public async Task<ExpressionValue> Eval(IExpression expression)
         {
             if (expression.Type != ExpressionType.Array)
             {
                 throw new WhyNotLangException("ArrayExpression expected");
             }
-            
+
             var arrayExpression = expression as ArrayExpression;
 
             var indexExpression = await _mainEvaluator.Eval(arrayExpression.IndexExpression);
@@ -32,8 +32,8 @@ namespace WhyNotLang.Interpreter.Evaluators
             {
                 throw new WhyNotLangException("Index must be a number");
             }
-            
-            return _programState.GetArrayItem(arrayExpression.Name.Value, (int) indexExpression.Value);
+
+            return _programState.GetArrayItem(arrayExpression.Name.Value, (int)indexExpression.Value);
         }
     }
 }

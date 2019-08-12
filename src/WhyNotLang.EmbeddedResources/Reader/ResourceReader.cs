@@ -53,11 +53,11 @@ namespace WhyNotLang.EmbeddedResources.Reader
         {
             var assembly = typeof(ResourceReader).GetTypeInfo().Assembly;
             var assemblyName = assembly.GetName().Name;
-                return assembly
-                    .GetManifestResourceNames()
-                    .Where(r => r.EndsWith(".wnl"))
-                    .Select(r => r.Replace($"{assemblyName}.", "").Replace(".wnl", ""))
-                    .ToList();
+            return assembly
+                .GetManifestResourceNames()
+                .Where(r => r.EndsWith(".wnl"))
+                .Select(r => r.Replace($"{assemblyName}.", "").Replace(".wnl", ""))
+                .ToList();
         }
     }
 }

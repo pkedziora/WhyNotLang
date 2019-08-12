@@ -12,7 +12,7 @@ namespace WhyNotLang.Interpreter.StatementExecutors
         {
             _mainExecutor = mainExecutor;
         }
-        
+
         public async Task<ExpressionValue> Execute()
         {
             var blockStatement = _mainExecutor.CurrentContext.StatementIterator.CurrentStatement as BlockStatement;
@@ -22,7 +22,7 @@ namespace WhyNotLang.Interpreter.StatementExecutors
             var returnValue = await _mainExecutor.ExecuteAll();
             _mainExecutor.LeaveContext();
             _mainExecutor.ProgramState.RemoveScope();
-            
+
             return returnValue;
         }
     }

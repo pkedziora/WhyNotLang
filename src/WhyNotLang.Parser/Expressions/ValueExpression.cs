@@ -19,7 +19,7 @@ namespace WhyNotLang.Parser.Expressions
             {
                 return false;
             }
-            
+
             return Token.Equals(expression.Token) && Type == expression.Type;
         }
 

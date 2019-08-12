@@ -1,5 +1,5 @@
-using System.Collections.Generic;
 using Microsoft.Extensions.DependencyInjection;
+using System.Collections.Generic;
 using WhyNotLang.Interpreter;
 using WhyNotLang.Parser.Expressions;
 using WhyNotLang.Parser.Statements;
@@ -11,7 +11,7 @@ namespace WhyNotLang.Parser.Tests.Statements
 {
     public class MultipleStatementsTests
     {
-        private IParser _parser;
+        private readonly IParser _parser;
 
         public MultipleStatementsTests()
         {
@@ -36,10 +36,10 @@ namespace WhyNotLang.Parser.Tests.Statements
             };
 
             var actual = _parser.ParseAll();
-            
+
             Assert.Equal(expected, actual);
         }
-        
+
         [Fact]
         public void Parses2AssignmentsWithSimpleExpressions()
         {
@@ -57,7 +57,7 @@ namespace WhyNotLang.Parser.Tests.Statements
             };
 
             var actual = _parser.ParseAll();
-            
+
             Assert.Equal(expected, actual);
         }
         [Fact]
@@ -75,10 +75,10 @@ namespace WhyNotLang.Parser.Tests.Statements
             };
 
             var actual = _parser.ParseAll();
-            
+
             Assert.Equal(expected, actual);
         }
-        
+
         [Fact]
         public void Parses2AssignmentsWithComplexExpressions()
         {
@@ -87,17 +87,17 @@ namespace WhyNotLang.Parser.Tests.Statements
                             y := (1 * (2 + 3))");
             var expected = new List<IStatement>
             {
-                TestHelpers.GetVariableAssignementStatement("x", 
+                TestHelpers.GetVariableAssignementStatement("x",
                     TestHelpers.GetBinaryExpression(TestHelpers.GetBinaryExpression(1, "+", 2), "*", 3)),
                 TestHelpers.GetVariableAssignementStatement( "y",
                     TestHelpers.GetBinaryExpression(1, "*", TestHelpers.GetBinaryExpression(2, "+", 3)))
             };
 
             var actual = _parser.ParseAll();
-            
+
             Assert.Equal(expected, actual);
         }
-        
+
         [Fact]
         public void Parses1DeclarationAnd1AssignmentsWithComplexExpressions()
         {
@@ -113,10 +113,10 @@ namespace WhyNotLang.Parser.Tests.Statements
             };
 
             var actual = _parser.ParseAll();
-            
+
             Assert.Equal(expected, actual);
         }
-        
+
         [Fact]
         public void ParsesVarAssignmentAndIfAndWhileAndFunctionAndVarDeclaration()
         {
@@ -139,10 +139,10 @@ namespace WhyNotLang.Parser.Tests.Statements
             var expectedIfBody = TestHelpers.GetVariableAssignementStatement("x", TestHelpers.GetValueExpression(1));
             var expectedElse = TestHelpers.GetVariableAssignementStatement("y", TestHelpers.GetValueExpression(2));
             var expectedIfStatement = new IfStatement(
-                expectedIfCondition, 
+                expectedIfCondition,
                 expectedIfBody,
                 expectedElse);
-            
+
             //While
             var expectedCondition = TestHelpers.GetBinaryExpressionWithIdentifiers("x", "<", "y");
             var expectedBody = new BlockStatement(new List<IStatement>()
@@ -151,18 +151,18 @@ namespace WhyNotLang.Parser.Tests.Statements
                 TestHelpers.GetVariableAssignementStatement("y", TestHelpers.GetBinaryExpressionWithIdentifiers("y", "-", 2))
             });
             var expectedWhileStatement = new WhileStatement(
-                expectedCondition, 
+                expectedCondition,
                 expectedBody);
-            
+
             //Function call
             var expectedParameters = new List<IExpression>
             {
                 new ValueExpression(new Token(TokenType.Number, "1")),
                 new ValueExpression(new Token(TokenType.Number, "2")),
             };
-            var expectedFunctionCallStatement = new FunctionCallStatement(new FunctionExpression(new Token(TokenType.Identifier, "foo"), 
+            var expectedFunctionCallStatement = new FunctionCallStatement(new FunctionExpression(new Token(TokenType.Identifier, "foo"),
                 expectedParameters));
-            
+
             var expected = new List<IStatement>
             {
                 TestHelpers.GetVariableAssignementStatement("x",
@@ -175,7 +175,7 @@ namespace WhyNotLang.Parser.Tests.Statements
             };
 
             var actual = _parser.ParseAll();
-            
+
             Assert.Equal(expected, actual);
         }
     }

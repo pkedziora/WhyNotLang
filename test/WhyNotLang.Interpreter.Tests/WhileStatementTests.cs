@@ -7,8 +7,8 @@ namespace WhyNotLang.Interpreter.Tests
 {
     public class WhileStatementTests
     {
-        private IProgramState _programState;
-        private IExecutor _executor;
+        private readonly IProgramState _programState;
+        private readonly IExecutor _executor;
 
         public WhileStatementTests()
         {
@@ -25,16 +25,16 @@ namespace WhyNotLang.Interpreter.Tests
                 while (x < 10)
                     x := x + 1
             ");
-            
+
             await _executor.ExecuteAll();
-            
+
             var actual = _programState.GetVariable("x");
 
             var expected = new ExpressionValue(10, ExpressionValueTypes.Number);
-            
+
             Assert.Equal(expected, actual);
         }
-        
+
         [Fact]
         public async void ExecutesWhileStatementWithBlock()
         {
@@ -47,13 +47,13 @@ namespace WhyNotLang.Interpreter.Tests
                     pow := pow * 2
                 end
             ");
-            
+
             await _executor.ExecuteAll();
-            
+
             var actual = _programState.GetVariable("pow");
 
             var expected = new ExpressionValue(1024, ExpressionValueTypes.Number);
-            
+
             Assert.Equal(expected, actual);
         }
 

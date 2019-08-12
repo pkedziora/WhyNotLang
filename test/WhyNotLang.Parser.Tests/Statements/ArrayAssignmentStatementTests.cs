@@ -10,7 +10,7 @@ namespace WhyNotLang.Parser.Tests.Statements
 {
     public class ArrayAssignmentStatementTests
     {
-        private IParser _parser;
+        private readonly IParser _parser;
         public ArrayAssignmentStatementTests()
         {
             var serviceProvider = IoC.BuildServiceProvider();
@@ -25,12 +25,12 @@ namespace WhyNotLang.Parser.Tests.Statements
                 new Token(TokenType.Identifier, "x"),
                 new ValueExpression(new Token(TokenType.Number, "0")),
                 new ValueExpression(new Token(TokenType.Number, "1")));
-            
+
             var actual = _parser.ParseNext();
-            
+
             Assert.Equal(expected, actual);
         }
-        
+
         [Fact]
         public void ParsesArrayAssignmentWithString()
         {
@@ -39,12 +39,12 @@ namespace WhyNotLang.Parser.Tests.Statements
                 new Token(TokenType.Identifier, "x"),
                 new ValueExpression(new Token(TokenType.Number, "0")),
                 new ValueExpression(new Token(TokenType.String, "abc")));
-            
+
             var actual = _parser.ParseNext();
-            
+
             Assert.Equal(expected, actual);
         }
-        
+
         [Fact]
         public void ParsesArrayAssignmentWith2PartExpressions()
         {
@@ -53,12 +53,12 @@ namespace WhyNotLang.Parser.Tests.Statements
                 new Token(TokenType.Identifier, "x"),
                 TestHelpers.GetBinaryExpression(0, "+", 1),
                 TestHelpers.GetBinaryExpression(2, "+", 3));
-            
+
             var actual = _parser.ParseNext();
-            
+
             Assert.Equal(expected, actual);
         }
-        
+
         [Fact]
         public void ParsesArrayAssignmentWith2PartExpressionWithIdentifiers()
         {
@@ -67,12 +67,12 @@ namespace WhyNotLang.Parser.Tests.Statements
                 new Token(TokenType.Identifier, "x"),
                 TestHelpers.GetBinaryExpressionWithIdentifiers("a", "*", "b"),
                 TestHelpers.GetBinaryExpressionWithIdentifiers("c", "+", "d"));
-            
+
             var actual = _parser.ParseNext();
-            
+
             Assert.Equal(expected, actual);
         }
-        
+
         [Fact]
         public void ParsesArrayAssignmentWith3PartExpression()
         {
@@ -81,14 +81,14 @@ namespace WhyNotLang.Parser.Tests.Statements
             var expression = TestHelpers.GetBinaryExpression(1, "+", inner);
             var expected = new ArrayAssignmentStatement(
                 new Token(TokenType.Identifier, "x"),
-                new ValueExpression(new Token(TokenType.Number, "0")), 
+                new ValueExpression(new Token(TokenType.Number, "0")),
                 expression);
-            
+
             var actual = _parser.ParseNext();
-            
+
             Assert.Equal(expected, actual);
         }
-        
+
         [Fact]
         public void ParsesArrayAssignmentWith3PartExpressionWithParens()
         {
@@ -99,9 +99,9 @@ namespace WhyNotLang.Parser.Tests.Statements
                 new Token(TokenType.Identifier, "x"),
                 new ValueExpression(new Token(TokenType.Number, "0")),
                 expression);
-            
+
             var actual = _parser.ParseNext();
-            
+
             Assert.Equal(expected, actual);
         }
     }

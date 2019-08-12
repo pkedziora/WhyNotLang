@@ -10,7 +10,7 @@ namespace WhyNotLang.Tokenizer
         {
             Map = GetTokenMap();
         }
-        
+
         public Dictionary<string, TokenType> GetTokenTypesStartingWith(string prefix)
         {
             var result = new Dictionary<string, TokenType>();

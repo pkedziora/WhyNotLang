@@ -15,14 +15,14 @@ namespace WhyNotLang.Interpreter.StatementExecutors
             _expressionEvaluator = expressionEvaluator;
             _mainExecutor = mainExecutor;
         }
-        
+
         public async Task<ExpressionValue> Execute()
         {
             var variableDeclaration = _mainExecutor.CurrentContext.StatementIterator.CurrentStatement as VariableDeclarationStatement;
             var variableName = variableDeclaration.VariableName.Value;
             var variableValue = await _expressionEvaluator.Eval(variableDeclaration.Expression);
             _mainExecutor.ProgramState.DeclareVariable(variableName, variableValue, variableDeclaration.IsGlobal);
-            
+
             return ExpressionValue.Empty;
         }
     }

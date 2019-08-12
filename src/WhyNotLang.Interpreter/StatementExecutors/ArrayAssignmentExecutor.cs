@@ -16,7 +16,7 @@ namespace WhyNotLang.Interpreter.StatementExecutors
             _expressionEvaluator = expressionEvaluator;
             _mainExecutor = mainExecutor;
         }
-        
+
         public async Task<ExpressionValue> Execute()
         {
             var arrayAssignement = _mainExecutor.CurrentContext.StatementIterator.CurrentStatement as ArrayAssignmentStatement;
@@ -28,9 +28,9 @@ namespace WhyNotLang.Interpreter.StatementExecutors
             {
                 throw new WhyNotLangException("Index needs to be a number", arrayAssignement.ArrayName.LineNumber);
             }
-            
-            _mainExecutor.ProgramState.AssignArrayItem(arrayName, (int) arrayIndexValue.Value, arrayItemValue);
-            
+
+            _mainExecutor.ProgramState.AssignArrayItem(arrayName, (int)arrayIndexValue.Value, arrayItemValue);
+
             return ExpressionValue.Empty;
         }
     }

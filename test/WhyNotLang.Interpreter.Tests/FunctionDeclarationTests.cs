@@ -1,6 +1,6 @@
+using Microsoft.Extensions.DependencyInjection;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Microsoft.Extensions.DependencyInjection;
 using WhyNotLang.Interpreter.State;
 using WhyNotLang.Parser.Statements;
 using WhyNotLang.Test.Common;
@@ -11,8 +11,8 @@ namespace WhyNotLang.Interpreter.Tests
 {
     public class FunctionDeclarationTests
     {
-        private IProgramState _programState;
-        private IExecutor _executor;
+        private readonly IProgramState _programState;
+        private readonly IExecutor _executor;
 
         public FunctionDeclarationTests()
         {
@@ -29,9 +29,9 @@ namespace WhyNotLang.Interpreter.Tests
                 begin
                 end                
             ");
-            
+
             await _executor.ExecuteNext();
-            
+
             var expected = new FunctionDeclarationStatement(
                 new Token(TokenType.Identifier, "foo"), new List<Token>(), new BlockStatement(new List<IStatement>()));
 
@@ -51,12 +51,12 @@ namespace WhyNotLang.Interpreter.Tests
                     var abc := (2 + 2) * 3
                 end                
             ");
-            
+
             await _executor.ExecuteNext();
-            
+
             var expected = new FunctionDeclarationStatement(
-                new Token(TokenType.Identifier, "foo"), 
-                new List<Token>() {new Token(TokenType.Identifier, "abc"), new Token(TokenType.Identifier, "d"), new Token(TokenType.Identifier, "e")}, 
+                new Token(TokenType.Identifier, "foo"),
+                new List<Token>() { new Token(TokenType.Identifier, "abc"), new Token(TokenType.Identifier, "d"), new Token(TokenType.Identifier, "e") },
                 new BlockStatement(new List<IStatement>
                 {
                     TestHelpers.GetVariableAssignementStatement("x", TestHelpers.GetValueExpression(1)),
@@ -64,7 +64,7 @@ namespace WhyNotLang.Interpreter.Tests
                     TestHelpers.GetVariableDeclarationStatement("abc", TestHelpers.GetBinaryExpression(
                         TestHelpers.GetBinaryExpression(2, "+", 2), "*", 3))
                 }));
-            
+
             var actual = _programState.GetFunction("foo");
 
             Assert.Equal(expected, actual);

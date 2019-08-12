@@ -1,5 +1,5 @@
-using System.Collections.Generic;
 using Microsoft.Extensions.DependencyInjection;
+using System.Collections.Generic;
 using WhyNotLang.Interpreter;
 using WhyNotLang.Parser.Statements;
 using WhyNotLang.Test.Common;
@@ -9,28 +9,28 @@ namespace WhyNotLang.Parser.Tests.Statements
 {
     public class BlockStatementTests
     {
-        private IParser _parser;
+        private readonly IParser _parser;
 
         public BlockStatementTests()
         {
             var serviceProvider = IoC.BuildServiceProvider();
             _parser = serviceProvider.GetService<IParser>();
         }
-        
+
         [Fact]
         public void ParsesEmptyBlockStatement()
         {
             _parser.Initialise(@"
                 begin
                 end");
-            
+
             var expected = new BlockStatement(new List<IStatement>());
 
             var actual = _parser.ParseNext();
-            
+
             Assert.Equal(expected, actual);
         }
-        
+
         [Fact]
         public void ParsesBlockStatementWith1Statement()
         {
@@ -38,17 +38,17 @@ namespace WhyNotLang.Parser.Tests.Statements
                 begin
                     x := 1
                 end");
-            
+
             var expected = new BlockStatement(new List<IStatement>
             {
                 TestHelpers.GetVariableAssignementStatement("x", TestHelpers.GetValueExpression(1))
             });
 
             var actual = _parser.ParseNext();
-            
+
             Assert.Equal(expected, actual);
         }
-        
+
         [Fact]
         public void ParsesBlockStatementWith2Statements()
         {
@@ -57,7 +57,7 @@ namespace WhyNotLang.Parser.Tests.Statements
                     x := 1
                     var y := 2
                 end");
-            
+
             var expected = new BlockStatement(new List<IStatement>
             {
                 TestHelpers.GetVariableAssignementStatement("x", TestHelpers.GetValueExpression(1)),
@@ -65,10 +65,10 @@ namespace WhyNotLang.Parser.Tests.Statements
             });
 
             var actual = _parser.ParseNext();
-            
+
             Assert.Equal(expected, actual);
         }
-        
+
         [Fact]
         public void ParsesBlockStatementWith3Statements()
         {
@@ -78,7 +78,7 @@ namespace WhyNotLang.Parser.Tests.Statements
                     var y := 2
                     var abc := (2 + 2) * 3
                 end");
-            
+
             var expected = new BlockStatement(new List<IStatement>
             {
                 TestHelpers.GetVariableAssignementStatement("x", TestHelpers.GetValueExpression(1)),
@@ -88,10 +88,10 @@ namespace WhyNotLang.Parser.Tests.Statements
             });
 
             var actual = _parser.ParseNext();
-            
+
             Assert.Equal(expected, actual);
         }
-        
+
         [Fact]
         public void ParsesNestedBlockStatementWith3Statements()
         {
@@ -105,7 +105,7 @@ namespace WhyNotLang.Parser.Tests.Statements
                     end
                     var abc := (2 + 2) * 3
                 end");
-            
+
             var expected = new BlockStatement(new List<IStatement>
             {
                 TestHelpers.GetVariableAssignementStatement("x", TestHelpers.GetValueExpression(1)),
@@ -121,7 +121,7 @@ namespace WhyNotLang.Parser.Tests.Statements
             });
 
             var actual = _parser.ParseNext();
-            
+
             Assert.Equal(expected, actual);
         }
     }

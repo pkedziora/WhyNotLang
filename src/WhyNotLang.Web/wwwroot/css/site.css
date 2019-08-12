@@ -96,13 +96,13 @@ app {
     color: red;
 }
 
-@media (max-width: 1200px) {
+@media (max-width: 1300px) {
     .main .top-row {
         display: none;
     }
 }
 
-@media (min-width: 1200px) {
+@media (min-width: 1300px) {
     app {
         flex-direction: row;
     }
@@ -132,6 +132,10 @@ app {
         /* Never collapse the sidebar for wide screens */
         display: block;
     }
+}
+
+body {
+    min-width: 1040px;
 }
 
 #container {
@@ -187,6 +191,11 @@ app {
 .outputHead {
     text-align: center;
     margin-top: 5px;
+}
+
+.btnSave {
+    margin-top: 5px;
+    margin-left: 5px;
 }
 
 .reference {

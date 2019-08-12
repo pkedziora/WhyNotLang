@@ -8,8 +8,8 @@ namespace WhyNotLang.Interpreter.Tests
 {
     public class BuiltinFunctionsTests
     {
-        private IProgramState _programState;
-        private IExecutor _executor;
+        private readonly IProgramState _programState;
+        private readonly IExecutor _executor;
 
         public BuiltinFunctionsTests()
         {
@@ -17,32 +17,32 @@ namespace WhyNotLang.Interpreter.Tests
             _executor = serviceProvider.GetService<IExecutor>();
             _programState = _executor.ProgramState;
         }
-        
+
         [Fact]
         public async Task ExecutesBuiltinFunctionToNumber()
         {
             _executor.Initialise(@"
                 var x:= 100 + ToNumber(""2"")       
             ");
-            
+
             await _executor.ExecuteAll();
-            
+
             var actual = _programState.GetVariable("x");
 
             var expected = new ExpressionValue(102, ExpressionValueTypes.Number);
 
             Assert.Equal(expected, actual);
         }
-        
+
         [Fact]
         public async Task ExecutesBuiltinFunctionToString()
         {
             _executor.Initialise(@"
                 var x:= ""1"" + ToString(0)      
             ");
-            
+
             await _executor.ExecuteAll();
-            
+
             var actual = _programState.GetVariable("x");
 
             var expected = new ExpressionValue("10", ExpressionValueTypes.String);

@@ -1,5 +1,5 @@
-using System.Collections.Generic;
 using Microsoft.Extensions.DependencyInjection;
+using System.Collections.Generic;
 using WhyNotLang.Interpreter;
 using WhyNotLang.Parser.Statements;
 using WhyNotLang.Test.Common;
@@ -10,7 +10,7 @@ namespace WhyNotLang.Parser.Tests.Statements
 {
     public class FunctionDeclarationStatementTests
     {
-        private IParser _parser;
+        private readonly IParser _parser;
 
         public FunctionDeclarationStatementTests()
         {
@@ -28,12 +28,12 @@ namespace WhyNotLang.Parser.Tests.Statements
             ");
             var expected = new FunctionDeclarationStatement(
                 new Token(TokenType.Identifier, "foo"), new List<Token>(), new BlockStatement(new List<IStatement>()));
-            
+
             var actual = _parser.ParseNext();
 
             Assert.Equal(expected, actual);
         }
-        
+
         [Fact]
         public void ParsesFunctionWith1ParameterAndEmptyBody()
         {
@@ -43,15 +43,15 @@ namespace WhyNotLang.Parser.Tests.Statements
                 end                
             ");
             var expected = new FunctionDeclarationStatement(
-                new Token(TokenType.Identifier, "foo"), 
-                new List<Token>() {new Token(TokenType.Identifier, "abc")}, 
+                new Token(TokenType.Identifier, "foo"),
+                new List<Token>() { new Token(TokenType.Identifier, "abc") },
                 new BlockStatement(new List<IStatement>()));
-            
+
             var actual = _parser.ParseNext();
 
             Assert.Equal(expected, actual);
         }
-        
+
         [Fact]
         public void ParsesFunctionWith2ParameterAndEmptyBody()
         {
@@ -61,15 +61,15 @@ namespace WhyNotLang.Parser.Tests.Statements
                 end                
             ");
             var expected = new FunctionDeclarationStatement(
-                new Token(TokenType.Identifier, "foo"), 
-                new List<Token>() {new Token(TokenType.Identifier, "abc"), new Token(TokenType.Identifier, "d")}, 
+                new Token(TokenType.Identifier, "foo"),
+                new List<Token>() { new Token(TokenType.Identifier, "abc"), new Token(TokenType.Identifier, "d") },
                 new BlockStatement(new List<IStatement>()));
-            
+
             var actual = _parser.ParseNext();
 
             Assert.Equal(expected, actual);
         }
-        
+
         [Fact]
         public void ParsesFunctionWith3ParameterAndBodySet()
         {
@@ -82,8 +82,8 @@ namespace WhyNotLang.Parser.Tests.Statements
                 end                
             ");
             var expected = new FunctionDeclarationStatement(
-                new Token(TokenType.Identifier, "foo"), 
-                new List<Token>() {new Token(TokenType.Identifier, "abc"), new Token(TokenType.Identifier, "d"), new Token(TokenType.Identifier, "e")}, 
+                new Token(TokenType.Identifier, "foo"),
+                new List<Token>() { new Token(TokenType.Identifier, "abc"), new Token(TokenType.Identifier, "d"), new Token(TokenType.Identifier, "e") },
                 new BlockStatement(new List<IStatement>
                 {
                     TestHelpers.GetVariableAssignementStatement("x", TestHelpers.GetValueExpression(1)),
@@ -91,7 +91,7 @@ namespace WhyNotLang.Parser.Tests.Statements
                     TestHelpers.GetVariableDeclarationStatement("abc", TestHelpers.GetBinaryExpression(
                         TestHelpers.GetBinaryExpression(2, "+", 2), "*", 3))
                 }));
-            
+
             var actual = _parser.ParseNext();
 
             Assert.Equal(expected, actual);

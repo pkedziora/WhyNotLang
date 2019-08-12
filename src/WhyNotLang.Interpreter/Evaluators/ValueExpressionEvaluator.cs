@@ -21,7 +21,7 @@ namespace WhyNotLang.Interpreter.Evaluators
             {
                 throw new WhyNotLangException("ValueExpression expected");
             }
-            
+
             var valueExpression = expression as ValueExpression;
             var token = valueExpression.Token;
             switch (valueExpression.Token.Type)
@@ -33,7 +33,7 @@ namespace WhyNotLang.Interpreter.Evaluators
                 case TokenType.Identifier:
                     return await Task.FromResult(GetVariableValue(token.Value));
             }
-            
+
             throw new WhyNotLangException("Unsupported token type");
         }
 

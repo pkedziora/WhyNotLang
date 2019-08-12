@@ -5,7 +5,7 @@ namespace WhyNotLang.Parser.Statements
     public class FunctionCallStatement : IStatement
     {
         public StatementType Type => StatementType.FunctionCallStatement;
-        
+
         public FunctionExpression FunctionExpression { get; }
         public int LineNumber { get; }
 
@@ -14,7 +14,7 @@ namespace WhyNotLang.Parser.Statements
             FunctionExpression = functionExpression;
             LineNumber = lineNumber;
         }
-        
+
         public override bool Equals(object obj)
         {
             var statement = obj as FunctionCallStatement;
@@ -22,7 +22,7 @@ namespace WhyNotLang.Parser.Statements
             {
                 return false;
             }
-            
+
             return FunctionExpression.Equals(statement.FunctionExpression) &&
                    Type == statement.Type;
         }
@@ -34,7 +34,7 @@ namespace WhyNotLang.Parser.Statements
                 int hash = 17;
                 hash = hash * 23 + FunctionExpression.GetHashCode();
                 hash = hash * 23 + Type.GetHashCode();
-                
+
                 return hash;
             }
         }

@@ -8,7 +8,7 @@ namespace WhyNotLang.Tokenizer
         public int LineNumber { get; set; }
 
         public static Token Eof => new Token(TokenType.Eof, "");
-        
+
         public Token(TokenType type, string value, int lineNumber = 0)
         {
             Type = type;
@@ -23,7 +23,7 @@ namespace WhyNotLang.Tokenizer
             {
                 return false;
             }
-            
+
             return Type == token.Type && Value == token.Value;
         }
 

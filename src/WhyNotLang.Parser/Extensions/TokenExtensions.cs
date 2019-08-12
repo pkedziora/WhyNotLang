@@ -10,10 +10,10 @@ namespace WhyNotLang.Parser.Extensions
             {
                 case TokenType.Or:
                     return Precedence.Or;
-                
+
                 case TokenType.And:
                     return Precedence.And;
-                
+
                 case TokenType.LessThan:
                 case TokenType.GreaterThan:
                 case TokenType.LessThanOrEqual:
@@ -21,11 +21,11 @@ namespace WhyNotLang.Parser.Extensions
                 case TokenType.Equal:
                 case TokenType.NotEqual:
                     return Precedence.Comparison;
-                
+
                 case TokenType.Plus:
                 case TokenType.Minus:
                     return Precedence.AddSub;
-                
+
                 case TokenType.Multiply:
                 case TokenType.Divide:
                     return Precedence.MulDiv;

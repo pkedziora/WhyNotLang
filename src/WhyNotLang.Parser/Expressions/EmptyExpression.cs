@@ -3,7 +3,7 @@ namespace WhyNotLang.Parser.Expressions
     public class EmptyExpression : IExpression
     {
         public ExpressionType Type => ExpressionType.Empty;
-        
+
         public override bool Equals(object obj)
         {
             var expression = obj as EmptyExpression;
@@ -11,7 +11,7 @@ namespace WhyNotLang.Parser.Expressions
             {
                 return false;
             }
-            
+
             return Type == expression.Type;
         }
 

@@ -13,7 +13,7 @@ namespace WhyNotLang.Parser.Statements
             ReturnExpression = returnExpression;
             LineNumber = lineNumber;
         }
-        
+
         public override bool Equals(object obj)
         {
             var statement = obj as ReturnStatement;
@@ -33,7 +33,7 @@ namespace WhyNotLang.Parser.Statements
                 int hash = 17;
                 hash = hash * 23 + ReturnExpression.GetHashCode();
                 hash = hash * 23 + Type.GetHashCode();
-                
+
                 return hash;
             }
         }

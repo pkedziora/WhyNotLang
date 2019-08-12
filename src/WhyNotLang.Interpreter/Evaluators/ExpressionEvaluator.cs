@@ -8,7 +8,7 @@ namespace WhyNotLang.Interpreter.Evaluators
 {
     public class ExpressionEvaluator : IExpressionEvaluator
     {
-        private Dictionary<ExpressionType, IExpressionEvaluator> _evaluatorCache;
+        private readonly Dictionary<ExpressionType, IExpressionEvaluator> _evaluatorCache;
         private readonly IExecutor _mainExecutor;
 
         public ExpressionEvaluator(IExecutor mainExecutor)
@@ -16,7 +16,7 @@ namespace WhyNotLang.Interpreter.Evaluators
             _mainExecutor = mainExecutor;
             _evaluatorCache = new Dictionary<ExpressionType, IExpressionEvaluator>();
         }
-        
+
         public async Task<ExpressionValue> Eval(IExpression expression)
         {
             var evaluator = CreateOrGetFromCache(expression.Type);
@@ -49,7 +49,7 @@ namespace WhyNotLang.Interpreter.Evaluators
                 case ExpressionType.Array:
                     return new ArrayExpressionEvaluator(this, _mainExecutor.ProgramState);
             }
-            
+
             throw new WhyNotLangException($"Parser not found for expression {expressionType}");
         }
     }

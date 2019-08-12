@@ -5,11 +5,11 @@ namespace WhyNotLang.Parser.Expressions
     public class ArrayExpression : IExpression
     {
         public Token Name { get; }
-        public IExpression IndexExpression { get;  }
-        
+        public IExpression IndexExpression { get; }
+
         public ExpressionType Type => ExpressionType.Array;
-        
-        
+
+
         public ArrayExpression(Token name, IExpression indexExpression)
         {
             Name = name;
@@ -23,7 +23,7 @@ namespace WhyNotLang.Parser.Expressions
             {
                 return false;
             }
-            
+
             return Name.Equals(expression.Name) &&
                    IndexExpression.Equals(expression.IndexExpression) &&
                    Type == expression.Type;
@@ -37,7 +37,7 @@ namespace WhyNotLang.Parser.Expressions
                 hash = hash * 23 + Name.GetHashCode();
                 hash = hash * 23 + IndexExpression.GetHashCode();
                 hash = hash * 23 + Type.GetHashCode();
-                
+
                 return hash;
             }
         }

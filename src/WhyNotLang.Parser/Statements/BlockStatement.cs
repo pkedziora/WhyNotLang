@@ -14,7 +14,7 @@ namespace WhyNotLang.Parser.Statements
             ChildStatements = childStatements;
             LineNumber = lineNumber;
         }
-        
+
         public override bool Equals(object obj)
         {
             var statement = obj as BlockStatement;
@@ -34,7 +34,7 @@ namespace WhyNotLang.Parser.Statements
                 int hash = 17;
                 hash = hash * 23 + ChildStatements.GetHashCode();
                 hash = hash * 23 + Type.GetHashCode();
-                
+
                 return hash;
             }
         }

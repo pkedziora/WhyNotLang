@@ -5,7 +5,7 @@ namespace WhyNotLang.Parser.Expressions
     public class BinaryExpression : IExpression
     {
         public IExpression Left { get; }
-        public IExpression Right { get;  }
+        public IExpression Right { get; }
         public Token Operator { get; }
         public ExpressionType Type => ExpressionType.Binary;
 
@@ -15,7 +15,7 @@ namespace WhyNotLang.Parser.Expressions
             Operator = operatorToken;
             Right = right;
         }
-        
+
         public override bool Equals(object obj)
         {
             var expression = obj as BinaryExpression;
@@ -23,8 +23,8 @@ namespace WhyNotLang.Parser.Expressions
             {
                 return false;
             }
-            
-            return Left.Equals(expression.Left) && 
+
+            return Left.Equals(expression.Left) &&
                    Right.Equals(expression.Right) &&
                    Operator.Equals(expression.Operator) &&
                    Type == expression.Type;
@@ -39,7 +39,7 @@ namespace WhyNotLang.Parser.Expressions
                 hash = hash * 23 + Right.GetHashCode();
                 hash = hash * 23 + Operator.GetHashCode();
                 hash = hash * 23 + Type.GetHashCode();
-                
+
                 return hash;
             }
         }

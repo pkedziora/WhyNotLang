@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.JSInterop;
-using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using WhyNotLang.Interpreter;
@@ -12,7 +11,7 @@ using WhyNotLang.Tokenizer;
 
 namespace WhyNotLang.Web.Components
 {
-    public class CanvasIOBase: ComponentBase
+    public class CanvasIOBase : ComponentBase
     {
         [Inject] IExecutor Executor { get; set; }
         [Inject] IJSRuntime JsRuntime { get; set; }
@@ -37,7 +36,7 @@ namespace WhyNotLang.Web.Components
                     var width = arguments[2];
                     var height = arguments[3];
                     var color = arguments[4];
-                    if (x.Type != ExpressionValueTypes.Number || y.Type != ExpressionValueTypes.Number 
+                    if (x.Type != ExpressionValueTypes.Number || y.Type != ExpressionValueTypes.Number
                     || width.Type != ExpressionValueTypes.Number || height.Type != ExpressionValueTypes.Number)
                     {
                         throw new WhyNotLangException("Number expected");
@@ -48,7 +47,7 @@ namespace WhyNotLang.Web.Components
                         throw new WhyNotLangException("String expected");
                     }
 
-                    await JsRuntime.InvokeAsync<string>("WhyNotLang.Canvas.drawRectangle", 
+                    await JsRuntime.InvokeAsync<string>("WhyNotLang.Canvas.drawRectangle",
                         x.Value, y.Value, width.Value, height.Value, color.Value);
                     return ExpressionValue.Empty;
                 });

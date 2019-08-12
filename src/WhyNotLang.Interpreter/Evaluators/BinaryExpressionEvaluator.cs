@@ -13,14 +13,14 @@ namespace WhyNotLang.Interpreter.Evaluators
         {
             _mainEvaluator = mainEvaluator;
         }
-        
+
         public async Task<ExpressionValue> Eval(IExpression expression)
         {
             if (expression.Type != ExpressionType.Binary)
             {
                 throw new WhyNotLangException("BinaryExpression expected");
             }
-            
+
             var binaryExpression = expression as BinaryExpression;
             var leftExpressionValue = await _mainEvaluator.Eval(binaryExpression.Left);
             var rightExpressionValue = await _mainEvaluator.Eval(binaryExpression.Right);
@@ -40,16 +40,16 @@ namespace WhyNotLang.Interpreter.Evaluators
             switch (left.Type)
             {
                 case ExpressionValueTypes.Number:
-                    return new ExpressionValue(CalculateNumberOperation((int) left.Value, op, (int) right.Value), ExpressionValueTypes.Number);
+                    return new ExpressionValue(CalculateNumberOperation((int)left.Value, op, (int)right.Value), ExpressionValueTypes.Number);
                 case ExpressionValueTypes.String:
                     if (op.Value == "==")
                     {
                         return new ExpressionValue(CastBoolToInt(left.Equals(right)), ExpressionValueTypes.Number);
                     }
-                    
+
                     return new ExpressionValue(CalculateStringOperation((string)left.Value, op, (string)right.Value), ExpressionValueTypes.String);
             }
-            
+
             throw new WhyNotLangException("Unsupported token type");
         }
 
@@ -62,7 +62,7 @@ namespace WhyNotLang.Interpreter.Evaluators
 
             return left + right;
         }
-        
+
         private int CalculateNumberOperation(int left, Token op, int right)
         {
             switch (op.Type)
@@ -92,7 +92,7 @@ namespace WhyNotLang.Interpreter.Evaluators
                 case TokenType.And:
                     return CastBoolToInt(CastIntToBool(left) && CastIntToBool(right));
             }
-            
+
             throw new WhyNotLangException("Unsupported token type");
         }
 
@@ -100,7 +100,7 @@ namespace WhyNotLang.Interpreter.Evaluators
         {
             return val ? 1 : 0;
         }
-        
+
         private bool CastIntToBool(int val)
         {
             return val != 0;

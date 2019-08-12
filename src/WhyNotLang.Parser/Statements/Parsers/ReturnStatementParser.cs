@@ -13,7 +13,7 @@ namespace WhyNotLang.Parser.Statements.Parsers
             _tokenIterator = tokenIterator;
             _expressionParser = expressionParser;
         }
-        
+
         public IStatement Parse()
         {
             var lineNumber = _tokenIterator.CurrentToken.LineNumber;
@@ -21,7 +21,7 @@ namespace WhyNotLang.Parser.Statements.Parsers
             {
                 throw new WhyNotLangException("return expected", lineNumber);
             }
-            
+
             _tokenIterator.GetNextToken(); // Swallow return
 
             IExpression returnExpression = _expressionParser.ParseNextExpression();

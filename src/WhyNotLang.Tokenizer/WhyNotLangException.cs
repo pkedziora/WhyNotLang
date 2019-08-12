@@ -9,8 +9,8 @@ namespace WhyNotLang.Tokenizer
         public WhyNotLangException(string message) : base(message)
         {
         }
-        
-        public WhyNotLangException(string message, int lineNumber, Exception innerException = null) 
+
+        public WhyNotLangException(string message, int lineNumber, Exception innerException = null)
             : base(message, innerException)
         {
             LineNumber = lineNumber;

@@ -15,15 +15,15 @@ namespace WhyNotLang.Interpreter.StatementExecutors
             _expressionEvaluator = expressionEvaluator;
             _mainExecutor = mainExecutor;
         }
-        
+
         public async Task<ExpressionValue> Execute()
         {
             var arrayDeclaration = _mainExecutor.CurrentContext.StatementIterator.CurrentStatement as ArrayDeclarationStatement;
             var arrayName = arrayDeclaration.ArrayName.Value;
             var arraySize = await _expressionEvaluator.Eval(arrayDeclaration.IndexExpression);
-            
+
             _mainExecutor.ProgramState.DeclareArray(arrayName, (int)arraySize.Value, arrayDeclaration.IsGlobal);
-            
+
             return ExpressionValue.Empty;
         }
     }

@@ -1,5 +1,5 @@
-using System.Threading.Tasks;
 using Microsoft.Extensions.DependencyInjection;
+using System.Threading.Tasks;
 using WhyNotLang.Interpreter.Evaluators.ExpressionValues;
 using WhyNotLang.Interpreter.State;
 using WhyNotLang.Tokenizer;
@@ -9,8 +9,8 @@ namespace WhyNotLang.Interpreter.Tests
 {
     public class ArrayAssignmentTests
     {
-        private IProgramState _programState;
-        private IExecutor _executor;
+        private readonly IProgramState _programState;
+        private readonly IExecutor _executor;
 
         public ArrayAssignmentTests()
         {
@@ -26,14 +26,14 @@ namespace WhyNotLang.Interpreter.Tests
                 var x[10]
                 x[0] := 1
             ");
-            
+
             await _executor.ExecuteAll();
 
             var actual = _programState.CurrentScope.Arrays["x"][0].Value;
 
             Assert.Equal(1, actual);
         }
-        
+
         [Fact]
         public async Task Executes2ArrayAssignementsWithComplexExpressions()
         {
@@ -42,7 +42,7 @@ namespace WhyNotLang.Interpreter.Tests
                 x[0] := 1
                 x[1] := (10 * (4/4) + (2 - 1))
             ");
-            
+
             await _executor.ExecuteAll();
 
             var actual0 = _programState.CurrentScope.Arrays["x"][0].Value;
@@ -51,7 +51,7 @@ namespace WhyNotLang.Interpreter.Tests
             Assert.Equal(1, actual0);
             Assert.Equal(11, actual1);
         }
-        
+
         [Fact]
         public async Task ThrowsDuringArrayAssignementWhenUndeclared()
         {
@@ -61,7 +61,7 @@ namespace WhyNotLang.Interpreter.Tests
 
             await Assert.ThrowsAsync<WhyNotLangException>(async () => await _executor.ExecuteAll());
         }
-        
+
         [Fact]
         public async Task ThrowsDuringArrayAssignementWhenOutOfRange()
         {
@@ -72,7 +72,7 @@ namespace WhyNotLang.Interpreter.Tests
 
             await Assert.ThrowsAsync<WhyNotLangException>(async () => await _executor.ExecuteAll());
         }
-        
+
         [Fact]
         public async Task ArrayValueCanBeRetrieved()
         {
@@ -81,16 +81,16 @@ namespace WhyNotLang.Interpreter.Tests
                 x[1] := 2
                 var y:= x[1] 
             ");
-            
+
             await _executor.ExecuteAll();
-            
+
             var actual = _programState.GetVariable("y");
 
             var expected = new ExpressionValue(2, ExpressionValueTypes.Number);
 
             Assert.Equal(expected, actual);
         }
-        
+
         [Fact]
         public async Task ArrayValueUsedInExpressionWithHighPrecedenceOnTheRight()
         {
@@ -99,16 +99,16 @@ namespace WhyNotLang.Interpreter.Tests
                 x[1] := 2
                 var y:= 1 + x[1] * 3 
             ");
-            
+
             await _executor.ExecuteAll();
-            
+
             var actual = _programState.GetVariable("y");
 
             var expected = new ExpressionValue(7, ExpressionValueTypes.Number);
 
             Assert.Equal(expected, actual);
         }
-        
+
         [Fact]
         public async Task ArrayCanBePassedByReferenceToFunctionAndModified()
         {
@@ -120,16 +120,16 @@ namespace WhyNotLang.Interpreter.Tests
                 var bar[10]
                 foo(bar)         
             ");
-            
+
             await _executor.ExecuteAll();
-            
+
             var actual = _programState.GetArrayItem("bar", 0);
 
             var expected = new ExpressionValue(100, ExpressionValueTypes.Number);
 
             Assert.Equal(expected, actual);
         }
-        
+
         [Fact]
         public async Task GlobalArrayValueAssignedInFunction()
         {
@@ -144,16 +144,16 @@ namespace WhyNotLang.Interpreter.Tests
                 foo()
                 var y:= 1 + x[1] * 3 
             ");
-            
+
             await _executor.ExecuteAll();
-            
+
             var actual = _programState.GetVariable("y");
 
             var expected = new ExpressionValue(7, ExpressionValueTypes.Number);
 
             Assert.Equal(expected, actual);
         }
-        
+
         [Fact]
         public async Task LocalArrayHidesGlobalArrayInFunction()
         {
@@ -169,9 +169,9 @@ namespace WhyNotLang.Interpreter.Tests
                 foo()
                 var y:= x[1] 
             ");
-            
+
             await _executor.ExecuteAll();
-            
+
             var actual = _programState.GetVariable("y");
 
             var expected = new ExpressionValue(1, ExpressionValueTypes.Number);

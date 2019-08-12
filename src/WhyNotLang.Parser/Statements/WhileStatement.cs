@@ -15,7 +15,7 @@ namespace WhyNotLang.Parser.Statements
             Body = body;
             LineNumber = lineNumber;
         }
-        
+
         public override bool Equals(object obj)
         {
             var statement = obj as WhileStatement;
@@ -23,8 +23,8 @@ namespace WhyNotLang.Parser.Statements
             {
                 return false;
             }
-            
-            return Condition.Equals(statement.Condition) && 
+
+            return Condition.Equals(statement.Condition) &&
                    Body.Equals(statement.Body) &&
                    Type == statement.Type;
         }
@@ -37,7 +37,7 @@ namespace WhyNotLang.Parser.Statements
                 hash = hash * 23 + Condition.GetHashCode();
                 hash = hash * 23 + Body.GetHashCode();
                 hash = hash * 23 + Type.GetHashCode();
-                
+
                 return hash;
             }
         }

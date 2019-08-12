@@ -20,7 +20,7 @@ namespace WhyNotLang.Interpreter.State
             BuiltinFunctionCollection = builtinFunctionCollection;
             _scopes = new List<Scope>();
             _functions = new Dictionary<string, FunctionDeclarationStatement>();
-            
+
             AddScope("Global", true);
             AddScope("Main");
             builtinFunctionCollection.DeclareBuiltinFunctions(this);
@@ -52,20 +52,20 @@ namespace WhyNotLang.Interpreter.State
             {
                 throw new WhyNotLangException($"Function {identifier} is not defined");
             }
-            
+
             return _functions[identifier];
         }
-        
+
         public void DeclareFunction(string identifier, FunctionDeclarationStatement statement)
         {
             if (_functions.ContainsKey(identifier))
             {
                 throw new WhyNotLangException($"Function {identifier} has already been declared");
             }
-            
+
             _functions.Add(identifier, statement);
         }
-        
+
         public ExpressionValue GetVariable(string identifier)
         {
             var result = FindScopeForIdentifier(identifier);
@@ -74,15 +74,15 @@ namespace WhyNotLang.Interpreter.State
             {
                 if (result.isArray)
                 {
-                    throw new WhyNotLangException($"{identifier} is an array. Variable expected");    
+                    throw new WhyNotLangException($"{identifier} is an array. Variable expected");
                 }
-                
+
                 return result.scope.VariableValues[identifier];
             }
-            
+
             throw new WhyNotLangException($"Variable {identifier} is not defined");
         }
-        
+
         public ExpressionValue GetArrayItem(string identifier, int index)
         {
             var result = FindScopeForIdentifier(identifier);
@@ -91,20 +91,20 @@ namespace WhyNotLang.Interpreter.State
             {
                 if (!result.isArray)
                 {
-                    throw new WhyNotLangException($"{identifier} is variable. Array expected");    
+                    throw new WhyNotLangException($"{identifier} is variable. Array expected");
                 }
-                
+
                 if (index >= result.scope.Arrays[identifier].Length)
                 {
-                    throw new WhyNotLangException($"Index {index} is out of range"); 
+                    throw new WhyNotLangException($"Index {index} is out of range");
                 }
-                
+
                 return result.scope.Arrays[identifier][index];
             }
-            
+
             throw new WhyNotLangException($"Array {identifier} is not defined");
         }
-        
+
         public ExpressionValue GetArrayReference(string identifier)
         {
             var result = FindScopeForIdentifier(identifier);
@@ -113,15 +113,15 @@ namespace WhyNotLang.Interpreter.State
             {
                 if (!result.isArray)
                 {
-                    throw new WhyNotLangException($"{identifier} is variable. Array expected");    
+                    throw new WhyNotLangException($"{identifier} is variable. Array expected");
                 }
-                
+
                 return new ExpressionValue(result.scope.Arrays[identifier], ExpressionValueTypes.ArrayReference);
             }
-            
+
             throw new WhyNotLangException($"Array {identifier} is not defined");
         }
-        
+
         public void AssignArrayItem(string identifier, int index, ExpressionValue value)
         {
             var result = FindScopeForIdentifier(identifier);
@@ -130,19 +130,19 @@ namespace WhyNotLang.Interpreter.State
             {
                 if (!result.isArray)
                 {
-                    throw new WhyNotLangException($"{identifier} is variable. Array expected");    
+                    throw new WhyNotLangException($"{identifier} is variable. Array expected");
                 }
 
                 if (index >= result.scope.Arrays[identifier].Length)
                 {
-                    throw new WhyNotLangException($"Index {index} is out of range"); 
+                    throw new WhyNotLangException($"Index {index} is out of range");
                 }
-                
+
                 result.scope.Arrays[identifier][index] = value;
-                
+
                 return;
             }
-            
+
             throw new WhyNotLangException($"Array {identifier} is not defined");
         }
 
@@ -152,13 +152,13 @@ namespace WhyNotLang.Interpreter.State
                    !scope.Arrays.ContainsKey(identifier) &&
                    !_functions.ContainsKey(identifier);
         }
-        
+
         public bool IsVariableDefined(string identifier)
         {
             var result = FindScopeForIdentifier(identifier);
             return result.scope != null && result.scope.VariableValues.ContainsKey(identifier);
         }
-        
+
         public bool IsArrayDefined(string identifier)
         {
             var result = FindScopeForIdentifier(identifier);
@@ -183,12 +183,12 @@ namespace WhyNotLang.Interpreter.State
             {
                 array[i] = new ExpressionValue(0, ExpressionValueTypes.Number);
             }
-            
+
             scope.Arrays.Add(identifier, array);
 
             return array;
         }
-        
+
         public ExpressionValue DeclareVariable(string identifier, ExpressionValue value, bool isGlobal = false)
         {
             var scope = isGlobal ? GlobalScope : CurrentScope;
@@ -196,12 +196,12 @@ namespace WhyNotLang.Interpreter.State
             {
                 throw new WhyNotLangException($"{identifier} has already been declared");
             }
-            
+
             scope.VariableValues.Add(identifier, value);
 
             return value;
         }
-        
+
         public void DeclareArrayByReference(string identifier, ExpressionValue expressionValue)
         {
             if (!CanBeDeclaredInScope(identifier, CurrentScope))
@@ -213,10 +213,10 @@ namespace WhyNotLang.Interpreter.State
             {
                 throw new WhyNotLangException($"{identifier} is not an array reference");
             }
-            
-            CurrentScope.Arrays[identifier] = (ExpressionValue[]) expressionValue.Value;
+
+            CurrentScope.Arrays[identifier] = (ExpressionValue[])expressionValue.Value;
         }
-        
+
         public void AssignVariable(string identifier, ExpressionValue value)
         {
             var result = FindScopeForIdentifier(identifier);
@@ -225,9 +225,9 @@ namespace WhyNotLang.Interpreter.State
             {
                 if (result.isArray)
                 {
-                    throw new WhyNotLangException($"{identifier} is an array. Variable expected");    
+                    throw new WhyNotLangException($"{identifier} is an array. Variable expected");
                 }
-                
+
                 result.scope.VariableValues[identifier] = value;
                 return;
             }
@@ -245,7 +245,7 @@ namespace WhyNotLang.Interpreter.State
                 {
                     return (_scopes[scopeIndex], false);
                 }
-                
+
                 if (_scopes[scopeIndex].Arrays.ContainsKey(identifier))
                 {
                     return (_scopes[scopeIndex], true);
@@ -256,12 +256,12 @@ namespace WhyNotLang.Interpreter.State
             {
                 return (GlobalScope, false);
             }
-                
+
             if (GlobalScope.Arrays.ContainsKey(identifier))
             {
                 return (GlobalScope, true);
             }
-            
+
             return (null, false);
         }
     }

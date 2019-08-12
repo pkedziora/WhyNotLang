@@ -1,5 +1,5 @@
-using System.Collections.Generic;
 using Microsoft.Extensions.DependencyInjection;
+using System.Collections.Generic;
 using WhyNotLang.Interpreter;
 using WhyNotLang.Parser.Statements;
 using WhyNotLang.Test.Common;
@@ -9,7 +9,7 @@ namespace WhyNotLang.Parser.Tests.Statements
 {
     public class WhileStatementTests
     {
-        private IParser _parser;
+        private readonly IParser _parser;
 
         public WhileStatementTests()
         {
@@ -26,16 +26,16 @@ namespace WhyNotLang.Parser.Tests.Statements
 
             var expectedCondition = TestHelpers.GetBinaryExpressionWithIdentifiers("x", "<", "y");
             var expectedBody = TestHelpers.GetVariableAssignementStatement("x", TestHelpers.GetBinaryExpressionWithIdentifiers("x", "+", 1));
-            
+
             var expected = new WhileStatement(
-               expectedCondition, 
+               expectedCondition,
                expectedBody);
-            
-            var actual =  _parser.ParseNext();
-            
+
+            var actual = _parser.ParseNext();
+
             Assert.Equal(expected, actual);
         }
-        
+
         [Fact]
         public void ParsesWhileStatementWithBlock()
         {
@@ -51,36 +51,36 @@ namespace WhyNotLang.Parser.Tests.Statements
             {
                 TestHelpers.GetVariableAssignementStatement("x", TestHelpers.GetBinaryExpressionWithIdentifiers("x", "+", 1)),
                 TestHelpers.GetVariableAssignementStatement("y", TestHelpers.GetBinaryExpressionWithIdentifiers("y", "-", 2))
-            }); 
-            
+            });
+
             var expected = new WhileStatement(
-                expectedCondition, 
+                expectedCondition,
                 expectedBody);
-            
+
             var actual = _parser.ParseNext();
-            
+
             Assert.Equal(expected, actual);
         }
-        
+
         [Fact]
         public void ParsesWhileStatementWithComplexCondition()
         {
             _parser.Initialise(@"
                 while (((1 == 2) and !(4 > 3)))
                     x := 1");
-            
+
             var left = TestHelpers.GetBinaryExpression(1, "==", 2);
-            var right = TestHelpers.GetUnaryExpression("!",TestHelpers.GetBinaryExpression(4, ">", 3));
+            var right = TestHelpers.GetUnaryExpression("!", TestHelpers.GetBinaryExpression(4, ">", 3));
             var expectedCondition = TestHelpers.GetBinaryExpression(left, "and", right);
-            
+
             var expectedBody = TestHelpers.GetVariableAssignementStatement("x", TestHelpers.GetValueExpression(1));
-            
+
             var expected = new WhileStatement(
-                expectedCondition, 
+                expectedCondition,
                 expectedBody);
-            
+
             var actual = _parser.ParseNext();
-            
+
             Assert.Equal(expected, actual);
         }
     }

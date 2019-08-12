@@ -11,7 +11,7 @@ namespace WhyNotLang.Interpreter.Evaluators.ExpressionValues
             Value = value;
             Type = type;
         }
-        
+
         public override bool Equals(object obj)
         {
             var expressionValue = obj as ExpressionValue;
@@ -19,7 +19,7 @@ namespace WhyNotLang.Interpreter.Evaluators.ExpressionValues
             {
                 return false;
             }
-            
+
             return Value.Equals(expressionValue.Value) &&
                    Type == expressionValue.Type;
         }
@@ -31,7 +31,7 @@ namespace WhyNotLang.Interpreter.Evaluators.ExpressionValues
                 int hash = 17;
                 hash = hash * 23 + Value.GetHashCode();
                 hash = hash * 23 + Type.GetHashCode();
-                
+
                 return hash;
             }
         }

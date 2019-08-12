@@ -16,14 +16,14 @@ namespace WhyNotLang.Interpreter.StatementExecutors
             _expressionEvaluator = expressionEvaluator;
             _mainExecutor = mainExecutor;
         }
-        
+
         public async Task<ExpressionValue> Execute()
         {
             var ifStatement = _mainExecutor.CurrentContext.StatementIterator.CurrentStatement as IfStatement;
             var conditionValue = await _expressionEvaluator.Eval(ifStatement.Condition);
 
             IStatement statementToExecute;
-            if ((int) conditionValue.Value != 0)
+            if ((int)conditionValue.Value != 0)
             {
                 statementToExecute = ifStatement.Body;
             }
@@ -31,12 +31,12 @@ namespace WhyNotLang.Interpreter.StatementExecutors
             {
                 statementToExecute = ifStatement.ElseStatement;
             }
-            
-            
-            _mainExecutor.CreateNewContext(new List<IStatement> {statementToExecute});
+
+
+            _mainExecutor.CreateNewContext(new List<IStatement> { statementToExecute });
             var value = await _mainExecutor.ExecuteAll();
             _mainExecutor.LeaveContext();
-            
+
             return value;
         }
     }

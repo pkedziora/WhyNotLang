@@ -5,12 +5,12 @@ namespace WhyNotLang.Tokenizer.Tests
 {
     public class SingleTokenTests
     {
-        private Tokenizer _tokenizer;
+        private readonly Tokenizer _tokenizer;
         public SingleTokenTests()
         {
             _tokenizer = new Tokenizer(new TokenReader(), new TokenFactory());
         }
-        
+
         [Theory]
         [InlineData("var", TokenType.Var)]
         [InlineData("begin", TokenType.Begin)]

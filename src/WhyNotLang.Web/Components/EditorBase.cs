@@ -1,11 +1,12 @@
-﻿using System;
+﻿using Blazor.Extensions.Storage;
+using Microsoft.AspNetCore.Components;
+using Microsoft.JSInterop;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Components;
-using Microsoft.JSInterop;
-using WhyNotLang.Interpreter;
 using WhyNotLang.EmbeddedResources.Reader;
+using WhyNotLang.Interpreter;
 using WhyNotLang.Tokenizer;
 
 namespace WhyNotLang.Web.Components
@@ -16,20 +17,38 @@ namespace WhyNotLang.Web.Components
         [Inject] IResourceReader SampleReader { get; set; }
         [Inject] IJSRuntime JsRuntime { get; set; }
         [Inject] IUriHelper UriHelper { get; set; }
+        [Inject] LocalStorage LocalStorage { get; set; }
+        [Parameter] public string SelectedSample { get; set; } = "";
 
+        public string programCode { get; set; }
+        protected string lastSavedKey = "LastSaved";
         protected TextIO textIO { get; set; }
         protected bool isRunning { get; set; } = false;
         protected List<string> CodeSamples { get; set; } = new List<string>();
-        public string programCode { get; set; }
+        private readonly string _localStorageKey = "customProgram";
 
-        [Parameter]
-        public string SelectedSample { get; set; } = "";
-        protected override void OnInit()
+        protected override async Task OnInitAsync()
         {
             CodeSamples = SampleReader.GetSampleList().ToList();
-            SelectedSample = SampleReader.FindProgramNameCaseInsensitive(SelectedSample);
-            SelectedSample = string.IsNullOrWhiteSpace(SelectedSample) ? "Pong" : SelectedSample;
-            programCode = SampleReader.ReadSample(SelectedSample);
+            var fromStorage = await LocalStorage.GetItem<string>(_localStorageKey);
+            if (string.IsNullOrWhiteSpace(SelectedSample))
+            {
+                if (!string.IsNullOrEmpty(fromStorage))
+                {
+                    SelectedSample = lastSavedKey;
+                }
+                else
+                {
+                    SelectedSample = "Pong";
+                }
+            }
+
+            programCode = await ReadSample(SelectedSample);
+        }
+
+        protected async Task Save()
+        {
+            await LocalStorage.SetItem(_localStorageKey, programCode);
         }
 
         protected override async Task OnAfterRenderAsync()
@@ -37,11 +56,10 @@ namespace WhyNotLang.Web.Components
             await JsRuntime.InvokeAsync<string>("WhyNotLang.Text.allowTextAreaTabs", "txtProgramCode");
         }
 
-        protected void OnSampleSelected(UIChangeEventArgs e)
+        protected async Task OnSampleSelected(UIChangeEventArgs e)
         {
             var sampleName = e.Value.ToString();
-            var sampleCode = SampleReader.ReadSample(sampleName);
-            programCode = sampleCode;
+            programCode = await ReadSample(sampleName);
             UriHelper.NavigateTo($"/sample/{sampleName.ToLower()}");
         }
 
@@ -79,6 +97,19 @@ namespace WhyNotLang.Web.Components
             }
 
             isRunning = false;
+        }
+
+        private async Task<string> ReadSample(string sampleName)
+        {
+            var fromStorage = await LocalStorage.GetItem<string>(_localStorageKey);
+            if (sampleName.Equals(lastSavedKey, StringComparison.OrdinalIgnoreCase))
+            {
+                SelectedSample = lastSavedKey;
+                return fromStorage ?? "";
+            }
+
+            SelectedSample = SampleReader.FindProgramNameCaseInsensitive(sampleName);
+            return SampleReader.ReadSample(SelectedSample);
         }
     }
 }

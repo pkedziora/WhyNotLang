@@ -8,8 +8,8 @@ namespace WhyNotLang.Interpreter.Tests
 {
     public class FunctionCallStatementTests
     {
-        private IProgramState _programState;
-        private IExecutor _executor;
+        private readonly IProgramState _programState;
+        private readonly IExecutor _executor;
 
         public FunctionCallStatementTests()
         {
@@ -29,16 +29,16 @@ namespace WhyNotLang.Interpreter.Tests
                 end
                 var x:= foo()         
             ");
-            
+
             await _executor.ExecuteAll();
-            
+
             var actual = _programState.GetVariable("x");
 
             var expected = new ExpressionValue(100, ExpressionValueTypes.Number);
 
             Assert.Equal(expected, actual);
         }
-        
+
         [Fact]
         public async Task ExecutesFunctionWithParams()
         {
@@ -50,16 +50,16 @@ namespace WhyNotLang.Interpreter.Tests
                 end
                 var z := foo(100)         
             ");
-            
+
             await _executor.ExecuteAll();
-            
+
             var actual = _programState.GetVariable("z");
 
             var expected = new ExpressionValue(101, ExpressionValueTypes.Number);
 
             Assert.Equal(expected, actual);
         }
-        
+
         [Fact]
         public async Task ExecutesFunctionWith2Params()
         {
@@ -71,16 +71,16 @@ namespace WhyNotLang.Interpreter.Tests
                 end
                 var x:= foo(2,3)         
             ");
-            
+
             await _executor.ExecuteAll();
-            
+
             var actual = _programState.GetVariable("x");
 
             var expected = new ExpressionValue(6, ExpressionValueTypes.Number);
 
             Assert.Equal(expected, actual);
         }
-        
+
         [Fact]
         public async Task FunctionCanBeUsedWithinExpression()
         {
@@ -91,9 +91,9 @@ namespace WhyNotLang.Interpreter.Tests
                 end
                 var x:= 1 + square(2) * 3
             ");
-            
+
             await _executor.ExecuteAll();
-            
+
             var actual = _programState.GetVariable("x");
 
             var expected = new ExpressionValue(13, ExpressionValueTypes.Number);

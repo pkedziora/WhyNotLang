@@ -1,5 +1,5 @@
-using System.Collections.Generic;
 using Microsoft.Extensions.DependencyInjection;
+using System.Collections.Generic;
 using WhyNotLang.Interpreter;
 using WhyNotLang.Parser.Statements;
 using WhyNotLang.Test.Common;
@@ -10,7 +10,7 @@ namespace WhyNotLang.Parser.Tests.Statements
 {
     public class IfStatementTests
     {
-        private IParser _parser;
+        private readonly IParser _parser;
 
         public IfStatementTests()
         {
@@ -27,64 +27,64 @@ namespace WhyNotLang.Parser.Tests.Statements
 
             var expectedCondition = TestHelpers.GetBinaryExpressionWithIdentifiers("x", "<", "y");
             var expectedBody = TestHelpers.GetVariableAssignementStatement("x", TestHelpers.GetValueExpression(1));
-            
+
             var expected = new IfStatement(
-               expectedCondition, 
+               expectedCondition,
                expectedBody);
-            
+
             var actual = _parser.ParseNext();
-            
+
             Assert.Equal(expected, actual);
         }
-        
+
         [Fact]
         public void ParsesIfStatementWithComplexCondition()
         {
             _parser.Initialise(@"
                 if (((1 == 2) and !(4 > 3)))
                     x := 1");
-            
+
             var left = TestHelpers.GetBinaryExpression(1, "==", 2);
-            var right = TestHelpers.GetUnaryExpression("!",TestHelpers.GetBinaryExpression(4, ">", 3));
+            var right = TestHelpers.GetUnaryExpression("!", TestHelpers.GetBinaryExpression(4, ">", 3));
             var expectedCondition = TestHelpers.GetBinaryExpression(left, "and", right);
-            
+
             var expectedBody = TestHelpers.GetVariableAssignementStatement("x", TestHelpers.GetValueExpression(1));
-            
+
             var expected = new IfStatement(
-                expectedCondition, 
+                expectedCondition,
                 expectedBody);
-            
+
             var actual = _parser.ParseNext();
-            
+
             Assert.Equal(expected, actual);
         }
-        
+
         [Fact]
         public void ParsesIfStatementWithComplexConditionAndComplexBody()
         {
             _parser.Initialise(@"
                 if (((1 == 2) and !(4 > 3)))
                     var x := (1 + 2) * 3");
-            
+
             var left = TestHelpers.GetBinaryExpression(1, "==", 2);
-            var right = TestHelpers.GetUnaryExpression("!",TestHelpers.GetBinaryExpression(4, ">", 3));
+            var right = TestHelpers.GetUnaryExpression("!", TestHelpers.GetBinaryExpression(4, ">", 3));
             var expectedCondition = TestHelpers.GetBinaryExpression(left, "and", right);
-            
+
             var inner = TestHelpers.GetBinaryExpression(1, "+", 2);
             var expression = TestHelpers.GetBinaryExpression(inner, "*", 3);
             var expectedBody = new VariableDeclarationStatement(
-                new Token(TokenType.Identifier, "x"), 
+                new Token(TokenType.Identifier, "x"),
                 expression);
 
             var expected = new IfStatement(
-                expectedCondition, 
+                expectedCondition,
                 expectedBody);
-            
+
             var actual = _parser.ParseNext();
-            
+
             Assert.Equal(expected, actual);
         }
-        
+
         [Fact]
         public void ParsesSimpleIfElseStatement()
         {
@@ -97,17 +97,17 @@ namespace WhyNotLang.Parser.Tests.Statements
             var expectedCondition = TestHelpers.GetBinaryExpressionWithIdentifiers("x", "<", "y");
             var expectedBody = TestHelpers.GetVariableAssignementStatement("x", TestHelpers.GetValueExpression(1));
             var expectedElse = TestHelpers.GetVariableAssignementStatement("y", TestHelpers.GetValueExpression(2));
-            
+
             var expected = new IfStatement(
-                expectedCondition, 
+                expectedCondition,
                 expectedBody,
                 expectedElse);
-            
+
             var actual = _parser.ParseNext();
-            
+
             Assert.Equal(expected, actual);
         }
-        
+
         [Fact]
         public void ParsesIfElseIfElseStatement()
         {
@@ -121,22 +121,22 @@ namespace WhyNotLang.Parser.Tests.Statements
 
             var firstExpectedCondition = TestHelpers.GetBinaryExpressionWithIdentifiers("x", "<", "y");
             var firstExpectedBody = TestHelpers.GetVariableAssignementStatement("x", TestHelpers.GetValueExpression(1));
-            
+
             var secondExpectedCondition = TestHelpers.GetBinaryExpressionWithIdentifiers("y", "==", "z");
             var secondExpectedBody = TestHelpers.GetVariableAssignementStatement("y", TestHelpers.GetBinaryExpression(2, "*", 3));
-            
+
             var thirdExpectedBody = TestHelpers.GetVariableAssignementStatement("z", TestHelpers.GetValueExpression(4));
-            
+
             var expected = new IfStatement(
-                firstExpectedCondition, 
+                firstExpectedCondition,
                 firstExpectedBody,
                 new IfStatement(secondExpectedCondition, secondExpectedBody, thirdExpectedBody));
-            
+
             var actual = _parser.ParseNext();
-            
+
             Assert.Equal(expected, actual);
         }
-        
+
         [Fact]
         public void ParsesIfElseIfElseStatementWithBlock()
         {
@@ -153,9 +153,9 @@ namespace WhyNotLang.Parser.Tests.Statements
 
             var firstExpectedCondition = TestHelpers.GetBinaryExpressionWithIdentifiers("x", "<", "y");
             var firstExpectedBody = TestHelpers.GetVariableAssignementStatement("x", TestHelpers.GetValueExpression(1));
-            
+
             var secondExpectedCondition = TestHelpers.GetBinaryExpressionWithIdentifiers("y", "==", "z");
-            var secondExpectedBody = 
+            var secondExpectedBody =
                 new BlockStatement(new List<IStatement>()
                 {
                     TestHelpers.GetVariableAssignementStatement("y", TestHelpers.GetBinaryExpression(2, "*", 3)),
@@ -163,17 +163,17 @@ namespace WhyNotLang.Parser.Tests.Statements
                 });
 
             var thirdExpectedBody = TestHelpers.GetVariableAssignementStatement("z", TestHelpers.GetValueExpression(4));
-            
+
             var expected = new IfStatement(
-                firstExpectedCondition, 
+                firstExpectedCondition,
                 firstExpectedBody,
                 new IfStatement(secondExpectedCondition, secondExpectedBody, thirdExpectedBody));
-            
+
             var actual = _parser.ParseNext();
-            
+
             Assert.Equal(expected, actual);
         }
-        
+
         [Fact]
         public void ParsesIfStatementWithBlock()
         {
@@ -189,14 +189,14 @@ namespace WhyNotLang.Parser.Tests.Statements
             {
                 TestHelpers.GetVariableAssignementStatement("x", TestHelpers.GetValueExpression(1)),
                 TestHelpers.GetVariableAssignementStatement("z", TestHelpers.GetValueExpression(2))
-            }); 
-            
+            });
+
             var expected = new IfStatement(
-                expectedCondition, 
+                expectedCondition,
                 expectedBody);
-            
+
             var actual = _parser.ParseNext();
-            
+
             Assert.Equal(expected, actual);
         }
     }

@@ -10,9 +10,9 @@ namespace WhyNotLang.Interpreter.Tests
 {
     public class ExpressionEvaluatorTests
     {
-        private IExpressionEvaluator _expressionEvaluator;
-        private IExpressionParser _expressionParser;
-        private IProgramState _programState;
+        private readonly IExpressionEvaluator _expressionEvaluator;
+        private readonly IExpressionParser _expressionParser;
+        private readonly IProgramState _programState;
 
         public ExpressionEvaluatorTests()
         {
@@ -21,7 +21,7 @@ namespace WhyNotLang.Interpreter.Tests
             _programState = serviceProvider.GetService<IProgramState>();
             _expressionEvaluator = serviceProvider.GetService<IExpressionEvaluator>();
         }
-        
+
         [Theory]
         [InlineData("1", 1)]
         [InlineData("1 + 2", 3)]
@@ -37,10 +37,10 @@ namespace WhyNotLang.Interpreter.Tests
 
             var actual = await _expressionEvaluator.Eval(input);
             var expected = new ExpressionValue(expectedResult, ExpressionValueTypes.Number);
-            
+
             Assert.Equal(expected, actual);
         }
-        
+
         [Theory]
         [InlineData("b", 2)]
         [InlineData("1 + a", 2)]
@@ -52,18 +52,18 @@ namespace WhyNotLang.Interpreter.Tests
         [InlineData("2*(1 + b) * -c", -18)]
         public async Task EvalBinaryExpressionWithNumbersAndVariables(string strExpression, int expectedResult)
         {
-            _programState.DeclareVariable("a", new ExpressionValue(1,ExpressionValueTypes.Number));
-            _programState.DeclareVariable("b", new ExpressionValue(2,ExpressionValueTypes.Number));
-            _programState.DeclareVariable("c", new ExpressionValue(3,ExpressionValueTypes.Number));
-            
+            _programState.DeclareVariable("a", new ExpressionValue(1, ExpressionValueTypes.Number));
+            _programState.DeclareVariable("b", new ExpressionValue(2, ExpressionValueTypes.Number));
+            _programState.DeclareVariable("c", new ExpressionValue(3, ExpressionValueTypes.Number));
+
             var input = _expressionParser.ParseExpression(strExpression);
 
             var actual = await _expressionEvaluator.Eval(input);
             var expected = new ExpressionValue(expectedResult, ExpressionValueTypes.Number);
-            
+
             Assert.Equal(expected, actual);
         }
-        
+
         [Theory]
         [InlineData("+1", 1)]
         [InlineData("+-1", -1)]
@@ -77,10 +77,10 @@ namespace WhyNotLang.Interpreter.Tests
 
             var actual = await _expressionEvaluator.Eval(input);
             var expected = new ExpressionValue(expectedResult, ExpressionValueTypes.Number);
-            
+
             Assert.Equal(expected, actual);
         }
-        
+
         [Theory]
         [InlineData("1 < 2", 1)]
         [InlineData("1 > 2", 0)]
@@ -95,10 +95,10 @@ namespace WhyNotLang.Interpreter.Tests
 
             var actual = await _expressionEvaluator.Eval(input);
             var expected = new ExpressionValue(expectedResult, ExpressionValueTypes.Number);
-            
+
             Assert.Equal(expected, actual);
         }
-        
+
         [Fact]
         public async Task EvalSingleString()
         {
@@ -106,7 +106,7 @@ namespace WhyNotLang.Interpreter.Tests
 
             var actual = await _expressionEvaluator.Eval(input);
             var expected = new ExpressionValue("abc", ExpressionValueTypes.String);
-            
+
             Assert.Equal(expected, actual);
         }
 
@@ -117,10 +117,10 @@ namespace WhyNotLang.Interpreter.Tests
 
             var actual = await _expressionEvaluator.Eval(input);
             var expected = new ExpressionValue("abcdef", ExpressionValueTypes.String);
-            
+
             Assert.Equal(expected, actual);
         }
-        
+
         [Theory]
         [InlineData("\"abc\" == \"def\"", 0)]
         [InlineData("\"abc\" == \"abc\"", 1)]
@@ -130,7 +130,7 @@ namespace WhyNotLang.Interpreter.Tests
 
             var actual = await _expressionEvaluator.Eval(input);
             var expected = new ExpressionValue(expectedResult, ExpressionValueTypes.Number);
-            
+
             Assert.Equal(expected, actual);
         }
     }

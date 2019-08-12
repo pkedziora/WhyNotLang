@@ -10,6 +10,6 @@ namespace WhyNotLang.Parser.Statements
         public VariableAssignmentStatement(Token variableName, IExpression expression, int lineNumber = 0) : base(variableName, expression, false, lineNumber)
         {
         }
-        
+
     }
 }

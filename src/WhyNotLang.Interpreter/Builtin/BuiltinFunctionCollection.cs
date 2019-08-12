@@ -24,7 +24,7 @@ namespace WhyNotLang.Interpreter.Builtin
             var functionDescription = new BuiltinFunctionDescription(functionName, implementation);
             Add(functionDescription);
         }
-        
+
         public void DeclareBuiltinFunctions(IProgramState programState)
         {
             foreach (var description in FunctionDescriptions)
@@ -59,8 +59,8 @@ namespace WhyNotLang.Interpreter.Builtin
                         throw new Exception("String expected");
                     }
 
-                    return await Task.FromResult(new ExpressionValue(int.Parse((string) str.Value), ExpressionValueTypes.Number));
-            });
+                    return await Task.FromResult(new ExpressionValue(int.Parse((string)str.Value), ExpressionValueTypes.Number));
+                });
 
             Add("Delay",
                 async arguments =>

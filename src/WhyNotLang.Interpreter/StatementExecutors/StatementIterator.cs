@@ -18,7 +18,7 @@ namespace WhyNotLang.Interpreter.StatementExecutors
             _statements = statements;
             _currentIndex = 0;
         }
-        
+
         public void InitStatements(List<IStatement> statements)
         {
             _statements = statements;
@@ -44,7 +44,7 @@ namespace WhyNotLang.Interpreter.StatementExecutors
             {
                 return new EofStatement();
             }
-            
+
             return _statements[peekIndex];
         }
 

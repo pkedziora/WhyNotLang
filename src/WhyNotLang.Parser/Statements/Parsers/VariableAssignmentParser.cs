@@ -12,15 +12,15 @@ namespace WhyNotLang.Parser.Statements.Parsers
             _tokenIterator = tokenIterator;
             _expressionParser = expressionParser;
         }
-        
+
         public IStatement Parse()
         {
             var variableName = _tokenIterator.CurrentToken;
             if (variableName.Type != TokenType.Identifier)
             {
-                throw new WhyNotLangException("identifier expected", _tokenIterator.CurrentToken.LineNumber);    
+                throw new WhyNotLangException("identifier expected", _tokenIterator.CurrentToken.LineNumber);
             }
-            
+
             _tokenIterator.GetNextToken();
             if (_tokenIterator.CurrentToken.Type != TokenType.Assign)
             {

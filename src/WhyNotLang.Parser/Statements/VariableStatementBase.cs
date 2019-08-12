@@ -12,7 +12,7 @@ namespace WhyNotLang.Parser.Statements
         public abstract StatementType Type { get; }
 
         public bool IsGlobal { get; }
-        
+
         public VariableStatementBase(Token variableName, IExpression expression, bool isGlobal = false, int lineNumber = 0)
         {
             VariableName = variableName;
@@ -20,7 +20,7 @@ namespace WhyNotLang.Parser.Statements
             LineNumber = lineNumber;
             IsGlobal = isGlobal;
         }
-        
+
         public override bool Equals(object obj)
         {
             var statement = obj as VariableStatementBase;
@@ -44,7 +44,7 @@ namespace WhyNotLang.Parser.Statements
                 hash = hash * 23 + Expression.GetHashCode();
                 hash = hash * 23 + IsGlobal.GetHashCode();
                 hash = hash * 23 + Type.GetHashCode();
-                
+
                 return hash;
             }
         }

@@ -11,7 +11,7 @@ namespace WhyNotLang.Interpreter.State
 
         public Dictionary<string, ExpressionValue[]> Arrays { get; }
         public bool IsFunctionScope { get; }
-        
+
         public Scope(string name, bool isFunctionScope = false)
         {
             Name = name;

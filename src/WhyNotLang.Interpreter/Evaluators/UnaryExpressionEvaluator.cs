@@ -13,14 +13,14 @@ namespace WhyNotLang.Interpreter.Evaluators
         {
             _mainEvaluator = mainEvaluator;
         }
-        
+
         public async Task<ExpressionValue> Eval(IExpression expression)
         {
             if (expression.Type != ExpressionType.Unary)
             {
                 throw new WhyNotLangException("UnaryExpression expected");
             }
-            
+
             var unaryExpression = expression as UnaryExpression;
             var innerExpressionValue = await _mainEvaluator.Eval(unaryExpression.Inner);
             var result =
@@ -35,10 +35,10 @@ namespace WhyNotLang.Interpreter.Evaluators
             {
                 throw new WhyNotLangException("Number expression expected");
             }
-            
+
             return new ExpressionValue(CalculateNumberOperation(op, (int)inner.Value), ExpressionValueTypes.Number);
         }
-        
+
         private int CalculateNumberOperation(Token op, int value)
         {
             switch (op.Type)
@@ -50,7 +50,7 @@ namespace WhyNotLang.Interpreter.Evaluators
                 case TokenType.Not:
                     return value != 0 ? 0 : 1;
             }
-            
+
             throw new WhyNotLangException("Unsupported token type");
         }
     }

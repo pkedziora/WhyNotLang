@@ -4,9 +4,9 @@ namespace WhyNotLang.Parser.Expressions
 {
     public class UnaryExpression : IExpression
     {
-        public IExpression Inner { get;  }
+        public IExpression Inner { get; }
         public Token Operator { get; }
-        
+
         public ExpressionType Type => ExpressionType.Unary;
 
         public UnaryExpression(IExpression inner, Token operatorToken)
@@ -14,7 +14,7 @@ namespace WhyNotLang.Parser.Expressions
             Inner = inner;
             Operator = operatorToken;
         }
-        
+
         public override bool Equals(object obj)
         {
             var expression = obj as UnaryExpression;
@@ -22,7 +22,7 @@ namespace WhyNotLang.Parser.Expressions
             {
                 return false;
             }
-            
+
             return Inner.Equals(expression.Inner) &&
                    Operator.Equals(expression.Operator) &&
                    Type == expression.Type;
@@ -36,7 +36,7 @@ namespace WhyNotLang.Parser.Expressions
                 hash = hash * 23 + Inner.GetHashCode();
                 hash = hash * 23 + Operator.GetHashCode();
                 hash = hash * 23 + Type.GetHashCode();
-                
+
                 return hash;
             }
         }

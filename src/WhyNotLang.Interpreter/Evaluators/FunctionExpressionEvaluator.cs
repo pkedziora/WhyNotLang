@@ -17,14 +17,14 @@ namespace WhyNotLang.Interpreter.Evaluators
             _mainEvaluator = mainEvaluator;
             _mainExecutor = mainExecutor;
         }
-        
+
         public async Task<ExpressionValue> Eval(IExpression expression)
         {
             if (expression.Type != ExpressionType.Function)
             {
                 throw new WhyNotLangException("FunctionExpression expected");
             }
-            
+
             var functionExpression = expression as FunctionExpression;
             var functionDeclaration = _mainExecutor.ProgramState.GetFunction(functionExpression.Name.Value);
             var argumentsValues = await EvaluateArguments(functionExpression.Parameters.Where(p => p.Type != ExpressionType.Empty).ToList());
@@ -36,7 +36,7 @@ namespace WhyNotLang.Interpreter.Evaluators
 
             _mainExecutor.ProgramState.AddScope(functionDeclaration.Name.Value, true);
             InitialiseParameterVariables(argumentsValues, functionDeclaration.Parameters);
-            
+
             _mainExecutor.CreateNewContext(functionDeclaration.Body.ChildStatements);
             var returnValue = await _mainExecutor.ExecuteAll();
             _mainExecutor.LeaveContext();

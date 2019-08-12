@@ -32,7 +32,7 @@ namespace WhyNotLang.Parser
         {
             _tokenIterator.InitTokens(program);
         }
-        
+
         public IStatement ParseNext()
         {
             var parser = GetNextStatementParser();

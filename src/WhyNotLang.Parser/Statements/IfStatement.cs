@@ -17,7 +17,7 @@ namespace WhyNotLang.Parser.Statements
             LineNumber = lineNumber;
             ElseStatement = elseStatement ?? new EmptyStatement();
         }
-        
+
         public override bool Equals(object obj)
         {
             var statement = obj as IfStatement;
@@ -25,8 +25,8 @@ namespace WhyNotLang.Parser.Statements
             {
                 return false;
             }
-            
-            return Condition.Equals(statement.Condition) && 
+
+            return Condition.Equals(statement.Condition) &&
                    Body.Equals(statement.Body) &&
                    ElseStatement.Equals(statement.ElseStatement) &&
                    Type == statement.Type;
@@ -41,7 +41,7 @@ namespace WhyNotLang.Parser.Statements
                 hash = hash * 23 + Body.GetHashCode();
                 hash = hash * 23 + ElseStatement.GetHashCode();
                 hash = hash * 23 + Type.GetHashCode();
-                
+
                 return hash;
             }
         }

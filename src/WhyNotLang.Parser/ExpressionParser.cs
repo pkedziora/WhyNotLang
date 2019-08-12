@@ -19,7 +19,7 @@ namespace WhyNotLang.Parser
 
             return ParseExpression(Precedence.None);
         }
-        
+
         public IExpression ParseNextExpression()
         {
             return ParseExpression(Precedence.None);
@@ -53,7 +53,7 @@ namespace WhyNotLang.Parser
                 else
                 {
                     var nextPrecedence = GetNextPrecedence();
-                
+
                     if (currentPrecedence >= nextPrecedence)
                     {
                         rightExpression = ParseUnaryExpression();
@@ -73,10 +73,10 @@ namespace WhyNotLang.Parser
 
         private Precedence GetNextPrecedence()
         {
-            var isFunctionCallOrArray = _tokenIterator.CurrentToken.Type == TokenType.Identifier && 
-                                 (_tokenIterator.PeekToken(1).Type == TokenType.LeftParen || 
+            var isFunctionCallOrArray = _tokenIterator.CurrentToken.Type == TokenType.Identifier &&
+                                 (_tokenIterator.PeekToken(1).Type == TokenType.LeftParen ||
                                   _tokenIterator.PeekToken(1).Type == TokenType.LeftBracket);
-            
+
             if (isFunctionCallOrArray)
             {
                 // Find closing paren of function call
@@ -84,7 +84,7 @@ namespace WhyNotLang.Parser
                 var peekAhead = 2;
                 while (openParens > 0)
                 {
-                    if (_tokenIterator.PeekToken(peekAhead).Type == TokenType.LeftParen || 
+                    if (_tokenIterator.PeekToken(peekAhead).Type == TokenType.LeftParen ||
                         _tokenIterator.PeekToken(peekAhead).Type == TokenType.LeftBracket)
                     {
                         openParens++;
@@ -100,7 +100,7 @@ namespace WhyNotLang.Parser
 
                 return _tokenIterator.PeekToken(peekAhead).GetPrecedence(); // Get precedence of operator after the function call
             }
-            
+
             return _tokenIterator.PeekToken(1).GetPrecedence();
         }
 
@@ -114,7 +114,7 @@ namespace WhyNotLang.Parser
             _tokenIterator.GetNextToken(); // Swallow (
 
             var expression = ParseExpression(Precedence.None);
-            
+
             _tokenIterator.GetNextToken();
             return expression;
         }
@@ -125,7 +125,7 @@ namespace WhyNotLang.Parser
             {
                 throw new WhyNotLangException("Identifier expected", _tokenIterator.CurrentToken.LineNumber);
             }
-            
+
             var functionNameToken = _tokenIterator.CurrentToken;
             _tokenIterator.GetNextToken(); // Swallow function name
             var parameterExpressions = new List<IExpression>();
@@ -146,14 +146,14 @@ namespace WhyNotLang.Parser
             _tokenIterator.GetNextToken();
             return new FunctionExpression(functionNameToken, parameterExpressions);
         }
-        
+
         private IExpression ParseArrayExpression()
         {
             if (_tokenIterator.CurrentToken.Type != TokenType.Identifier)
             {
                 throw new WhyNotLangException("Identifier expected", _tokenIterator.CurrentToken.LineNumber);
             }
-            
+
             var arrayNameToken = _tokenIterator.CurrentToken;
             _tokenIterator.GetNextToken(); // Swallow array name
             _tokenIterator.GetNextToken(); // Swallow [
@@ -168,13 +168,13 @@ namespace WhyNotLang.Parser
         {
             var token = _tokenIterator.CurrentToken;
             var nextToken = _tokenIterator.PeekToken(1);
-            
+
             var isFunctionExpression = token.Type == TokenType.Identifier && nextToken.Type == TokenType.LeftParen;
             if (isFunctionExpression)
             {
                 return ParseFunctionExpression();
             }
-            
+
             var isArrayExpression = token.Type == TokenType.Identifier && nextToken.Type == TokenType.LeftBracket;
             if (isArrayExpression)
             {
@@ -185,7 +185,7 @@ namespace WhyNotLang.Parser
             {
                 return ParseParens();
             }
-            
+
             if (token.Type == TokenType.Number || token.Type == TokenType.Identifier || token.Type == TokenType.String)
             {
                 _tokenIterator.GetNextToken();

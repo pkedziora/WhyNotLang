@@ -16,13 +16,13 @@ namespace WhyNotLang.Interpreter.StatementExecutors
             _expressionEvaluator = expressionEvaluator;
             _mainExecutor = mainExecutor;
         }
-        
+
         public async Task<ExpressionValue> Execute()
         {
             var whileStatement = _mainExecutor.CurrentContext.StatementIterator.CurrentStatement as WhileStatement;
-            _mainExecutor.CreateNewContext(new List<IStatement> { whileStatement.Body});
+            _mainExecutor.CreateNewContext(new List<IStatement> { whileStatement.Body });
             ExpressionValue returnValue = ExpressionValue.Empty;
-            while (!_mainExecutor.Stopped && (int) (await _expressionEvaluator.Eval(whileStatement.Condition)).Value != 0)
+            while (!_mainExecutor.Stopped && (int)(await _expressionEvaluator.Eval(whileStatement.Condition)).Value != 0)
             {
                 returnValue = await _mainExecutor.ExecuteAll();
                 if (!returnValue.Equals(ExpressionValue.Empty))

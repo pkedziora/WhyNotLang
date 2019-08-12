@@ -14,13 +14,13 @@ namespace WhyNotLang.Parser
         {
             _tokenizer = tokenzer;
         }
-        
+
         public void InitTokens(string str)
         {
             _tokens = _tokenizer.GetTokens(str);
             _currentIndex = 0;
         }
-        
+
         public Token GetNextToken()
         {
             if (_currentIndex >= _tokens.Count - 1)
@@ -36,10 +36,10 @@ namespace WhyNotLang.Parser
             {
                 throw new WhyNotLangException($"Invalid token: {token.Value}", token.LineNumber);
             }
-            
+
             return token;
         }
-        
+
         public Token PeekToken(int offset)
         {
             var peekIndex = _currentIndex + offset;
@@ -53,7 +53,7 @@ namespace WhyNotLang.Parser
             {
                 throw new WhyNotLangException($"Invalid token: {token.Value}", token.LineNumber);
             }
-            
+
             return token;
         }
     }

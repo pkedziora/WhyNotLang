@@ -9,7 +9,7 @@ namespace WhyNotLang.Parser.Statements
         public StatementType Type => StatementType.FunctionDeclarationStatement;
         public Token Name { get; }
         public List<Token> Parameters { get; }
-        
+
         public BlockStatement Body { get; }
         public int LineNumber { get; }
 
@@ -22,14 +22,14 @@ namespace WhyNotLang.Parser.Statements
             Body = body;
             LineNumber = lineNumber;
         }
-        
+
         public FunctionDeclarationStatement(Token name, List<Token> parameters)
         {
             Name = name;
             Parameters = parameters;
             IsBuiltin = true;
         }
-        
+
         public override bool Equals(object obj)
         {
             var statement = obj as FunctionDeclarationStatement;
@@ -37,8 +37,8 @@ namespace WhyNotLang.Parser.Statements
             {
                 return false;
             }
-            
-            return Name.Equals(statement.Name) && 
+
+            return Name.Equals(statement.Name) &&
                    Parameters.SequenceEqual(statement.Parameters) &&
                    (Body?.Equals(statement?.Body) ?? true) &&
                    IsBuiltin.Equals(statement.IsBuiltin) &&
@@ -55,7 +55,7 @@ namespace WhyNotLang.Parser.Statements
                 hash = hash * 23 + (Body?.GetHashCode() ?? 0);
                 hash = hash * 23 + IsBuiltin.GetHashCode();
                 hash = hash * 23 + Type.GetHashCode();
-                
+
                 return hash;
             }
         }

@@ -4,57 +4,57 @@ namespace WhyNotLang.Tokenizer.Tests
 {
     public class FullProgramTests
     {
-        private Tokenizer _tokenizer;
-        private ITokenFactory _tokenFactory;
-        
+        private readonly Tokenizer _tokenizer;
+        private readonly ITokenFactory _tokenFactory;
+
         public FullProgramTests()
         {
             _tokenFactory = new TokenFactory();
             _tokenizer = new Tokenizer(new TokenReader(), _tokenFactory);
         }
-        
+
         [Fact]
         public void TokenizesHelloWorld()
         {
             var tokenStr = "print(\"Hello World\")";
             var actual = _tokenizer.GetTokens(tokenStr);
-            var expected =  new[]
+            var expected = new[]
             {
-                _tokenFactory.CreateToken(TokenType.Identifier, "print"), 
+                _tokenFactory.CreateToken(TokenType.Identifier, "print"),
                 _tokenFactory.CreateToken(TokenType.LeftParen),
                 _tokenFactory.CreateToken(TokenType.String, "Hello World"),
                 _tokenFactory.CreateToken(TokenType.RightParen),
             };
-            
+
             Assert.Equal(expected, actual);
         }
-        
+
         [Fact]
         public void TokenizesVariableAssignment()
         {
             var tokenStr = "var x := 1 + 100";
             var actual = _tokenizer.GetTokens(tokenStr);
-            var expected =  new[]
+            var expected = new[]
             {
-                _tokenFactory.CreateToken(TokenType.Var), 
+                _tokenFactory.CreateToken(TokenType.Var),
                 _tokenFactory.CreateToken(TokenType.Identifier, "x"),
                 _tokenFactory.CreateToken(TokenType.Assign),
                 _tokenFactory.CreateToken(TokenType.Number, "1"),
                 _tokenFactory.CreateToken(TokenType.Plus),
                 _tokenFactory.CreateToken(TokenType.Number, "100")
             };
-            
+
             Assert.Equal(expected, actual);
         }
-        
+
         [Fact]
         public void TokenizesMathExpression()
         {
             var tokenStr = "var x := 2 * (1 + (100 / 2))";
             var actual = _tokenizer.GetTokens(tokenStr);
-            var expected =  new[]
+            var expected = new[]
             {
-                _tokenFactory.CreateToken(TokenType.Var), 
+                _tokenFactory.CreateToken(TokenType.Var),
                 _tokenFactory.CreateToken(TokenType.Identifier, "x"),
                 _tokenFactory.CreateToken(TokenType.Assign),
                 _tokenFactory.CreateToken(TokenType.Number, "2"),
@@ -69,10 +69,10 @@ namespace WhyNotLang.Tokenizer.Tests
                 _tokenFactory.CreateToken(TokenType.RightParen),
                 _tokenFactory.CreateToken(TokenType.RightParen),
             };
-            
+
             Assert.Equal(expected, actual);
         }
-        
+
         [Fact]
         public void TokenizesIfStatement()
         {
@@ -83,9 +83,9 @@ namespace WhyNotLang.Tokenizer.Tests
                 end
                 ";
             var actual = _tokenizer.GetTokens(tokenStr);
-            var expected =  new[]
+            var expected = new[]
             {
-                _tokenFactory.CreateToken(TokenType.If), 
+                _tokenFactory.CreateToken(TokenType.If),
                 _tokenFactory.CreateToken(TokenType.LeftParen),
                 _tokenFactory.CreateToken(TokenType.Identifier, "i"),
                 _tokenFactory.CreateToken(TokenType.LessThanOrEqual),
@@ -98,10 +98,10 @@ namespace WhyNotLang.Tokenizer.Tests
                 _tokenFactory.CreateToken(TokenType.RightParen),
                 _tokenFactory.CreateToken(TokenType.End)
             };
-            
+
             Assert.Equal(expected, actual);
         }
-        
+
         [Fact]
         public void TokenizesWhileLoop()
         {
@@ -113,9 +113,9 @@ namespace WhyNotLang.Tokenizer.Tests
                 end
                 ";
             var actual = _tokenizer.GetTokens(tokenStr);
-            var expected =  new[]
+            var expected = new[]
             {
-                _tokenFactory.CreateToken(TokenType.While), 
+                _tokenFactory.CreateToken(TokenType.While),
                 _tokenFactory.CreateToken(TokenType.LeftParen),
                 _tokenFactory.CreateToken(TokenType.Identifier, "i"),
                 _tokenFactory.CreateToken(TokenType.LessThan),
@@ -133,7 +133,7 @@ namespace WhyNotLang.Tokenizer.Tests
                 _tokenFactory.CreateToken(TokenType.RightParen),
                 _tokenFactory.CreateToken(TokenType.End)
             };
-            
+
             Assert.Equal(expected, actual);
         }
     }
