@@ -162,7 +162,7 @@ global paddleHeight := 60
 
 global paddleSpeed := 10
 global ballSize := 10
-global ballSpeed := 4
+global ballSpeed := 3
 
 global leftPaddlePos := 0
 global leftDelta := 0
@@ -189,5 +189,5 @@ begin
     end
 
     DrawScene()
-    Delay(20)
+    Delay(15)
 end

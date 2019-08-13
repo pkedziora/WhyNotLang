@@ -29,6 +29,7 @@ namespace WhyNotLang.Web.Components
 
         protected override async Task OnInitAsync()
         {
+            Stop();
             CodeSamples = SampleReader.GetSampleList().ToList();
             var fromStorage = await LocalStorage.GetItem<string>(_localStorageKey);
             if (string.IsNullOrWhiteSpace(SelectedSample))
