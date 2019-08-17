@@ -8,7 +8,6 @@
 
   <ItemGroup>
     <None Remove="Fibonacci.wnl" />
-    <None Remove="MoveRectangleWASD.wnl" />
     <None Remove="Pong.wnl" />
     <None Remove="QuickSort.wnl" />
     <None Remove="REFERENCE.md" />
@@ -18,7 +17,6 @@
     <EmbeddedResource Include="Fibonacci.wnl">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </EmbeddedResource>
-    <EmbeddedResource Include="MoveRectangleWASD.wnl" />
     <EmbeddedResource Include="Pong.wnl" />
     <EmbeddedResource Include="QuickSort.wnl" />
     <EmbeddedResource Include="REFERENCE.md" />
