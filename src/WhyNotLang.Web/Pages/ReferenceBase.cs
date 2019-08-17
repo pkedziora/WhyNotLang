@@ -10,7 +10,7 @@ namespace WhyNotLang.Web.Pages
 
         public MarkupString Content { get; set; }
 
-        protected override void OnInit()
+        protected override void OnInitialized()
         {
             var reference = SampleReader.ReadReference();
             var html = Markdown.ToHtml(reference, new MarkdownPipelineBuilder().UseAdvancedExtensions().Build());

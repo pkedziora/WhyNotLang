@@ -27,7 +27,7 @@ namespace WhyNotLang.Web.Components
         protected List<string> CodeSamples { get; set; } = new List<string>();
         private readonly string _localStorageKey = "customProgram";
 
-        protected override async Task OnInitAsync()
+        protected override async Task OnInitializedAsync()
         {
             Stop();
             CodeSamples = SampleReader.GetSampleList().ToList();
