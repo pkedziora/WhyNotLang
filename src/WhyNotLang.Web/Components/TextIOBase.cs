@@ -57,9 +57,9 @@ namespace WhyNotLang.Web.Components
                    await JsRuntime.InvokeAsync<bool>("WhyNotLang.Text.setFocus", "input");
                    InputDisabled = false;
                    this.StateHasChanged();
+
                    while (!Executor.Stopped && InputValue == string.Empty)
                    {
-
                        await Task.Delay(100);
                    }
 
@@ -69,6 +69,7 @@ namespace WhyNotLang.Web.Components
                    InputDisabled = true;
 
                    this.StateHasChanged();
+
                    return value;
                });
         }

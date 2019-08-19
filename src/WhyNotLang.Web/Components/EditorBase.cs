@@ -77,8 +77,11 @@ namespace WhyNotLang.Web.Components
             catch (WhyNotLangException ex)
             {
                 var msg = ex.LineNumber > 0 ? $"[ERROR] Line {ex.LineNumber}: {ex.Message}" : $"[ERROR] {ex.Message}";
+                if (!Executor.Stopped)
+                {
+                    TextIO.WriteLine(msg);
+                }
 
-                TextIO.WriteLine(msg);
                 Console.WriteLine(msg);
             }
 
