@@ -16,7 +16,7 @@ namespace WhyNotLang.Web.Components
         [Inject] IExecutor Executor { get; set; }
         [Inject] IJSRuntime JsRuntime { get; set; }
 
-        protected override async Task OnAfterRenderAsync()
+        protected override async Task OnAfterRenderAsync(bool firstRender)
         {
             var canvasId = "myCanvas";
             await JsRuntime.InvokeAsync<string>("WhyNotLang.Canvas.initGraphics", canvasId);

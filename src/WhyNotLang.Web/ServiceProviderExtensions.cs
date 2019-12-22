@@ -21,7 +21,7 @@ namespace WhyNotLang.Web
                         throw new Exception("String expected");
                     }
 
-                    await jsRuntime.InvokeAsync<string>("console.log", str.Value);
+                    await jsRuntime.InvokeAsync<string>("console.log", new []{str.Value});
 
                     return await Task.FromResult(ExpressionValue.Empty);
                 });

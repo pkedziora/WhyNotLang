@@ -3,6 +3,7 @@ using Microsoft.JSInterop;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Components.Web;
 using WhyNotLang.Interpreter;
 using WhyNotLang.Interpreter.Evaluators.ExpressionValues;
 using WhyNotLang.Tokenizer;
@@ -19,7 +20,7 @@ namespace WhyNotLang.Web.Components
         protected string InputValue { get; set; } = "";
         protected bool InputDisabled { get; set; } = true;
 
-        protected override void OnAfterRender()
+        protected override void OnAfterRender(bool firstRender)
         {
             Executor.ProgramState.BuiltinFunctionCollection.Add("Writeln",
                 async arguments =>
@@ -86,7 +87,7 @@ namespace WhyNotLang.Web.Components
             this.StateHasChanged();
         }
 
-        public void OnInputKeyDown(UIKeyboardEventArgs e)
+        public void OnInputKeyDown(KeyboardEventArgs e)
         {
             if (e.Key == "Enter")
             {

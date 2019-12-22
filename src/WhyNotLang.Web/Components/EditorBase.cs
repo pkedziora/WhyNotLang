@@ -16,7 +16,7 @@ namespace WhyNotLang.Web.Components
         [Inject] IExecutor Executor { get; set; }
         [Inject] IResourceReader SampleReader { get; set; }
         [Inject] IJSRuntime JsRuntime { get; set; }
-        [Inject] IUriHelper UriHelper { get; set; }
+        [Inject] NavigationManager NavigationManager { get; set; }
         [Inject] LocalStorage LocalStorage { get; set; }
         [Parameter] public string SelectedSample { get; set; } = "";
 
@@ -45,16 +45,16 @@ namespace WhyNotLang.Web.Components
             await LocalStorage.SetItem(_localStorageKey, ProgramCode);
         }
 
-        protected override async Task OnAfterRenderAsync()
+        protected override async Task OnAfterRenderAsync(bool firstRender)
         {
             await JsRuntime.InvokeAsync<string>("WhyNotLang.Text.allowTextAreaTabs", "txtProgramCode");
         }
 
-        protected async Task OnSampleSelected(UIChangeEventArgs e)
+        protected async Task OnSampleSelected(ChangeEventArgs e)
         {
             var sampleName = e.Value.ToString();
             ProgramCode = await ReadSample(sampleName);
-            UriHelper.NavigateTo($"/sample/{sampleName.ToLower()}");
+            NavigationManager.NavigateTo($"/sample/{sampleName.ToLower()}");
         }
 
         protected void Stop()
