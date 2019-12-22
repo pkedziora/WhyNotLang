@@ -4,7 +4,7 @@ language: csharp
 mono: none
 dotnet: 2.2.401
 script:
-- "./scripts/install-dotnet-preview.sh"
+- "./scripts/install-dotnet.sh"
 - "./scripts/run-tests.sh"
 - "./scripts/build-web-package.sh"
 deploy:
