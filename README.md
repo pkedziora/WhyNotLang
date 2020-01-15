@@ -13,8 +13,8 @@ Programming language and interpreter created for fun
     * Tokenizer
     * Parser
     * Interpreter
-* Web test area (JavaScript, C#, [Blazor](https://dotnet.microsoft.com/apps/aspnet/web-apps/blazor), [.NET Core 3.0 preview8](https://github.com/dotnet/core/blob/master/release-notes/3.0/preview/3.0.0-preview8.md))
-* Command line executable (C#, .NET Core 2.2)
+* Web test area (C#, JavaScript, [Blazor](https://dotnet.microsoft.com/apps/aspnet/web-apps/blazor), [.NET Core 3.1](https://github.com/dotnet/core/blob/master/release-notes/3.1/3.1.0/3.1.0.md))
+* Command line executable (C#, .NET Core 3.1)
 
 ## Example
 ```
