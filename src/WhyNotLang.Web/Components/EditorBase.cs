@@ -1,10 +1,10 @@
-﻿using Blazor.Extensions.Storage;
-using Microsoft.AspNetCore.Components;
+﻿using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Blazored.LocalStorage;
 using WhyNotLang.EmbeddedResources.Reader;
 using WhyNotLang.Interpreter;
 using WhyNotLang.Tokenizer;
@@ -17,7 +17,7 @@ namespace WhyNotLang.Web.Components
         [Inject] IResourceReader SampleReader { get; set; }
         [Inject] IJSRuntime JsRuntime { get; set; }
         [Inject] NavigationManager NavigationManager { get; set; }
-        [Inject] LocalStorage LocalStorage { get; set; }
+        [Inject] ILocalStorageService LocalStorage { get; set; }
         [Parameter] public string SelectedSample { get; set; } = "";
 
         public string ProgramCode { get; set; }
@@ -31,7 +31,7 @@ namespace WhyNotLang.Web.Components
         {
             Stop();
             CodeSamples = SampleReader.GetSampleList().ToList();
-            var fromStorage = await LocalStorage.GetItem<string>(_localStorageKey);
+            var fromStorage = await LocalStorage.GetItemAsync<string>(_localStorageKey);
             if (string.IsNullOrWhiteSpace(SelectedSample))
             {
                 SelectedSample = string.IsNullOrEmpty(fromStorage) ? "Pong" : LastSavedKey;
@@ -42,7 +42,7 @@ namespace WhyNotLang.Web.Components
 
         protected async Task Save()
         {
-            await LocalStorage.SetItem(_localStorageKey, ProgramCode);
+            await LocalStorage.SetItemAsync(_localStorageKey, ProgramCode);
         }
 
         protected override async Task OnAfterRenderAsync(bool firstRender)
@@ -90,7 +90,7 @@ namespace WhyNotLang.Web.Components
 
         private async Task<string> ReadSample(string sampleName)
         {
-            var fromStorage = await LocalStorage.GetItem<string>(_localStorageKey);
+            var fromStorage = await LocalStorage.GetItemAsync<string>(_localStorageKey);
             if (sampleName.Equals(LastSavedKey, StringComparison.OrdinalIgnoreCase))
             {
                 SelectedSample = LastSavedKey;

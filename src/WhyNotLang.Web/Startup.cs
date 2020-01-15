@@ -1,4 +1,4 @@
-using Blazor.Extensions.Storage;
+using Blazored.LocalStorage;
 using Microsoft.AspNetCore.Components.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.JSInterop;
@@ -13,7 +13,7 @@ namespace WhyNotLang.Web
         {
             services.AddWhyNotLang();
             services.AddSampleReader();
-            services.AddStorage();
+            services.AddBlazoredLocalStorage();
         }
 
         public void Configure(IComponentsApplicationBuilder app)
