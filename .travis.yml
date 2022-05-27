@@ -4,16 +4,15 @@ language: csharp
 mono: none
 dotnet: 3.1
 script:
-#- "./scripts/install-dotnet.sh"
 - "./scripts/run-tests.sh"
 - "./scripts/build-web-package.sh"
 deploy:
   provider: s3
-  access_key_id: AKIAUBRS2K73MCPSHBK4
+  access_key_id: AKIA52CGVFQZQPZPXF5T
   secret_access_key:
-    secure: XIzSvDYZCNZv4td5ve9jDMaGBkRastg6w0DMMBFg+g/p5toLazqa1mGmYCe4QO2Vs6FsAR8pXgbMMocEDtf10eAw33b7pusDkGWYnt7dx/G2gWdsXVBV48nsZ5ucD0ZzhWRPITJW55GGimSBdDgkxz/X15iZMxP47cL4HGRryOBxcoJthmLuQlF3nuHUMjTpldG39/7nn42NYceEmlmXFI5d2uuQ0AVCrkmKye0yT+CbO1/yZStgsWz6APM3KGcxURhaM5a7B3TgWltsBKQJfOasah0OuSJiujkdAYg0xu2pr98eQyJ859pttxJoMWQI6NdPSZyD05Ij5Qy2gWvLcmoWPAg+Yaf41T2mKwQX+qbi8ZRwc70A0YuPSfcNzRfoKV/EeSTW3AvU3gt/qPzyMkyu8bz5BU5/JgA0IJ24HLjrNnDwxPwYfifW1q2H9BuQHURepDhcEDWfgz7xWVDfT60qLzN2VfA1r2U8tDw98cWhUi44qvT4uu9hx7wyofNKBK7Kh0W/6IkrDv72Ve7pe0KQswDsalIRVbupiqU8QAvLFPIChngZekfpQYTPDtt5Z82TaWI+QlGr3sZLLujpNboWjv7pCcMRZp439/aCL673R782Vo09FWk7VnVeAWl61IGqoOIlrRABV2thNnb3opJAQcage/EXIeZWTyyrntU=
-  bucket: whynotlang-2021
-  region: eu-west-1
+    secure: o5YA/mPX3am12r+TH8Oeb7ol624TxzDZzkGgoQmz183gdkn0cwiVezi/AZCaKuZoosA7NmwfjPbBnbuQDlMbxccc7r6Tqa3Q5J7KD/iYhn7fwQ6babtEDNgn6qY5M4MX6CmRCuHRFaeGAtFlJjW6faSQPOSse1yr451spaUgVddW0H82OwqKZRRdIQ5BOGoqN1eH2RM8hXQc52+yWGFH0e5T+AA2mFo5GGNTWa/d3QuXuN5M3nqwnhU5F6cQE0jsr+RP729Fml6luXckCQk0yeQJhwHNkohP5LfhSraXcaz3R1dPzcmHbZBLCvM6NMQyifqoBOUoiVeVc2O2k7Mjqn1g3Qtu7dl8oWZdLr8Nh+aCC57n9VOsLCEvfdtxxsSMTP2u7hytBvKrPzxWHMlITlFip3yRpQataXinxNUj1muETWpK5ZkUbweB0pEPS1dYpmEC5Y4UUZnwkreOFtewHICNvoHgXrU7W8kZmN1nuwiiTAWsEY1WvIsctRXBDTD+s18CdMz8NmhBEsuGqbS3CTJClJcsr6KeJBvjC2R9uO7zR+D0C0meJJdav1LGmqP+zbLE3PFshX8todjfhGnJoynZlHtevjxAgG5wVvgtZ75cLH5J3fVmIcJJCKs39uSSXPWOBAUfw/AbgG4+sR9g5nG7LOgIHa/hfExo4KnM5uI=
+  bucket: whynotlang
+  region: eu-west-2
   local-dir: artifacts
   skip_cleanup: true
   acl: public_read
