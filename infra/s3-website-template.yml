@@ -1,0 +1,132 @@
+Description: >
+  Script to create a SSL certificate, S3 bucket and Cloudfront distribution.
+###############################################################################
+Parameters:
+  ###############################################################################
+
+  DomainName:
+    Type: String
+    Description: The website domain name.
+    Default: whynotlang.kedziora.dev
+
+  BucketName:
+    Type: String
+    Description: The bucket name.
+    Default: whynotlang-website
+
+  MainHostedZoneId:
+    Type: String
+    Description: Id of the hosted zone for the site.
+    Default: Z09273052X2SXDRKW351B
+
+  PriceClass:
+    Type: String
+    Description: The CloudFront distribution price class
+    Default: "PriceClass_All"
+    AllowedValues:
+      - "PriceClass_100"
+      - "PriceClass_200"
+      - "PriceClass_All"
+
+###############################################################################
+Resources:
+  ###############################################################################
+  myDNSRecordSetGroup:
+    Type: AWS::Route53::RecordSetGroup
+    Properties:
+      HostedZoneId: !Ref MainHostedZoneId
+      Comment: Zone apex alias targeted to CloudFront.
+      RecordSets:
+        - Name: !Sub "${DomainName}."
+          Type: A
+          AliasTarget:
+            HostedZoneId: Z2FDTNDATAQYW2 #Constant CloudFront HostedZoneId
+            DNSName: !GetAtt CloudFrontDistribution.DomainName
+  Cert:
+    Type: AWS::CertificateManager::Certificate
+    Properties:
+      DomainName: !Ref DomainName
+      DomainValidationOptions:
+        - DomainName: !Ref DomainName
+          HostedZoneId: !Ref MainHostedZoneId
+      ValidationMethod: DNS
+
+  CloudFrontDistribution:
+    Type: AWS::CloudFront::Distribution
+    Properties:
+      DistributionConfig:
+        Aliases:
+          - !Ref DomainName
+        DefaultCacheBehavior:
+          Compress: true
+          ForwardedValues:
+            QueryString: false
+          TargetOriginId: the-s3-website
+          ViewerProtocolPolicy: redirect-to-https
+          DefaultTTL: 60
+        #DefaultRootObject: index.html
+        # CustomErrorResponses:
+        #   - ErrorCachingMinTTL: 300
+        #     ErrorCode: 403
+        #     ResponseCode: 200
+        #     ResponsePagePath: /index.html
+        #   - ErrorCachingMinTTL: 300
+        #     ErrorCode: 404
+        #     ResponseCode: 200
+        #     ResponsePagePath: /index.html
+        Enabled: true
+        HttpVersion: http2
+        Origins:
+          - DomainName: !Join ["", [!Ref Bucket, ".s3-website-us-east-1.amazonaws.com"]]
+            Id: the-s3-website
+            CustomOriginConfig:
+              OriginProtocolPolicy: http-only
+            OriginCustomHeaders:
+              - HeaderName: User-Agent
+                HeaderValue: !Ref MainHostedZoneId
+        PriceClass: !Ref PriceClass
+        ViewerCertificate:
+          AcmCertificateArn: !Ref Cert
+          MinimumProtocolVersion: TLSv1
+          SslSupportMethod: sni-only
+      Tags:
+        - Key: Domain
+          Value: !Ref DomainName
+
+  CloudFrontOriginAccessIdentity:
+    Type: AWS::CloudFront::CloudFrontOriginAccessIdentity
+    Properties:
+      CloudFrontOriginAccessIdentityConfig:
+        Comment: !Sub "CloudFront OAI for ${DomainName}"
+
+  Bucket:
+    Type: AWS::S3::Bucket
+    #DeletionPolicy: Retain
+    Properties:
+      BucketName: !Ref BucketName
+      BucketEncryption:
+        ServerSideEncryptionConfiguration:
+          - ServerSideEncryptionByDefault:
+              SSEAlgorithm: AES256
+      WebsiteConfiguration:
+        IndexDocument: index.html
+        ErrorDocument: 404.html
+      Tags:
+        - Key: Domain
+          Value: !Ref DomainName
+
+  BucketPolicy:
+    Type: AWS::S3::BucketPolicy
+    Properties:
+      Bucket: !Ref Bucket
+      PolicyDocument:
+        Statement:
+          - Action:
+              - s3:GetObject
+            Effect: Allow
+            Resource: !Join ["", ["arn:aws:s3:::", !Ref Bucket, "/*"]]
+            Principal: '*'
+            Condition:
+              StringEquals:
+                'aws:UserAgent':
+                  - !Ref MainHostedZoneId

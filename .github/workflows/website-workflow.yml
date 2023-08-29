@@ -1,0 +1,60 @@
+name: Deploy website to S3
+
+on:
+  push:
+    branches: ["master"]
+    paths:
+      - client/**
+      - .github/workflows/website-workflow.yml
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        dotnet-version: [ '3.1.x', '6.0.x' ]
+
+    steps:
+      - uses: actions/checkout@v3
+      - name: Setup .NET Core SDK ${{ matrix.dotnet-version }}
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: ${{ matrix.dotnet-version }}
+      - name: Install dependencies
+        run: dotnet restore
+      - name: Test
+        run: ./scripts/run-tests.sh
+      - name: Build
+        run: ./scripts/build-web-package.sh
+      - name: Upload artifact
+        uses: actions/upload-artifact@master
+        with:
+          name: codecogito-website-artifact
+          path: ./out
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./client
+    steps:
+      - uses: actions/download-artifact@master
+        with:
+          name: codecogito-website-artifact
+          path: out
+      - uses: geekyeggo/delete-artifact@v2
+        with:
+          name: codecogito-website-artifact
+      - uses: jakejarvis/s3-sync-action@master
+        with:
+          args: --follow-symlinks --delete
+        env:
+          AWS_S3_BUCKET: codecogito-website
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_REGION: "us-east-1" # optional: defaults to us-east-1
+          SOURCE_DIR: "out" # optional: defaults to entire repository
