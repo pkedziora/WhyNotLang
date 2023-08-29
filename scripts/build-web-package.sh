@@ -1,4 +1,4 @@
-dotnet publish src/WhyNotLang.Web/ -o tmp
+dotnet publish src/WhyNotLang.Blazor/ -o tmp
 mkdir out
-mv ./tmp/WhyNotLang.Web/dist/* out/
+mv ./tmp/WhyNotLang.Blazor/dist/* out/
 rm -rf tmp
