@@ -1,0 +1,24 @@
+<Project Sdk="Microsoft.NET.Sdk.BlazorWebAssembly">
+
+    <PropertyGroup>
+        <TargetFramework>net6.0</TargetFramework>
+        <Nullable>enable</Nullable>
+        <ImplicitUsings>enable</ImplicitUsings>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Blazored.LocalStorage" Version="4.4.0" />
+        <PackageReference Include="Markdig" Version="0.32.0" />
+        <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="6.0.10"/>
+        <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="6.0.10" PrivateAssets="all"/>
+    </ItemGroup>
+
+
+
+    <ItemGroup>
+      <ProjectReference Include="..\src\WhyNotLang.Interpreter\WhyNotLang.Interpreter.csproj" />
+      <ProjectReference Include="..\src\WhyNotLang.Parser\WhyNotLang.Parser.csproj" />
+      <ProjectReference Include="..\src\WhyNotLang.Tokenizer\WhyNotLang.Tokenizer.csproj" />
+    </ItemGroup>
+
+</Project>

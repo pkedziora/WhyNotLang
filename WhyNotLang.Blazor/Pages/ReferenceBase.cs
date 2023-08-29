@@ -1,12 +1,13 @@
-﻿using Markdig;
+﻿using System.Resources;
+using Markdig;
 using Microsoft.AspNetCore.Components;
 using WhyNotLang.EmbeddedResources.Reader;
 
-namespace WhyNotLang.Web.Pages
+namespace WhyNotLang.Blazor.Pages
 {
     public class ReferenceBase : ComponentBase
     {
-        [Inject] IResourceReader SampleReader { get; set; }
+        [Inject] WhyNotLang.EmbeddedResources.Reader.IResourceReader SampleReader { get; set; }
 
         public MarkupString Content { get; set; }
 

@@ -29,13 +29,13 @@ WhyNotLang.Canvas = WhyNotLang.Canvas || (function () {
     }
 
     function handleKeyDown(event) {
-        DotNet.invokeMethodAsync('WhyNotLang.Web', 'OnKeyDown', event.key)
+        DotNet.invokeMethodAsync('WhyNotLang.Blazor', 'OnKeyDown', event.key)
             .then(message => {
             });
     }
 
     function handleKeyUp(event) {
-        DotNet.invokeMethodAsync('WhyNotLang.Web', 'OnKeyUp', event.key)
+        DotNet.invokeMethodAsync('WhyNotLang.Blazor', 'OnKeyUp', event.key)
             .then(message => {
             });
     }

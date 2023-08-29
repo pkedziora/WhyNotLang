@@ -8,7 +8,7 @@ using WhyNotLang.Interpreter;
 using WhyNotLang.Interpreter.Evaluators.ExpressionValues;
 using WhyNotLang.Tokenizer;
 
-namespace WhyNotLang.Web.Components
+namespace WhyNotLang.Blazor.Components
 {
     public class TextIOBase : ComponentBase
     {

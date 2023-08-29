@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace WhyNotLang.Web
+namespace WhyNotLang.Blazor
 {
     public static class Interop
     {

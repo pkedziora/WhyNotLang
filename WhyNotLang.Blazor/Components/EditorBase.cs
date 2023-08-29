@@ -9,7 +9,7 @@ using WhyNotLang.EmbeddedResources.Reader;
 using WhyNotLang.Interpreter;
 using WhyNotLang.Tokenizer;
 
-namespace WhyNotLang.Web.Components
+namespace WhyNotLang.Blazor.Components
 {
     public class EditorBase : ComponentBase
     {

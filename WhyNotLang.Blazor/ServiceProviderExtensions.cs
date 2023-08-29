@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using WhyNotLang.Interpreter.Builtin;
 using WhyNotLang.Interpreter.Evaluators.ExpressionValues;
 
-namespace WhyNotLang.Web
+namespace WhyNotLang.Blazor
 {
     public static class ServiceProviderExtensions
     {

@@ -9,7 +9,7 @@ using WhyNotLang.Parser.Expressions;
 using WhyNotLang.Parser.Statements;
 using WhyNotLang.Tokenizer;
 
-namespace WhyNotLang.Web.Components
+namespace WhyNotLang.Blazor.Components
 {
     public class CanvasIOBase : ComponentBase
     {

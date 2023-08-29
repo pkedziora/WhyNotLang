@@ -25,6 +25,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WhyNotLang.Web", "src\WhyNo
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WhyNotLang.EmbeddedResources", "src\WhyNotLang.EmbeddedResources\WhyNotLang.EmbeddedResources.csproj", "{86CD535C-FBE6-43E2-9EB5-82A154921CD1}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WhyNotLang.Blazor", "WhyNotLang.Blazor\WhyNotLang.Blazor.csproj", "{FEEF9B29-0D73-42AB-8366-0F1CE8A525BD}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -71,6 +73,10 @@ Global
 		{86CD535C-FBE6-43E2-9EB5-82A154921CD1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{86CD535C-FBE6-43E2-9EB5-82A154921CD1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{86CD535C-FBE6-43E2-9EB5-82A154921CD1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FEEF9B29-0D73-42AB-8366-0F1CE8A525BD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FEEF9B29-0D73-42AB-8366-0F1CE8A525BD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FEEF9B29-0D73-42AB-8366-0F1CE8A525BD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FEEF9B29-0D73-42AB-8366-0F1CE8A525BD}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
