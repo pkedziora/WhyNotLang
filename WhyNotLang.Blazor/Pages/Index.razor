@@ -1,0 +1,10 @@
+﻿@page "/"
+@page "/sample/{sampleName}"
+@using WhyNotLang.Web.Components;
+
+<Editor SelectedSample="@SampleName"></Editor>
+
+@code {
+    [Parameter]
+    public string SampleName { get; set; } = "";
+}
