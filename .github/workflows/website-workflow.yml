@@ -4,8 +4,7 @@ on:
   push:
     branches: ["master"]
     paths:
-      - client/**
-      - .github/workflows/website-workflow.yml
+      - /**
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
