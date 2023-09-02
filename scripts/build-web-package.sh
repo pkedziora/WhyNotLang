@@ -1,5 +1,5 @@
 ls
 dotnet publish ./src/WhyNotLang.Blazor/ -o tmp
 mkdir out
-mv ./tmp/WhyNotLang.Blazor/dist/* out/
+mv ./tmp/wwwroot/* out/
 rm -rf tmp
