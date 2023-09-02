@@ -1,0 +1,21 @@
+func Fib(number)
+begin
+    if (number == 0 or number == 1)
+        return number
+
+    if (memo[number] != 0)
+        return memo[number]
+
+    var result := Fib(number - 1) + Fib(number - 2)
+    memo[number] := result
+
+    return result
+end
+
+Writeln("Fibonacci calculator. Enter n: ")
+var num := ToNumber(Readln())
+
+global memo[num + 1]
+
+var result := Fib(num)
+Writeln("Result: " + ToString(result))
