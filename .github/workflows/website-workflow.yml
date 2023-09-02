@@ -29,7 +29,7 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-artifact@master
         with:
-          name: codecogito-website-artifact
+          name: whynotlang-website-artifact
           path: ./out
 
   deploy:
@@ -41,16 +41,16 @@ jobs:
     steps:
       - uses: actions/download-artifact@master
         with:
-          name: codecogito-website-artifact
+          name: whynotlang-website-artifact
           path: out
       - uses: geekyeggo/delete-artifact@v2
         with:
-          name: codecogito-website-artifact
+          name: whynotlang-website-artifact
       - uses: jakejarvis/s3-sync-action@master
         with:
           args: --follow-symlinks --delete
         env:
-          AWS_S3_BUCKET: codecogito-website
+          AWS_S3_BUCKET: whynotlang-website
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           AWS_REGION: "us-east-1" # optional: defaults to us-east-1
