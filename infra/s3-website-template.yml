@@ -111,6 +111,11 @@ Resources:
       WebsiteConfiguration:
         IndexDocument: index.html
         ErrorDocument: 404.html
+      PublicAccessBlockConfiguration:
+        BlockPublicPolicy: false
+        BlockPublicAcls: false
+        IgnorePublicAcls: false
+        RestrictPublicBuckets: false
       Tags:
         - Key: Domain
           Value: !Ref DomainName
