@@ -17,7 +17,7 @@ Parameters:
   MainHostedZoneId:
     Type: String
     Description: Id of the hosted zone for the site.
-    Default: Z057121740U6NM2260HP
+    Default: Z04590043D57P73P3B66W
 
   PriceClass:
     Type: String
